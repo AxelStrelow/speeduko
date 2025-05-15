@@ -1,5 +1,5 @@
 import React from 'react';
-import Sudoku3x3 from './Sudoku3x3'; // 👈 import the new component
+import Sudoku3x3 from './Sudoku3x3'; // ✅ Correct import
 
 function App() {
   return (
@@ -8,6 +8,7 @@ function App() {
     </div>
   );
 }
+
 export default function App() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
