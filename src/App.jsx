@@ -1,5 +1,5 @@
 import React from 'react';
-import Sudoku3x3 from './Sudoku3x3';
+import Sudoku3x3 from './Sudoku3x3'; // this is your game component
 
 export default function App() {
   return (
