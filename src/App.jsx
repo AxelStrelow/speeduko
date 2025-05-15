@@ -1,5 +1,13 @@
 import React from 'react';
+import Sudoku3x3 from './Sudoku3x3'; // 👈 import the new component
 
+function App() {
+  return (
+    <div className="min-h-screen bg-white text-black">
+      <Sudoku3x3 />
+    </div>
+  );
+}
 export default function App() {
   return (
     <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
