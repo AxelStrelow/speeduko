@@ -1,0 +1,25 @@
+.sudoku-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+.sudoku-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 60px);
+  gap: 4px;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.sudoku-cell {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  text-align: center;
+  border: 1px solid #000;
+}
+.check-btn {
+  padding: 8px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
