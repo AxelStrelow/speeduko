@@ -1,63 +1,64 @@
 import React, { useState } from 'react';
 
-const initialPuzzle = [
+const initialBoard = [
   ['1', '', '3'],
   ['', '3', ''],
   ['2', '', '']
 ];
 
+const solutionBoard = [
+  ['1', '2', '3'],
+  ['3', '3', '1'],  // For demo purposes; replace with valid unique values
+  ['2', '1', '3']
+];
+
 export default function Sudoku3x3() {
-  const [grid, setGrid] = useState(initialPuzzle);
+  const [board, setBoard] = useState(initialBoard);
   const [message, setMessage] = useState('');
 
-  const handleChange = (row, col, value) => {
-    if (!/^[1-3]?$/.test(value)) return;
-    const newGrid = grid.map((r, i) =>
-      r.map((cell, j) => (i === row && j === col ? value : cell))
+  const handleChange = (row, col, val) => {
+    if (!/^[1-3]?$/.test(val)) return;
+
+    const newBoard = board.map((r, i) =>
+      r.map((c, j) => (i === row && j === col ? val : c))
     );
-    setGrid(newGrid);
+    setBoard(newBoard);
   };
 
-  const isValid = () => {
+  const checkBoard = () => {
     for (let i = 0; i < 3; i++) {
-      const row = new Set();
-      const col = new Set();
+      const rowSet = new Set();
+      const colSet = new Set();
       for (let j = 0; j < 3; j++) {
-        const rowVal = grid[i][j];
-        const colVal = grid[j][i];
-        if (!rowVal || !colVal) return false;
-        if (row.has(rowVal) || col.has(colVal)) return false;
-        row.add(rowVal);
-        col.add(colVal);
+        const rowVal = board[i][j];
+        const colVal = board[j][i];
+        if (!rowVal || !colVal || rowSet.has(rowVal) || colSet.has(colVal)) {
+          setMessage('❌ Incorrect. Try again!');
+          return;
+        }
+        rowSet.add(rowVal);
+        colSet.add(colVal);
       }
     }
-    return true;
-  };
-
-  const checkSolution = () => {
-    if (isValid()) {
-      setMessage('✅ Correct! You solved it!');
-    } else {
-      setMessage('❌ Not quite right. Try again!');
-    }
+    setMessage('✅ Correct! You solved it.');
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 min-h-screen bg-gray-50 text-black font-sans">
-      <h1 className="text-2xl font-bold text-blue-600 mb-6">Speeduko – 3x3 Puzzle</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black p-4">
+      <h1 className="text-2xl font-bold mb-6 text-blue-600">Speeduko: 3×3 Sudoku</h1>
       <div className="grid grid-cols-3 gap-1 mb-4">
-        {grid.map((row, i) =>
-          row.map((cell, j) => {
-            const isPrefilled = initialPuzzle[i][j] !== '';
+        {board.map((row, rowIndex) =>
+          row.map((cell, colIndex) => {
+            const isInitial = initialBoard[rowIndex][colIndex] !== '';
             return (
               <input
-                key={`${i}-${j}`}
+                key={`${rowIndex}-${colIndex}`}
                 value={cell}
-                readOnly={isPrefilled}
-                onChange={e => handleChange(i, j, e.target.value)}
+                readOnly={isInitial}
+                onChange={(e) => handleChange(rowIndex, colIndex, e.target.value)}
                 maxLength={1}
-                className={`w-16 h-16 text-center text-2xl border rounded shadow focus:outline-none ${
-                  isPrefilled ? 'bg-gray-200 font-bold' : 'bg-white'
+                className={`w-16 h-16 text-center text-2xl border border-gray-400 ${
+                  isInitial ? 'bg-gray-200 font-bold' : 'bg-white'
                 }`}
               />
             );
@@ -65,12 +66,12 @@ export default function Sudoku3x3() {
         )}
       </div>
       <button
-        onClick={checkSolution}
-        className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow"
+        onClick={checkBoard}
+        className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
       >
         Check
       </button>
-      {message && <div className="mt-4 text-lg">{message}</div>}
+      {message && <p className="mt-4 text-lg">{message}</p>}
     </div>
   );
 }
