@@ -18,24 +18,33 @@ export default function Sudoku3x3() {
     setGrid(newGrid);
   };
 
-  const checkSolution = () => {
+  const isValid = () => {
     for (let i = 0; i < 3; i++) {
       const row = new Set();
       const col = new Set();
       for (let j = 0; j < 3; j++) {
-        row.add(grid[i][j]);
-        col.add(grid[j][i]);
-      }
-      if (row.size !== 3 || col.size !== 3 || row.has('') || col.has('')) {
-        setMessage('❌ Not correct yet. Keep trying!');
-        return;
+        const rowVal = grid[i][j];
+        const colVal = grid[j][i];
+        if (!rowVal || !colVal) return false;
+        if (row.has(rowVal) || col.has(colVal)) return false;
+        row.add(rowVal);
+        col.add(colVal);
       }
     }
-    setMessage('✅ Correct! You solved it!');
+    return true;
+  };
+
+  const checkSolution = () => {
+    if (isValid()) {
+      setMessage('✅ Correct! You solved it!');
+    } else {
+      setMessage('❌ Not quite right. Try again!');
+    }
   };
 
   return (
-    <div className="p-4">
+    <div className="flex flex-col items-center justify-center p-4 min-h-screen bg-gray-50 text-black font-sans">
+      <h1 className="text-2xl font-bold text-blue-600 mb-6">Speeduko – 3x3 Puzzle</h1>
       <div className="grid grid-cols-3 gap-1 mb-4">
         {grid.map((row, i) =>
           row.map((cell, j) => {
@@ -47,8 +56,8 @@ export default function Sudoku3x3() {
                 readOnly={isPrefilled}
                 onChange={e => handleChange(i, j, e.target.value)}
                 maxLength={1}
-                className={`w-16 h-16 text-center text-xl border rounded ${
-                  isPrefilled ? 'bg-gray-200' : 'bg-white'
+                className={`w-16 h-16 text-center text-2xl border rounded shadow focus:outline-none ${
+                  isPrefilled ? 'bg-gray-200 font-bold' : 'bg-white'
                 }`}
               />
             );
@@ -57,11 +66,11 @@ export default function Sudoku3x3() {
       </div>
       <button
         onClick={checkSolution}
-        className="px-4 py-2 bg-blue-600 text-white rounded"
+        className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded shadow"
       >
         Check
       </button>
-      <div className="mt-2 text-lg">{message}</div>
+      {message && <div className="mt-4 text-lg">{message}</div>}
     </div>
   );
 }
