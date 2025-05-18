@@ -5,6 +5,7 @@ import './Sudoku.css';
 const LEVELS = {
   '3x3': ['easy', 'medium', 'hard'],
   '6x6': ['easy', 'medium', 'hard'],
+  '9x9': ['easy', 'medium', 'hard'],
 };
 
 const getGridSize = (phase) => {
@@ -81,23 +82,35 @@ const removeCells = (grid, blanks) => {
   return newGrid;
 };
 
+const getBlankCount = (gridSize, level) => {
+  // Scale difficulty — more blanks on harder levels
+  const base = {
+    3: [2, 4, 6],
+    6: [8, 14, 20],
+    9: [30, 45, 60],
+  };
+  return base[gridSize][level];
+};
+
 const GameEngine = () => {
   const [phase, setPhase] = useState(0);
   const [grid, setGrid] = useState([]);
   const [solution, setSolution] = useState([]);
   const [userInput, setUserInput] = useState([]);
   const [wrongCells, setWrongCells] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
   const [gameOver, setGameOver] = useState(false);
 
   const timerRef = useRef(null);
   const gridSize = getGridSize(phase);
   const totalPhases = Object.values(LEVELS).flat().length;
+  const levelIndex = phase % 3;
 
   useEffect(() => {
     const fullGrid = generateFullGrid(gridSize);
+    const blanks = getBlankCount(gridSize, levelIndex);
     setSolution(fullGrid);
-    setGrid(removeCells(fullGrid, Math.floor(gridSize * 1.5)));
+    setGrid(removeCells(fullGrid, blanks));
     setUserInput(Array.from({ length: gridSize }, () => Array(gridSize).fill("")));
     setWrongCells([]);
   }, [phase]);
@@ -138,7 +151,7 @@ const GameEngine = () => {
       if (!correct && clean !== "") {
         if (!updatedWrongs.includes(cellKey)) updatedWrongs.push(cellKey);
         setWrongCells(updatedWrongs);
-        setTimeLeft((prev) => Math.max(prev - 5, 0)); // -5 seconds
+        setTimeLeft((prev) => Math.max(prev - 5, 0));
       } else {
         setWrongCells(wrongs => wrongs.filter(cell => cell !== cellKey));
       }
@@ -157,7 +170,7 @@ const GameEngine = () => {
       }
     }
 
-    setTimeLeft((prev) => prev + 60); // +1 minute
+    setTimeLeft((prev) => prev + 30); // +30 seconds per level
     if (phase + 1 < totalPhases) {
       setTimeout(() => setPhase(phase + 1), 500);
     } else {
@@ -168,8 +181,13 @@ const GameEngine = () => {
 
   return (
     <div className="text-center">
-      <h2 className="text-xl font-bold mb-2">Speeduko - Level {phase + 1}</h2>
-      <h3 className="text-lg mb-4">Time Left: {formatTime(timeLeft)}</h3>
+      <div className="mb-2">
+        <h2 className="text-xl font-bold">Speeduko</h2>
+        <div className="inline-block px-4 py-2 mt-2 bg-black text-white rounded font-mono text-lg tracking-wider">
+          {formatTime(timeLeft)}
+        </div>
+        <p className="mt-2 text-sm text-gray-500">Level {phase + 1} of {totalPhases}</p>
+      </div>
       <div className="sudoku-grid" style={{ gridTemplateColumns: `repeat(${gridSize}, 60px)` }}>
         {grid.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
@@ -188,7 +206,7 @@ const GameEngine = () => {
           })
         )}
       </div>
-      {gameOver && <div className="text-red-600 font-bold mt-4">⏱ Game Over</div>}
+      {gameOver && <div className="text-red-600 font-bold mt-4 text-lg">⏱ Game Over</div>}
     </div>
   );
 };
