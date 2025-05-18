@@ -10,13 +10,13 @@ const LEVELS = {
 const getGridSize = (phase) => {
   if (phase < 3) return 3;
   if (phase < 6) return 6;
-  return 9; // placeholder for future 9x9 support
+  return 9;
 };
 
 const getBoxSize = (gridSize) => {
   if (gridSize === 3) return [1, 3];
   if (gridSize === 6) return [2, 3];
-  return [3, 3]; // 9x9
+  return [3, 3];
 };
 
 const generateFullGrid = (gridSize) => {
@@ -103,18 +103,18 @@ const GameEngine = () => {
     const newInput = [...userInput];
     const clean = value.replace(/[^0-9]/, '').slice(0, 1);
     newInput[row][col] = clean;
-
     setUserInput(newInput);
 
     if (grid[row][col] === null) {
       const correct = parseInt(clean) === solution[row][col];
       const updatedWrongs = [...wrongCells];
+      const cellKey = `${row}-${col}`;
 
       if (!correct && clean !== "") {
-        updatedWrongs.push(\`\${row}-${col}\`);
+        if (!updatedWrongs.includes(cellKey)) updatedWrongs.push(cellKey);
         setWrongCells(updatedWrongs);
       } else {
-        setWrongCells(wrongs => wrongs.filter(cell => cell !== \`\${row}-${col}\`));
+        setWrongCells(wrongs => wrongs.filter(cell => cell !== cellKey));
       }
     }
 
@@ -144,12 +144,12 @@ const GameEngine = () => {
       <div className="sudoku-grid" style={{ gridTemplateColumns: `repeat(${gridSize}, 60px)` }}>
         {grid.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
-            const key = \`\${rowIndex}-\${colIndex}\`;
+            const key = `${rowIndex}-${colIndex}`;
             const isWrong = wrongCells.includes(key);
             return (
               <input
                 key={key}
-                className={\`sudoku-cell \${isWrong ? 'bg-red-200' : ''}\`}
+                className={`sudoku-cell ${isWrong ? 'bg-red-200' : ''}`}
                 type="text"
                 value={cell !== null ? cell : userInput[rowIndex][colIndex]}
                 onChange={(e) => handleInput(rowIndex, colIndex, e.target.value)}
