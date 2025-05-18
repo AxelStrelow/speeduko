@@ -8,7 +8,10 @@
   display: grid;
   gap: 4px;
   justify-content: center;
-  margin-bottom: 1rem;
+  margin: 1rem auto;
+  padding: 10px;
+  background: #f4f4f4;
+  border-radius: 12px;
 }
 
 .sudoku-row {
@@ -20,10 +23,22 @@
   height: 60px;
   font-size: 24px;
   text-align: center;
-  border: 1px solid #000;
+  border: 2px solid #ccc;
+  background-color: #fff;
+  font-weight: bold;
+  transition: background-color 0.2s, border-color 0.2s;
+  border-radius: 6px;
+  outline: none;
 }
 
-/* Dynamic grid sizes */
+.sudoku-cell:focus {
+  border-color: #000;
+}
+
+.sudoku-cell.bg-red-200 {
+  background-color: #fca5a5 !important;
+}
+
 .sudoku-grid-3x3 {
   grid-template-columns: repeat(3, 60px);
 }
@@ -32,10 +47,52 @@
   grid-template-columns: repeat(6, 60px);
 }
 
+.sudoku-grid-9x9 {
+  grid-template-columns: repeat(9, 60px);
+}
+
 .check-btn {
-  padding: 8px 16px;
-  background: #007bff;
+  padding: 10px 20px;
+  background: #16a34a;
   color: white;
+  font-weight: bold;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.check-btn:hover {
+  background: #15803d;
+}
+
+.text-red-600 {
+  color: #dc2626;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.font-mono {
+  font-family: monospace;
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+.text-white {
+  color: #fff;
+}
+
+.rounded {
+  border-radius: 8px;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.inline-block {
+  display: inline-block;
 }
