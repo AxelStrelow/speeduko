@@ -127,7 +127,7 @@ const GameEngine = () => {
         {grid.map((row, rowIndex) =>
           row.map((cell, colIndex) => (
             <input
-              key={\`\${rowIndex}-\${colIndex}\`}
+              key={`${rowIndex}-${colIndex}`}
               className="sudoku-cell"
               type="text"
               value={cell !== null ? cell : userInput[rowIndex][colIndex]}
