@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 
 const LEVELS = {
@@ -87,7 +87,10 @@ const GameEngine = () => {
   const [solution, setSolution] = useState([]);
   const [userInput, setUserInput] = useState([]);
   const [wrongCells, setWrongCells] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+  const [gameOver, setGameOver] = useState(false);
 
+  const timerRef = useRef(null);
   const gridSize = getGridSize(phase);
   const totalPhases = Object.values(LEVELS).flat().length;
 
@@ -99,7 +102,29 @@ const GameEngine = () => {
     setWrongCells([]);
   }, [phase]);
 
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current);
+          setGameOver(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, []);
+
+  const formatTime = (sec) => {
+    const m = Math.floor(sec / 60).toString().padStart(2, "0");
+    const s = (sec % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  };
+
   const handleInput = (row, col, value) => {
+    if (gameOver) return;
+
     const newInput = [...userInput];
     const clean = value.replace(/[^0-9]/, '').slice(0, 1);
     newInput[row][col] = clean;
@@ -113,6 +138,7 @@ const GameEngine = () => {
       if (!correct && clean !== "") {
         if (!updatedWrongs.includes(cellKey)) updatedWrongs.push(cellKey);
         setWrongCells(updatedWrongs);
+        setTimeLeft((prev) => Math.max(prev - 5, 0)); // -5 seconds
       } else {
         setWrongCells(wrongs => wrongs.filter(cell => cell !== cellKey));
       }
@@ -131,16 +157,19 @@ const GameEngine = () => {
       }
     }
 
+    setTimeLeft((prev) => prev + 60); // +1 minute
     if (phase + 1 < totalPhases) {
       setTimeout(() => setPhase(phase + 1), 500);
     } else {
       alert("🎉 You've completed all levels!");
+      clearInterval(timerRef.current);
     }
   };
 
   return (
     <div className="text-center">
-      <h2 className="text-xl font-bold mb-4">Speeduko - Level {phase + 1}</h2>
+      <h2 className="text-xl font-bold mb-2">Speeduko - Level {phase + 1}</h2>
+      <h3 className="text-lg mb-4">Time Left: {formatTime(timeLeft)}</h3>
       <div className="sudoku-grid" style={{ gridTemplateColumns: `repeat(${gridSize}, 60px)` }}>
         {grid.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
@@ -159,6 +188,7 @@ const GameEngine = () => {
           })
         )}
       </div>
+      {gameOver && <div className="text-red-600 font-bold mt-4">⏱ Game Over</div>}
     </div>
   );
 };
