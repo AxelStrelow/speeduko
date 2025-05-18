@@ -68,7 +68,7 @@ const Sudoku3x3 = () => {
   return (
     <div className="sudoku-container">
       <h2>Speeduko 3×3 - {difficulties[level].toUpperCase()}</h2>
-      <div className="sudoku-grid">
+      <div className="sudoku-grid sudoku-grid-3x3">
         {grid.map((row, i) =>
           row.map((cell, j) => (
             <input

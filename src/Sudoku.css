@@ -1,14 +1,20 @@
+
 .sudoku-container {
   text-align: center;
   margin-top: 2rem;
 }
+
 .sudoku-grid {
   display: grid;
-  grid-template-columns: repeat(3, 60px);
   gap: 4px;
   justify-content: center;
   margin-bottom: 1rem;
 }
+
+.sudoku-row {
+  display: contents;
+}
+
 .sudoku-cell {
   width: 60px;
   height: 60px;
@@ -16,6 +22,16 @@
   text-align: center;
   border: 1px solid #000;
 }
+
+/* Dynamic grid sizes */
+.sudoku-grid-3x3 {
+  grid-template-columns: repeat(3, 60px);
+}
+
+.sudoku-grid-6x6 {
+  grid-template-columns: repeat(6, 60px);
+}
+
 .check-btn {
   padding: 8px 16px;
   background: #007bff;
