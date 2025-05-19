@@ -227,7 +227,10 @@ const DailyGameEngine = () => {
           row.map((cell, c) => {
             const key = `${r}-${c}`;
             const isWrong = wrongCells.includes(key);
-            const isMatch = selectedValue && (solution[r][c] === selectedValue || userInput[r][c] === String(selectedValue));
+            const isMatch = selectedValue && (
+              (cell !== null && cell === selectedValue) ||
+              (userInput[r][c] && parseInt(userInput[r][c]) === selectedValue)
+            );
             return (
               <input
                 key={key}
