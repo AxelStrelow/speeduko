@@ -14,8 +14,6 @@ const DailyGameEngine = () => {
   const [userInput, setUserInput] = useState([]);
   const [wrongCells, setWrongCells] = useState([]);
   const [timeLeft, setTimeLeft] = useState(300);
-  const [selectedValue, setSelectedValue] = useState(null);
-  const [scoreFlash, setScoreFlash] = useState(null);
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -109,7 +107,6 @@ const DailyGameEngine = () => {
           row.map((cell, c) => {
             const key = `${r}-${c}`;
             const isWrong = wrongCells.includes(key);
-            const isMatch = selectedValue && (solution[r][c] === selectedValue || userInput[r][c] === String(selectedValue));
             const isMatch = selectedValue && (solution[r][c] === selectedValue || userInput[r][c] === String(selectedValue));
             return (
               <input
