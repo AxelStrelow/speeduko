@@ -93,6 +93,8 @@ const removeCells = (grid, blanks, rng) => {
 const DailyGameEngine = () => {
   const [locked, setLocked] = useState(hasPlayedToday());
   const [score, setScore] = useState(0);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [scoreFlash, setScoreFlash] = useState(null);
   const [grid, setGrid] = useState([]);
   const [solution, setSolution] = useState([]);
   const [userInput, setUserInput] = useState([]);
@@ -160,7 +162,18 @@ const DailyGameEngine = () => {
     const key = `${r}-${c}`;
     if (grid[r][c] === null) {
       const correct = parseInt(clean) === solution[r][c];
-      if (!correct && clean !== "") {
+      
+        if (!correct && clean !== "") {
+          setWrongCells(prev => [...prev, key]);
+          setTimeLeft(prev => Math.max(prev - 5, 0));
+          setScore(prev => prev - 5);
+          setScoreFlash({ value: -5, key: Date.now() });
+        } else if (parseInt(clean) === solution[r][c]) {
+          setWrongCells(prev => prev.filter(k => k !== key));
+          setScore(prev => prev + 10);
+          setScoreFlash({ value: +10, key: Date.now() });
+        }
+
         setWrongCells(prev => [...prev, key]);
         setTimeLeft(prev => Math.max(prev - 5, 0));
         setScore(prev => prev - 5);
@@ -206,7 +219,20 @@ const DailyGameEngine = () => {
 
   return (
     <div className="text-center">
-      <h2 className="text-xl font-bold">Daily Speeduko</h2>
+      
+      <h1 className="logo mb-2">🧠 Speeduko</h1>
+      <div className="inline-block px-4 py-2 bg-black text-white rounded font-mono text-3xl tracking-wider">
+        {formatTime(timeLeft)}
+      </div>
+      <div className="score-display relative">
+        Score: {score}
+        {scoreFlash && (
+          <div key={scoreFlash.key} className={`score-flash ${scoreFlash.value > 0 ? 'positive' : 'negative'}`}>
+            {scoreFlash.value > 0 ? `+${scoreFlash.value}` : scoreFlash.value}
+          </div>
+        )}
+      </div>
+
       <div className="inline-block px-4 py-2 mt-2 bg-black text-white rounded font-mono text-3xl tracking-wider">
         {formatTime(timeLeft)}
       </div>
@@ -216,14 +242,15 @@ const DailyGameEngine = () => {
           row.map((cell, c) => {
             const key = `${r}-${c}`;
             const isWrong = wrongCells.includes(key);
+            const isMatch = selectedValue && (cell === selectedValue || userInput[r][c] === String(selectedValue));
             return (
               <input
                 key={key}
-                className={`sudoku-cell ${isWrong ? 'bg-red-200' : ''}`}
+                className={`sudoku-cell ${isWrong ? 'bg-red-200' : ''} ${isMatch ? 'match-highlight' : ''}`}
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
-                readOnly={cell !== null}
+                readOnly={cell !== null} onFocus={() => setSelectedValue(cell || userInput[r][c])}
               />
             );
           })
