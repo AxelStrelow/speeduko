@@ -264,35 +264,6 @@ const DailyGameEngine = () => {
             const isWrong = wrongCells.includes(key);
             const isMatch = selectedValue && (cell === selectedValue || userInput[r][c] === String(selectedValue));
             return (
-              <input
-                key={key}
-                className={`sudoku-cell ${isWrong ? 'bg-red-200' : ''} ${isMatch ? 'match-highlight' : ''}`}
-                type="text"
-                value={cell !== null ? cell : userInput[r][c]}
-                onChange={(e) => handleInput(r, c, e.target.value)}
-                readOnly={cell !== null}
-                onFocus={() => setSelectedValue(cell || userInput[r][c])}
-              />
-            );
-          })
-        )}
-      </div>
-      {gameOver && (
-        <div className="mt-4">
-          <div className="text-red-600 font-bold mt-4 text-lg">⏱ Game Over</div>
-          <div className="text-green-600 font-bold text-lg mb-2">✅ Game Complete</div>
-          <button
-            className="check-btn"
-            onClick={() => {
-              const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;
-              navigator.clipboard.writeText(summary);
-              alert("Results copied to clipboard!");
-            }}
-          >
-            📋 Copy Results
-          </button>
-        </div>
-      )}
     </div>
   );
 }
