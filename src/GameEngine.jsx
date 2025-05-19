@@ -83,7 +83,6 @@ const removeCells = (grid, blanks) => {
 };
 
 const getBlankCount = (gridSize, level) => {
-  // Scale difficulty — more blanks on harder levels
   const base = {
     3: [2, 4, 6],
     6: [8, 14, 20],
@@ -98,7 +97,8 @@ const GameEngine = () => {
   const [solution, setSolution] = useState([]);
   const [userInput, setUserInput] = useState([]);
   const [wrongCells, setWrongCells] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
+  const [timeLeft, setTimeLeft] = useState(300);
+  const [score, setScore] = useState(0);
   const [gameOver, setGameOver] = useState(false);
 
   const timerRef = useRef(null);
@@ -152,7 +152,11 @@ const GameEngine = () => {
         if (!updatedWrongs.includes(cellKey)) updatedWrongs.push(cellKey);
         setWrongCells(updatedWrongs);
         setTimeLeft((prev) => Math.max(prev - 5, 0));
+        setScore((prev) => prev - 5);
       } else {
+        if (!wrongCells.includes(cellKey)) {
+          setScore((prev) => prev + 10);
+        }
         setWrongCells(wrongs => wrongs.filter(cell => cell !== cellKey));
       }
     }
@@ -170,24 +174,25 @@ const GameEngine = () => {
       }
     }
 
-    setTimeLeft((prev) => prev + 30); // +30 seconds per level
+    const levelBonus = 100 * gridSize;
+    setScore((prev) => prev + levelBonus);
+    setTimeLeft((prev) => prev + 30);
     if (phase + 1 < totalPhases) {
       setTimeout(() => setPhase(phase + 1), 500);
     } else {
-      alert("🎉 You've completed all levels!");
+      setScore((prev) => prev + timeLeft);
       clearInterval(timerRef.current);
+      setGameOver(true);
     }
   };
 
   return (
     <div className="text-center">
-      <div className="mb-2">
-        <h2 className="text-xl font-bold">Speeduko</h2>
-        <div className="inline-block px-4 py-2 mt-2 bg-black text-white rounded font-mono text-lg tracking-wider">
-          {formatTime(timeLeft)}
-        </div>
-        <p className="mt-2 text-sm text-gray-500">Level {phase + 1} of {totalPhases}</p>
+      <h2 className="text-xl font-bold">Speeduko</h2>
+      <div className="inline-block px-4 py-2 mt-2 bg-black text-white rounded font-mono text-3xl tracking-wider">
+        {formatTime(timeLeft)}
       </div>
+      <div className="mt-2 font-bold text-lg">Score: {score}</div>
       <div className="sudoku-grid" style={{ gridTemplateColumns: `repeat(${gridSize}, 60px)` }}>
         {grid.map((row, rowIndex) =>
           row.map((cell, colIndex) => {
