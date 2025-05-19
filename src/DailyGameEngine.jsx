@@ -94,7 +94,7 @@ const DailyGameEngine = () => {
   const [locked, setLocked] = useState(hasPlayedToday());
   const [score, setScore] = useState(0);
   const [scoreFlash, setScoreFlash] = useState(null);
-  const [selectedValue, setSelectedValue] = useState(null);
+  const [selectedReadonlyValue, setSelectedReadonlyValue] = useState(null);
   const [grid, setGrid] = useState([]);
   const [solution, setSolution] = useState([]);
   const [userInput, setUserInput] = useState([]);
@@ -238,7 +238,7 @@ const DailyGameEngine = () => {
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
-                readOnly={cell !== null} onFocus={() => setSelectedValue(solution[r][c])}
+                readOnly={cell !== null} onFocus={() => { if (cell !== null) setSelectedReadonlyValue(cell); }}
               />
             );
           })
