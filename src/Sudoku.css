@@ -37,7 +37,7 @@
   background-color: #fecaca !important;
 }
 
-.sudoku-cell.match-highlight {
+.sudoku-cell.match-highlight:read-only {
   background-color: #fef08a !important;
 }
 
@@ -114,4 +114,9 @@
     opacity: 0;
     transform: translateY(-30px);
   }
+}
+
+.sudoku-cell.bg-red-200 {
+  background-color: #fecaca !important;
+  border-color: #dc2626 !important;
 }
