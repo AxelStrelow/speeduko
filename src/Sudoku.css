@@ -15,10 +15,6 @@
   border: 2px solid #ccc;
 }
 
-.sudoku-row {
-  display: contents;
-}
-
 .sudoku-cell {
   width: 60px;
   height: 60px;
@@ -57,16 +53,6 @@
   grid-template-columns: repeat(9, 60px);
 }
 
-.sudoku-grid input:nth-child(3n) {
-  border-right: 3px solid #888;
-}
-.sudoku-grid input:nth-child(n+19):nth-child(-n+27),
-.sudoku-grid input:nth-child(n+37):nth-child(-n+45),
-.sudoku-grid input:nth-child(n+55):nth-child(-n+63),
-.sudoku-grid input:nth-child(n+73):nth-child(-n+81) {
-  border-bottom: 3px solid #888;
-}
-
 .check-btn {
   padding: 10px 20px;
   background: #16a34a;
@@ -79,43 +65,6 @@
 
 .check-btn:hover {
   background: #15803d;
-}
-
-.text-red-600 {
-  color: #dc2626;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.font-mono {
-  font-family: monospace;
-}
-
-.bg-black {
-  background-color: #000;
-}
-
-.text-white {
-  color: #fff;
-}
-
-.rounded {
-  border-radius: 8px;
-}
-
-.tracking-wider {
-  letter-spacing: 0.05em;
-}
-
-.inline-block {
-  display: inline-block;
-}
-
-.text-3xl {
-  font-size: 2rem;
-  line-height: 2.25rem;
 }
 
 .logo {
