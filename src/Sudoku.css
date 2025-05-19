@@ -96,3 +96,8 @@
 .inline-block {
   display: inline-block;
 }
+
+.text-3xl {
+  font-size: 2rem;
+  line-height: 2.25rem;
+}
