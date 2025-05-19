@@ -166,7 +166,9 @@ const DailyGameEngine = () => {
         setScore(prev => prev - 5);
       } else {
         setWrongCells(prev => prev.filter(k => k !== key));
-        setScore(prev => prev + 10);
+        if (parseInt(userInput[r][c]) === solution[r][c]) {
+      setScore(prev => prev + 10);
+    }
       }
     }
 
