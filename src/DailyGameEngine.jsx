@@ -275,6 +275,7 @@ const DailyGameEngine = () => {
 
     </div>
   );
-};
+  );
+}
 
 export default DailyGameEngine;
