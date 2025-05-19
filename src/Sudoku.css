@@ -124,3 +124,12 @@
     transform: translateY(-30px);
   }
 }
+
+
+.sudoku-cell.match-highlight {
+  background-color: #e2e8f0 !important;
+}
+
+.sudoku-cell.match-highlight:not(:read-only) {
+  background-color: #e2e8f0 !important;
+}
