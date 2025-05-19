@@ -41,8 +41,8 @@
   border-color: #dc2626 !important;
 }
 
-.sudoku-cell.match-highlight:focus:read-only {
-  background-color: #fef08a !important;
+.sudoku-cell.match-highlight:read-only {
+  background-color: #e2e8f0 !important;
 }
 
 .sudoku-grid-3x3 {
