@@ -183,7 +183,7 @@ const DailyGameEngine = () => {
     }
     setScore(prev => prev + 100 * gridSize);
     setTimeLeft(prev => prev + 30);
-    if (phase < totalPhases - 1) {
+    if (true) {  // infinite levels
       setTimeout(() => setPhase(phase + 1), 300);
     } else {
       setScore(prev => prev + timeLeft);
@@ -228,6 +228,22 @@ const DailyGameEngine = () => {
         )}
       </div>
       {gameOver && <div className="text-red-600 font-bold mt-4 text-lg">⏱ Game Over</div>}
+      {gameOver && (
+        <div className="mt-4">
+          <div className="text-green-600 font-bold text-lg mb-2">✅ Game Complete</div>
+          <button
+            className="check-btn"
+            onClick={() => {
+              const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;
+              navigator.clipboard.writeText(summary);
+              alert("Results copied to clipboard!");
+            }}
+          >
+            📋 Copy Results
+          </button>
+        </div>
+      )}
+
     </div>
   );
 };
