@@ -282,7 +282,7 @@ const DailyGameEngine = () => {
           <div className="text-green-600 font-bold text-lg mb-2">✅ Game Complete</div>
           <button
             className="check-btn"
-            onClick={() => {>
+            onClick={() => {
             {"📋 Copy Results"}
           </button>
         </div>
