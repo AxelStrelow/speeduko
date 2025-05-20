@@ -286,7 +286,7 @@ const DailyGameEngine = () => {
             {"📋 Copy Results"}
           <button>
         </div>
-      )}
+      }
     </div>
   );
 };
