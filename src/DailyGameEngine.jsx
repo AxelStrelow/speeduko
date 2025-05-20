@@ -1,20 +1,5 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-
-  function isSameBox(r1, c1, r2, c2, gridSize) {
-    if (gridSize === 6) {
-      const boxRow = Math.floor(r1 / 2);
-      const boxCol = Math.floor(c1 / 3);
-      return boxRow === Math.floor(r2 / 2) && boxCol === Math.floor(c2 / 3);
-    }
-    if (gridSize === 9) {
-      const boxRow = Math.floor(r1 / 3);
-      const boxCol = Math.floor(c1 / 3);
-      return boxRow === Math.floor(r2 / 3) && boxCol === Math.floor(c2 / 3);
-    }
-    return false;
-  }
-
 import './Sudoku.css';
 
 // Utility: seeded RNG (Mulberry32)
@@ -24,8 +9,7 @@ const mulberry32 = (a) => {
     let t = Math.imul(a ^ a >>> 15, 1 | a);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
-        <div className="level-indicator">Level {phase + 1}</div>
-  }
+              <input                key={key}                className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${                  selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : ""                } ${                  selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? "box-highlight" : ""                } ${                  selectedValue !== null && ((cell !== null && cell === selectedValue) ||                  parseInt(userInput[r][c] || "") === selectedValue)                    ? "match-highlight"                    : ""                }`}                type="text"                value={cell !== null ? cell : (userInput[r][c] || "")}                onChange={(e) => handleInput(r, c, e.target.value)}                readOnly={cell !== null}                onFocus={() => {                  setSelectedCell({ row: r, col: c });                  if (cell !== null) {                    setSelectedValue(cell);                  } else if (userInput[r][c]) {                    setSelectedValue(parseInt(userInput[r][c]));                  } else {                    setSelectedValue(null);                  }                }}              />  }
 };
 
 // Get today's date string
@@ -119,6 +103,22 @@ const DailyGameEngine = () => {
   const [gameOver, setGameOver] = useState(false);
   const [phase, setPhase] = useState(0);
 
+  const [selectedCell, setSelectedCell] = useState(null);
+
+  function isSameBox(r1, c1, r2, c2, gridSize) {
+    if (gridSize === 6) {
+      const boxRow = Math.floor(r1 / 2);
+      const boxCol = Math.floor(c1 / 3);
+      return boxRow === Math.floor(r2 / 2) && boxCol === Math.floor(c2 / 3);
+    }
+    if (gridSize === 9) {
+      const boxRow = Math.floor(r1 / 3);
+      const boxCol = Math.floor(c1 / 3);
+      return boxRow === Math.floor(r2 / 3) && boxCol === Math.floor(c2 / 3);
+    }
+    return false;
+  }
+
   const rng = useRef(mulberry32(parseInt(getTodayKey().replace(/-/g, ''))));
   const timerRef = useRef(null);
 
@@ -185,7 +185,7 @@ const DailyGameEngine = () => {
         setScoreFlash({ value: -5, key: Date.now() });
       } else {
         setWrongCells(prev => prev.filter(k => k !== key));
-        if (parseInt(userInput[r][c] || "") === solution[r][c]) {
+        if (parseInt(userInput[r][c]) === solution[r][c]) {
       setScore(prev => prev + 10);
         setScoreFlash({ value: +10, key: Date.now() });
     }
@@ -227,6 +227,7 @@ const DailyGameEngine = () => {
   return (
     <div className="text-center">
       <h1 className="logo mb-2">🧠 Speeduko</h1>
+      <div className="level-indicator">Level {phase + 1}</div>
       <div className="text-xl font-semibold text-gray-700 mt-2 mb-1">Level {phase + 1}</div>
       <div className="inline-block px-4 py-2 mt-2 bg-black text-white rounded font-mono text-3xl tracking-wider">
         {formatTime(timeLeft)}
@@ -246,31 +247,27 @@ const DailyGameEngine = () => {
             const isWrong = wrongCells.includes(key);
             const isMatch = selectedValue && (
               (cell !== null && cell === selectedValue) ||
-              (userInput[r][c] && parseInt(userInput[r][c] || "") === selectedValue)
+              (userInput[r][c] && parseInt(userInput[r][c]) === selectedValue)
             );
             return (
               <input
                 key={key}
                 className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${
-                  selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : ""
-                } ${
-                  selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? "box-highlight" : ""
-                } ${
-                  selectedValue !== null && ((cell !== null && cell === selectedValue) ||
-                  parseInt(userInput[r][c] || "") === selectedValue)
+                  selectedValue !== null &&
+                  ((cell !== null && cell === selectedValue) ||
+                   (parseInt(userInput[r][c]) === selectedValue))
                     ? "match-highlight"
                     : ""
                 }`}
                 type="text"
-                value={cell !== null ? cell : (userInput[r][c] || "")}
+                value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
                 readOnly={cell !== null}
                 onFocus={() => {
-                  setSelectedCell({ row: r, col: c });
                   if (cell !== null) {
                     setSelectedValue(cell);
                   } else if (userInput[r][c]) {
-                    setSelectedValue(parseInt(userInput[r][c] || ""));
+                    setSelectedValue(parseInt(userInput[r][c]));
                   } else {
                     setSelectedValue(null);
                   }
