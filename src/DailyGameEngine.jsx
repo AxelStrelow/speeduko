@@ -280,7 +280,8 @@ const DailyGameEngine = () => {
       {gameOver && (
         <div className="mt-4">
           <div className="text-green-600 font-bold text-lg mb-2">✅ Game Complete</div>
-          <button            className="check-btn"            onClick={() => {              const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;              navigator.clipboard.writeText(summary);              alert("Results copied to clipboard!");            }}          >            📋 Copy Results          </button>        </div>
+          <button            className="check-btn"            onClick={() => {              const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;              navigator.clipboard.writeText(summary);              alert("Results copied to clipboard!");            }}          >            {"📋 Copy Results"}
+          </button>        </div>
       )}
     </div>
   );
