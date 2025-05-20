@@ -255,11 +255,6 @@ const DailyGameEngine = () => {
                   }
                 }}
               />
-                type="text"
-      } else {
-        setSelectedValue(null); // no highlight
-      }
-    }}
               />
             );
           })
