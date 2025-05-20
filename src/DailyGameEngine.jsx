@@ -234,11 +234,6 @@ const DailyGameEngine = () => {
             return (
               <input
                 key={key}
-                className={`sudoku-cell ${isWrong ? 'bg-red-200' : ''} ${
-      selectedValue !== null &&
-      ((cell !== null && cell === selectedValue) ||
-       (parseInt(userInput[r][c]) === selectedValue))
-className={`sudoku-cell ${isWrong ? 'bg-red-200' : ''} ${
   selectedValue !== null &&
   ((cell !== null && cell === selectedValue) || (parseInt(userInput[r][c]) === selectedValue))
     ? 'match-highlight'
