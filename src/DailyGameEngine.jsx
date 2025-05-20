@@ -238,9 +238,12 @@ const DailyGameEngine = () => {
       selectedValue !== null &&
       ((cell !== null && cell === selectedValue) ||
        (parseInt(userInput[r][c]) === selectedValue))
-        ? 'match-highlight'
-        : ''
-    }`
+className={`sudoku-cell ${isWrong ? 'bg-red-200' : ''} ${
+  selectedValue !== null &&
+  ((cell !== null && cell === selectedValue) || (parseInt(userInput[r][c]) === selectedValue))
+    ? 'match-highlight'
+    : ''
+}`
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
