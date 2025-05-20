@@ -287,3 +287,4 @@ const DailyGameEngine = () => {
 };
 
 export default DailyGameEngine;
+        </div>      )}    </div>  );};export default DailyGameEngine;
