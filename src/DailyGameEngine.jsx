@@ -288,13 +288,4 @@ const DailyGameEngine = () => {
               alert("Results copied to clipboard!");
             }}
           >
-            📋 Copy Results
-          </button>
-        </div>
-      )}
-
-    </div>
-  );
-};
-
-export default DailyGameEngine;
+    </div>  );};export default DailyGameEngine;
