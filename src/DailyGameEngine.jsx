@@ -185,7 +185,7 @@ const DailyGameEngine = () => {
         setScoreFlash({ value: -5, key: Date.now() });
       } else {
         setWrongCells(prev => prev.filter(k => k !== key));
-        if (parseInt(userInput[r][c]) === solution[r][c]) {
+        if (parseInt(userInput[r][c] || "") === solution[r][c]) {
       setScore(prev => prev + 10);
         setScoreFlash({ value: +10, key: Date.now() });
     }
@@ -246,7 +246,7 @@ const DailyGameEngine = () => {
             const isWrong = wrongCells.includes(key);
             const isMatch = selectedValue && (
               (cell !== null && cell === selectedValue) ||
-              (userInput[r][c] && parseInt(userInput[r][c]) === selectedValue)
+              (userInput[r][c] && parseInt(userInput[r][c] || "") === selectedValue)
             );
             return (
               <input
@@ -257,12 +257,12 @@ const DailyGameEngine = () => {
                   selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? "box-highlight" : ""
                 } ${
                   selectedValue !== null && ((cell !== null && cell === selectedValue) ||
-                  parseInt(userInput[r][c]) === selectedValue)
+                  parseInt(userInput[r][c] || "") === selectedValue)
                     ? "match-highlight"
                     : ""
                 }`}
                 type="text"
-                value={cell !== null ? cell : userInput[r][c]}
+                value={cell !== null ? cell : (userInput[r][c] || "")}
                 onChange={(e) => handleInput(r, c, e.target.value)}
                 readOnly={cell !== null}
                 onFocus={() => {
@@ -270,7 +270,7 @@ const DailyGameEngine = () => {
                   if (cell !== null) {
                     setSelectedValue(cell);
                   } else if (userInput[r][c]) {
-                    setSelectedValue(parseInt(userInput[r][c]));
+                    setSelectedValue(parseInt(userInput[r][c] || ""));
                   } else {
                     setSelectedValue(null);
                   }
