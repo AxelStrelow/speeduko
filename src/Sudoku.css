@@ -1,4 +1,5 @@
 
+/* Layout for the entire Sudoku board */
 .sudoku-grid {
   display: grid;
   gap: 2px;
@@ -6,6 +7,9 @@
   margin-bottom: 1rem;
 }
 
+/* Dynamically added via inline style in JSX: gridTemplateColumns */
+
+/* Style for each cell */
 .sudoku-cell {
   width: 2.5rem;
   height: 2.5rem;
@@ -14,24 +18,40 @@
   font-weight: bold;
   border: 1px solid #cbd5e0;
   outline: none;
+  background-color: white;
+  transition: background-color 0.2s ease;
 }
 
+/* Focus effect on editable cells */
 .sudoku-cell:focus {
   border: 2px solid #3182ce;
 }
 
+/* Highlight for matching number cells */
 .match-highlight {
   background-color: #c3dafe !important;
 }
 
+/* Row/Column highlight */
 .row-col-highlight {
   background-color: #f7fafc !important;
 }
 
+/* Box highlight (3x3 or 2x3 or 3x2 depending on phase) */
 .box-highlight {
   background-color: #e2e8f0 !important;
 }
 
+/* Incorrect input feedback */
 .bg-red-200 {
   background-color: #fecaca !important;
+}
+
+/* Styling for level text */
+.level-indicator {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  color: #4a5568;
+  text-align: center;
 }
