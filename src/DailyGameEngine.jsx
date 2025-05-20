@@ -1,5 +1,20 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+
+  function isSameBox(r1, c1, r2, c2, gridSize) {
+    if (gridSize === 6) {
+      const boxRow = Math.floor(r1 / 2);
+      const boxCol = Math.floor(c1 / 3);
+      return boxRow === Math.floor(r2 / 2) && boxCol === Math.floor(c2 / 3);
+    }
+    if (gridSize === 9) {
+      const boxRow = Math.floor(r1 / 3);
+      const boxCol = Math.floor(c1 / 3);
+      return boxRow === Math.floor(r2 / 3) && boxCol === Math.floor(c2 / 3);
+    }
+    return false;
+  }
+
 import './Sudoku.css';
 
 // Utility: seeded RNG (Mulberry32)
@@ -235,11 +250,15 @@ const DailyGameEngine = () => {
             );
             return (
               <input
+              <input
                 key={key}
                 className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${
-                  selectedValue !== null &&
-                  ((cell !== null && cell === selectedValue) ||
-                   (parseInt(userInput[r][c]) === selectedValue))
+                  selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : ""
+                } ${
+                  selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? "box-highlight" : ""
+                } ${
+                  selectedValue !== null && ((cell !== null && cell === selectedValue) ||
+                  parseInt(userInput[r][c]) === selectedValue)
                     ? "match-highlight"
                     : ""
                 }`}
@@ -248,6 +267,7 @@ const DailyGameEngine = () => {
                 onChange={(e) => handleInput(r, c, e.target.value)}
                 readOnly={cell !== null}
                 onFocus={() => {
+                  setSelectedCell({ row: r, col: c });
                   if (cell !== null) {
                     setSelectedValue(cell);
                   } else if (userInput[r][c]) {
