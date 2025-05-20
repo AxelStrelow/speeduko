@@ -283,9 +283,13 @@ const DailyGameEngine = () => {
           <button
             className="check-btn"
             onClick={() => {
-              const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;
-              navigator.clipboard.writeText(summary);
-              alert("Results copied to clipboard!");
-            }}
           >
-    </div>  );};export default DailyGameEngine;
+            📋 Copy Results
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default DailyGameEngine;
