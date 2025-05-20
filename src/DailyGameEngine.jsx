@@ -229,7 +229,7 @@ const DailyGameEngine = () => {
             const isWrong = wrongCells.includes(key);
             const isMatch = selectedValue && (
               (cell !== null && cell === selectedValue) ||
-              (userInput[r][c] && parseInt(userInput[r][c]) === selectedValue)
+              (parseInt(userInput[r][c]) === selectedValue && parseInt(userInput[r][c]) === solution[r][c] && selectedValue === solution[r][c])
             );
             return (
               <input
@@ -238,7 +238,7 @@ const DailyGameEngine = () => {
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
-                readOnly={cell !== null} onFocus={() => setSelectedValue(solution[r][c])}
+                readOnly={cell !== null} onFocus={() => { if (cell !== null) setSelectedValue(cell); }}
               />
             );
           })
