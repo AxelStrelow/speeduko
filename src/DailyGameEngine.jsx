@@ -256,13 +256,6 @@ const DailyGameEngine = () => {
                 }}
               />
                 type="text"
-                value={cell !== null ? cell : userInput[r][c]}
-                onChange={(e) => handleInput(r, c, e.target.value)}
-                readOnly={cell !== null} onFocus={() => {
-      if (cell !== null) {
-        setSelectedValue(cell); // pre-filled cell
-      } else if (userInput[r][c]) {
-        setSelectedValue(parseInt(userInput[r][c])); // user-filled
       } else {
         setSelectedValue(null); // no highlight
       }
