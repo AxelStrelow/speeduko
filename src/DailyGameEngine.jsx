@@ -240,7 +240,7 @@ const DailyGameEngine = () => {
        (parseInt(userInput[r][c]) === selectedValue))
         ? 'match-highlight'
         : ''
-    }`}}
+    }`
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
