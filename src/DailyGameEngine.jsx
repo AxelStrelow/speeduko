@@ -229,16 +229,29 @@ const DailyGameEngine = () => {
             const isWrong = wrongCells.includes(key);
             const isMatch = selectedValue && (
               (cell !== null && cell === selectedValue) ||
-              (parseInt(userInput[r][c]) === selectedValue && parseInt(userInput[r][c]) === solution[r][c] && selectedValue === solution[r][c])
+              (userInput[r][c] && parseInt(userInput[r][c]) === selectedValue)
             );
             return (
               <input
                 key={key}
-                className={`sudoku-cell ${isWrong ? 'bg-red-200' : ''} ${((cell !== null && cell === selectedValue) || (parseInt(userInput[r][c]) === selectedValue && parseInt(userInput[r][c]) === solution[r][c] && selectedValue === solution[r][c])) ? 'match-highlight' : ''}`}
+                className={`sudoku-cell ${isWrong ? 'bg-red-200' : ''} ${
+      (selectedValue !== null && (
+        (cell !== null && cell === selectedValue) ||
+        (parseInt(userInput[r][c]) === selectedValue)
+      )) ? 'match-highlight' : ''
+    }`}}
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
-                readOnly={cell !== null} onFocus={() => { if (cell !== null) setSelectedValue(cell); }}
+                readOnly={cell !== null} onFocus={() => {
+      if (cell !== null) {
+        setSelectedValue(cell); // pre-filled cell
+      } else if (userInput[r][c]) {
+        setSelectedValue(parseInt(userInput[r][c])); // user-filled
+      } else {
+        setSelectedValue(null); // no highlight
+      }
+    }}
               />
             );
           })
