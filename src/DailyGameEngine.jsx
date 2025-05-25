@@ -314,6 +314,7 @@ const DailyGameEngine = () => {
               alert("Results copied to clipboard!");
             }}
           >
+      )}
             📋 Copy Results
           </button>
         </div>
