@@ -245,7 +245,6 @@ const DailyGameEngine = () => {
         <p className="text-gray-600">Come back tomorrow for a new challenge!</p>
       </div>
     );
-  }
 
   return (
     <div className="text-center">
@@ -293,7 +292,6 @@ const DailyGameEngine = () => {
                     setSelectedValue(parseInt(userInput[r][c]));
                   } else {
                     setSelectedValue(null);
-                  }
                 }}
               />
             );
