@@ -164,8 +164,8 @@
 }
 
 
-/* Highlight for row and column */
+/* Highlight for selected row and column */
 .row-col-highlight {
-  outline: 1px solid rgba(0, 128, 255, 0.4);
-  outline-offset: -1px;
+  outline: 2px solid rgba(0, 0, 255, 0.2);
 }
+
