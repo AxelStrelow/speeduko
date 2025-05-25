@@ -9,7 +9,8 @@ const mulberry32 = (a) => {
     let t = Math.imul(a ^ a >>> 15, 1 | a);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
-              <input                key={key}                className={`sudoku-cell ${isWrong ? "bg-red-200" : ""}` +                  `${selectedCell && (selectedCell.row === r || selectedCell.col === c) ? " row-col-highlight" : ""}` +                  `${selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? " box-highlight" : ""}` +                  `${selectedValue !== null && ((cell !== null && cell === selectedValue) ||                    parseInt(userInput[r][c] || "") === selectedValue) ? " match-highlight" : ""}`                }                type="text"                value={cell !== null ? cell : (userInput[r][c] || "")}                onChange={(e) => handleInput(r, c, e.target.value)}                readOnly={cell !== null}                onFocus={() => {                  setSelectedCell({ row: r, col: c });                  if (cell !== null) {                    setSelectedValue(cell);                  } else if (userInput[r][c]) {                    setSelectedValue(parseInt(userInput[r][c]));                  } else {                    setSelectedValue(null);                  }                }}              />};
+              <input                key={key}                className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${                  selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : ""                } ${                  selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? "box-highlight" : ""                } ${                  selectedValue !== null && ((cell !== null && cell === selectedValue) ||                  parseInt(userInput[r][c] || "") === selectedValue)                    ? "match-highlight"                    : ""                }`}                type="text"                value={cell !== null ? cell : (userInput[r][c] || "")}                onChange={(e) => handleInput(r, c, e.target.value)}                readOnly={cell !== null}                onFocus={() => {                  setSelectedCell({ row: r, col: c });                  if (cell !== null) {                    setSelectedValue(cell);                  } else if (userInput[r][c]) {                    setSelectedValue(parseInt(userInput[r][c]));                  } else {                    setSelectedValue(null);                  }                }}              />  }
+};
 
 // Get today's date string
 const getTodayKey = () => new Date().toISOString().slice(0, 10);
@@ -280,5 +281,21 @@ const DailyGameEngine = () => {
       {gameOver && (
         <div className="mt-4">
           <div className="text-green-600 font-bold text-lg mb-2">✅ Game Complete</div>
-          <button            className="check-btn"            onClick={() => {              const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;              navigator.clipboard.writeText(summary);              alert("Results copied to clipboard!");            }}>            📋 Copy Results          </button>        </div>      )}    </div>  );};export default DailyGameEngine;
+          <button
+            className="check-btn"
+            onClick={() => {
+              const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;
+              navigator.clipboard.writeText(summary);
+              alert("Results copied to clipboard!");
+            }}
+          >
+            📋 Copy Results
+          </button>
+        </div>
+      )}
+
+    </div>
+  );
+};
+
 export default DailyGameEngine;
