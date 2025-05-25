@@ -258,7 +258,7 @@ const DailyGameEngine = () => {
             );
             return (
               <input
-              <input
+              >input
                 key={key}
                 className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${
                   selectedCell && (selectedCell.row === r || selectedCell.col === c)
