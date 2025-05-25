@@ -278,7 +278,6 @@ const DailyGameEngine = () => {
               />
             );
               />
-            );
           })
         )}
       </div>
