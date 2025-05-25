@@ -258,14 +258,25 @@ const DailyGameEngine = () => {
             );
             return (
               <input
+              <input
                 key={key}
-                className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : ""} ${selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? "box-highlight" : ""} ${selectedValue !== null && ((cell !== null && cell === selectedValue) || (parseInt(userInput[r][c] || "") === selectedValue)) ? "match-highlight" : ""}`
+                className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${
+                  selectedCell && (selectedCell.row === r || selectedCell.col === c)
+                    ? "row-col-highlight"
+                    : ""
+                } ${
+                  selectedValue !== null &&
+                  ((cell !== null && cell === selectedValue) ||
+                   (parseInt(userInput[r][c]) === selectedValue))
+                    ? "match-highlight"
+                    : ""
+                }`}
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
                 readOnly={cell !== null}
-                />
                 onFocus={() => {
+                  setSelectedCell({ row: r, col: c });
                   if (cell !== null) {
                     setSelectedValue(cell);
                   } else if (userInput[r][c]) {
@@ -274,12 +285,8 @@ const DailyGameEngine = () => {
                     setSelectedValue(null);
                   }
                 }}
+                onBlur={() => setSelectedCell(null)}
               />
-            );
-          })
-        )}
-      </div>
-      {gameOver && <div className="text-red-600 font-bold mt-4 text-lg">⏱ Game Over</div>}
       {gameOver && (
         <div className="mt-4">
           <div className="text-green-600 font-bold text-lg mb-2">✅ Game Complete</div>
