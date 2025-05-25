@@ -10,6 +10,7 @@ const mulberry32 = (a) => {
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
               <input                key={key}                className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${                  selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : ""                } ${                  selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? "box-highlight" : ""                } ${                  selectedValue !== null && ((cell !== null && cell === selectedValue) ||                  parseInt(userInput[r][c] || "") === selectedValue)                    ? "match-highlight"                    : ""                }`}                type="text"                value={cell !== null ? cell : (userInput[r][c] || "")}                onChange={(e) => handleInput(r, c, e.target.value)}                readOnly={cell !== null}                onFocus={() => {                  setSelectedCell({ row: r, col: c });                  if (cell !== null) {                    setSelectedValue(cell);                  } else if (userInput[r][c]) {                    setSelectedValue(parseInt(userInput[r][c]));                  } else {                    setSelectedValue(null);                  }                }}              />  }
+                  setSelectedCell({ row: r, col: c });
 };
 
 // Get today's date string
