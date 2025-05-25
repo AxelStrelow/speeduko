@@ -5,7 +5,7 @@ const isSameBox = (r1, c1, r2, c2, size) => {
   const boxSize = Math.sqrt(size);
   return (
     Math.floor(r1 / boxSize) === Math.floor(r2 / boxSize) &&
-    Math.floor(c1 / boxSize) === Math.floor(c2 / boxSize)
+    Math.floor(c1 / boxSize) === Math.floor(r2 / boxSize)
   );
 };
 
@@ -111,6 +111,7 @@ const DailyGameEngine = () => {
 
   const gridSize = getGridSize(phase);
   const levelIndex = phase % 3;
+  const [boxRows, boxCols] = getBoxSize(gridSize);
 
   const getBlankCount = (size, level) => {
     const blanks = {
@@ -123,7 +124,6 @@ const DailyGameEngine = () => {
 
   useEffect(() => {
     if (locked) return;
-
     const full = generateFullGrid(gridSize, rng.current);
     const blanks = getBlankCount(gridSize, levelIndex);
     const removed = removeCells(full, blanks, rng.current);
@@ -159,7 +159,6 @@ const DailyGameEngine = () => {
     const newInput = [...userInput];
     newInput[r][c] = clean;
     setUserInput(newInput);
-
     const key = `${r}-${c}`;
     if (grid[r][c] === null) {
       const correct = parseInt(clean) === solution[r][c];
@@ -176,7 +175,6 @@ const DailyGameEngine = () => {
         }
       }
     }
-
     checkComplete(newInput);
   };
 
@@ -193,35 +191,37 @@ const DailyGameEngine = () => {
     setTimeout(() => setPhase(phase + 1), 300);
   };
 
-  const [boxRows, boxCols] = getBoxSize(gridSize);
-
   return (
     <div className="text-center">
       <h1 className="logo mb-2">🧠 Speeduko</h1>
-      <div className="sudoku-grid" style={{ gridTemplateColumns: `repeat(${gridSize}, 60px)` }}>
+      <div className="level-indicator">Level {phase + 1}</div>
+      <div className="inline-block px-4 py-2 mt-2 bg-black text-white rounded font-mono text-3xl tracking-wider">
+        {formatTime(timeLeft)}
+      </div>
+      <div className="score-display relative mt-2 font-bold text-lg">
+        Score: {score}
+        {scoreFlash && (
+          <div key={scoreFlash.key} className={`score-flash ${scoreFlash.value > 0 ? 'positive' : 'negative'}`}>
+            {scoreFlash.value > 0 ? `+${scoreFlash.value}` : scoreFlash.value}
+          </div>
+        )}
+      </div>
+      <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`} style={{ gridTemplateColumns: `repeat(${gridSize}, 60px)` }}>
         {grid.map((row, r) =>
           row.map((cell, c) => {
             const key = `${r}-${c}`;
             const isWrong = wrongCells.includes(key);
-            const classes = [
-              "sudoku-cell",
-              isWrong ? "bg-red-200" : "",
-              selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : "",
-              selectedValue !== null &&
+            const isMatch = selectedValue &&
               ((cell !== null && cell === selectedValue) ||
-                parseInt(userInput[r][c]) === selectedValue)
-                ? "match-highlight"
-                : "",
-              (r % boxRows === 0) ? "border-top-bold" : "",
-              (c % boxCols === 0) ? "border-left-bold" : "",
-              (r === gridSize - 1) ? "border-bottom-bold" : "",
-              (c === gridSize - 1) ? "border-right-bold" : ""
-            ].join(" ");
-
+              (userInput[r][c] && parseInt(userInput[r][c]) === selectedValue));
             return (
               <input
                 key={key}
-                className={classes}
+                className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${
+                  selectedCell && (selectedCell.row === r || selectedCell.col === c)
+                    ? "row-col-highlight"
+                    : ""
+                } ${isMatch ? "match-highlight" : ""}`}
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
