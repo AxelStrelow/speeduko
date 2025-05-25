@@ -27,7 +27,6 @@
   border: 2px solid #ccc;
   border-radius: 6px;
   transition: background-color 0.2s, border-color 0.2s;
-  outline: none;
 }
 
 .sudoku-cell:focus {
@@ -152,4 +151,10 @@
 .row-col-highlight {
   outline: 2px solid #94a3b8 !important;
   outline-offset: -2px;
+}
+
+.row-col-highlight {
+  outline: 3px solid #2563eb !important;
+  outline-offset: -2px;
+  z-index: 1;
 }
