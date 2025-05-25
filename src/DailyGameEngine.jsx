@@ -260,9 +260,10 @@ const DailyGameEngine = () => {
           <button
             className="check-btn"
             onClick={() => {
-              const summary = \🧠 Speeduko Daily #\${getTodayKey()}
-Score: \${score} | Time Left: \${formatTime(timeLeft)}
-Play at: speeduko.xyz\`;
+            const summary = `🧠 Speeduko Daily #${getTodayKey()}
+Score: ${score} | Time Left: ${formatTime(timeLeft)}
+Play at: speeduko.xyz`;
+
               navigator.clipboard.writeText(summary);
               alert("Results copied to clipboard!");
             }}
