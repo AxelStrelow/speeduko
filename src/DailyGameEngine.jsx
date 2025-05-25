@@ -1,8 +1,14 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 
-// Utility: seeded RNG (Mulberry32)
+const isSameBox = (r1, c1, r2, c2, size) => {
+  const boxSize = Math.sqrt(size);
+  return (
+    Math.floor(r1 / boxSize) === Math.floor(r2 / boxSize) &&
+    Math.floor(c1 / boxSize) === Math.floor(c2 / boxSize)
+  );
+};
+
 const mulberry32 = (a) => {
   return function () {
     a |= 0; a = a + 0x6D2B79F5 | 0;
@@ -12,12 +18,8 @@ const mulberry32 = (a) => {
   };
 };
 
-// Get today's date string
 const getTodayKey = () => new Date().toISOString().slice(0, 10);
-
-// Check if already played
 const hasPlayedToday = () => localStorage.getItem("lastPlayed") === getTodayKey();
-
 const markAsPlayed = () => localStorage.setItem("lastPlayed", getTodayKey());
 
 const getGridSize = (phase) => {
@@ -50,7 +52,7 @@ const generateFullGrid = (gridSize, rng) => {
     const boxRow = Math.floor(row / boxRows) * boxRows;
     const boxCol = Math.floor(col / boxCols) * boxCols;
     for (let r = boxRow; r < boxRow + boxRows; r++) {
-      for (let c = boxCol; c < boxCol + boxCols; c++) {
+      for (let c = boxCol; c < boxCols; c++) {
         if (grid[r][c] === num) return false;
       }
     }
@@ -121,6 +123,7 @@ const DailyGameEngine = () => {
 
   useEffect(() => {
     if (locked) return;
+
     const full = generateFullGrid(gridSize, rng.current);
     const blanks = getBlankCount(gridSize, levelIndex);
     const removed = removeCells(full, blanks, rng.current);
@@ -152,7 +155,6 @@ const DailyGameEngine = () => {
 
   const handleInput = (r, c, val) => {
     if (gameOver || locked) return;
-
     const clean = val.replace(/[^0-9]/, '').slice(0, 1);
     const newInput = [...userInput];
     newInput[r][c] = clean;
@@ -168,7 +170,7 @@ const DailyGameEngine = () => {
         setScoreFlash({ value: -5, key: Date.now() });
       } else {
         setWrongCells(prev => prev.filter(k => k !== key));
-        if (parseInt(clean) === solution[r][c]) {
+        if (parseInt(userInput[r][c]) === solution[r][c]) {
           setScore(prev => prev + 10);
           setScoreFlash({ value: +10, key: Date.now() });
         }
@@ -191,49 +193,35 @@ const DailyGameEngine = () => {
     setTimeout(() => setPhase(phase + 1), 300);
   };
 
-  if (locked) {
-    return (
-      <div className="text-center mt-20">
-        <h2 className="text-2xl font-bold mb-2">🎯 Daily Game Complete</h2>
-        <p className="text-gray-600">Come back tomorrow for a new challenge!</p>
-      </div>
-    );
-  }
+  const [boxRows, boxCols] = getBoxSize(gridSize);
 
   return (
     <div className="text-center">
       <h1 className="logo mb-2">🧠 Speeduko</h1>
-      <div className="level-indicator">Level {phase + 1}</div>
-      <div className="inline-block px-4 py-2 mt-2 bg-black text-white rounded font-mono text-3xl tracking-wider">
-        {formatTime(timeLeft)}
-      </div>
-      <div className="score-display relative mt-2 font-bold text-lg">
-        Score: {score}
-        {scoreFlash && (
-          <div key={scoreFlash.key} className={`score-flash ${scoreFlash.value > 0 ? 'positive' : 'negative'}`}>
-            {scoreFlash.value > 0 ? `+${scoreFlash.value}` : scoreFlash.value}
-          </div>
-        )}
-      </div>
       <div className="sudoku-grid" style={{ gridTemplateColumns: `repeat(${gridSize}, 60px)` }}>
         {grid.map((row, r) =>
           row.map((cell, c) => {
             const key = `${r}-${c}`;
             const isWrong = wrongCells.includes(key);
+            const classes = [
+              "sudoku-cell",
+              isWrong ? "bg-red-200" : "",
+              selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : "",
+              selectedValue !== null &&
+              ((cell !== null && cell === selectedValue) ||
+                parseInt(userInput[r][c]) === selectedValue)
+                ? "match-highlight"
+                : "",
+              (r % boxRows === 0) ? "border-top-bold" : "",
+              (c % boxCols === 0) ? "border-left-bold" : "",
+              (r === gridSize - 1) ? "border-bottom-bold" : "",
+              (c === gridSize - 1) ? "border-right-bold" : ""
+            ].join(" ");
+
             return (
               <input
                 key={key}
-                className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${
-                  selectedCell && (selectedCell.row === r || selectedCell.col === c)
-                    ? "row-col-highlight"
-                    : ""
-                } ${
-                  selectedValue !== null &&
-                  ((cell !== null && cell === selectedValue) ||
-                   (parseInt(userInput[r][c]) === selectedValue))
-                    ? "match-highlight"
-                    : ""
-                }`}
+                className={classes}
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
@@ -254,24 +242,6 @@ const DailyGameEngine = () => {
           })
         )}
       </div>
-      {gameOver && (
-        <div className="mt-4">
-          <div className="text-green-600 font-bold text-lg mb-2">✅ Game Complete</div>
-          <button
-            className="check-btn"
-            onClick={() => {
-            const summary = `🧠 Speeduko Daily #${getTodayKey()}
-Score: ${score} | Time Left: ${formatTime(timeLeft)}
-Play at: speeduko.xyz`;
-
-              navigator.clipboard.writeText(summary);
-              alert("Results copied to clipboard!");
-            }}
-          >
-            📋 Copy Results
-          </button>
-        </div>
-      )}
     </div>
   );
 };
