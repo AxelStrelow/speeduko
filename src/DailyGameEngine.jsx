@@ -5,34 +5,11 @@ import './Sudoku.css';
 // Utility: seeded RNG (Mulberry32)
 const mulberry32 = (a) => {
   return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
     let t = Math.imul(a ^ a >>> 15, 1 | a);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-              <input
-                key={key}
-                className={[
-                  "sudoku-cell",
-                  isWrong ? "bg-red-200" : "",
-                  selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : "",
-                  selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? "box-highlight" : "",
-                  selectedValue !== null && ((cell !== null && cell === selectedValue) ||
-                    parseInt(userInput[r][c] || "") === selectedValue) ? "match-highlight" : ""
-                ].join(" ")}
-                type="text"
-                value={cell !== null ? cell : (userInput[r][c] || "")}
-                onChange={(e) => handleInput(r, c, e.target.value)}
-                readOnly={cell !== null}
-                onFocus={() => {
-                  setSelectedCell({ row: r, col: c });
-                  if (cell !== null) {
-                    setSelectedValue(cell);
-                  } else if (userInput[r][c]) {
-                    setSelectedValue(parseInt(userInput[r][c]));
-                  } else {
-                    setSelectedValue(null);
-                  }
-                }}
-              />
-                  setSelectedCell({ row: r, col: c });
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+              <input                key={key}                className={`sudoku-cell ${isWrong ? "bg-red-200" : ""} ${                  selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : ""                } ${                  selectedCell && isSameBox(selectedCell.row, selectedCell.col, r, c, grid.length) ? "box-highlight" : ""                } ${                  selectedValue !== null && ((cell !== null && cell === selectedValue) ||                  parseInt(userInput[r][c] || "") === selectedValue)                    ? "match-highlight"                    : ""                }`}                type="text"                value={cell !== null ? cell : (userInput[r][c] || "")}                onChange={(e) => handleInput(r, c, e.target.value)}                readOnly={cell !== null}                onFocus={() => {                  setSelectedCell({ row: r, col: c });                  if (cell !== null) {                    setSelectedValue(cell);                  } else if (userInput[r][c]) {                    setSelectedValue(parseInt(userInput[r][c]));                  } else {                    setSelectedValue(null);                  }                }}              />  }
 };
 
 // Get today's date string
@@ -245,6 +222,7 @@ const DailyGameEngine = () => {
         <p className="text-gray-600">Come back tomorrow for a new challenge!</p>
       </div>
     );
+  }
 
   return (
     <div className="text-center">
@@ -292,6 +270,7 @@ const DailyGameEngine = () => {
                     setSelectedValue(parseInt(userInput[r][c]));
                   } else {
                     setSelectedValue(null);
+                  }
                 }}
               />
             );
@@ -308,10 +287,10 @@ const DailyGameEngine = () => {
               const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;
               navigator.clipboard.writeText(summary);
               alert("Results copied to clipboard!");
-          }}
-        >📋 Copy Results</button>
             }}
-      )}
+          >
+            📋 Copy Results
+          </button>
         </div>
       )}
 
