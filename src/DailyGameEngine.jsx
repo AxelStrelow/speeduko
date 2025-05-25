@@ -310,7 +310,9 @@ const DailyGameEngine = () => {
             className="check-btn"
             onClick={() => {
               const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;
+            📋 Copy Results
               navigator.clipboard.writeText(summary);
+          </button>
               alert("Results copied to clipboard!");
             }}
           >
