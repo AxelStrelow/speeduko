@@ -5,10 +5,8 @@ import './Sudoku.css';
 // Utility: seeded RNG (Mulberry32)
 const mulberry32 = (a) => {
   return function () {
-          >📋 Copy Results
     let t = Math.imul(a ^ a >>> 15, 1 | a);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-          </button>
               <input
                 key={key}
                 className={[
@@ -310,15 +308,13 @@ const DailyGameEngine = () => {
             className="check-btn"
             onClick={() => {
               const summary = `🧠 Speeduko Daily #${new Date().toISOString().slice(0,10)}\nScore: ${score} | Time Left: ${formatTime(timeLeft)}\nPlay at: speeduko.xyz`;
-            📋 Copy Results
               navigator.clipboard.writeText(summary);
+            📋 Copy Results
           </button>
               alert("Results copied to clipboard!");
             }}
           >
       )}
-            📋 Copy Results
-          </button>
         </div>
       )}
 
