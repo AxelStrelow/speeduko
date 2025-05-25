@@ -277,10 +277,6 @@ const DailyGameEngine = () => {
                 onBlur={() => setSelectedCell(null)}
               />
             );
-                  } else {
-                    setSelectedValue(null);
-                  }
-                }}
               />
             );
           })
