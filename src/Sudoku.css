@@ -132,7 +132,6 @@
   background-color: #e2e8f0 !important;
 }
 
-.sudoku-cell.row-col-highlight {
   background-color: #f0f4f8 !important;
 }
 
@@ -148,13 +147,18 @@
   text-align: center;
 }
 
-.row-col-highlight {
   outline: 2px solid #94a3b8 !important;
   outline-offset: -2px;
 }
 
-.row-col-highlight {
   outline: 3px solid #2563eb !important;
   outline-offset: -2px;
   z-index: 1;
+}
+
+.row-col-highlight {
+  outline: 3px solid red !important;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 2px red inset !important;
+  z-index: 10;
 }
