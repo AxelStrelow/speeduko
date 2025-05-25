@@ -148,3 +148,8 @@
   color: #4a5568;
   text-align: center;
 }
+
+.row-col-highlight {
+  outline: 2px solid #94a3b8 !important;
+  outline-offset: -2px;
+}
