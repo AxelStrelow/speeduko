@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 
 // Helper to generate a completed 3x3 Sudoku grid
@@ -17,15 +16,12 @@ function generateCompleteGrid() {
 function removeCells(grid, difficulty) {
   const levels = { easy: 2, medium: 3, hard: 4 };
   const numToRemove = levels[difficulty] || 2;
-
   const newGrid = grid.map((row) => row.map((val) => ({ value: val, readOnly: true })));
-
   for (let i = 0; i < numToRemove; i++) {
     const row = Math.floor(Math.random() * 3);
     const col = Math.floor(Math.random() * 3);
     newGrid[row][col] = { value: "", readOnly: false };
   }
-
   return newGrid;
 }
 
@@ -33,6 +29,7 @@ const SudokuGrid = () => {
   const [levelIndex, setLevelIndex] = useState(0);
   const [grid, setGrid] = useState([]);
   const [initialGrid, setInitialGrid] = useState([]);
+  const [selectedCell, setSelectedCell] = useState(null);
   const levels = ["easy", "medium", "hard"];
 
   useEffect(() => {
@@ -44,18 +41,18 @@ const SudokuGrid = () => {
 
   const handleChange = (e, rowIdx, colIdx) => {
     const value = parseInt(e.target.value);
-    const newGrid = [...grid];
-    newGrid[rowIdx][colIdx].value = isNaN(value) ? "" : value;
+    const newGrid = grid.map((row, r) =>
+      row.map((cell, c) => (r === rowIdx && c === colIdx ? { ...cell, value } : cell))
+    );
     setGrid(newGrid);
 
-    checkCompletion(newGrid);
-  };
-
-  const checkCompletion = (currentGrid) => {
-    for (let r = 0; r < 3; r++) {
-      for (let c = 0; c < 3; c++) {
-        if (currentGrid[r][c].value !== initialGrid[r][c]) return;
-      }
+    // Check if row solved
+    for (let c = 0; c < grid[0].length; c++) {
+      if (newGrid[rowIdx][c].value !== initialGrid[rowIdx][c]) return;
+    }
+    // Check if column solved
+    for (let r = 0; r < grid.length; r++) {
+      if (newGrid[r][colIdx].value !== initialGrid[r][colIdx]) return;
     }
 
     // If solved correctly, go to next level
@@ -66,25 +63,48 @@ const SudokuGrid = () => {
     }
   };
 
+  const gridSize = grid.length;
+
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 60px)", gap: "5px" }}>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${gridSize}, 60px)`,
+        gap: "5px",
+      }}
+    >
       {grid.map((row, rowIdx) =>
-        row.map((cell, colIdx) => (
-          <input
-            key={`${rowIdx}-${colIdx}`}
-            value={cell.value}
-            readOnly={cell.readOnly}
-            onChange={(e) => handleChange(e, rowIdx, colIdx)}
-            style={{
-              width: "60px",
-              height: "60px",
-              textAlign: "center",
-              fontSize: "1.5rem",
-              backgroundColor: cell.readOnly ? "#e0e0e0" : "white",
-              border: "1px solid #ccc",
-            }}
-          />
-        ))
+        row.map((cell, colIdx) => {
+          const isSelected =
+            selectedCell &&
+            rowIdx === selectedCell.rowIdx &&
+            colIdx === selectedCell.colIdx;
+          const isHighlighted =
+            selectedCell &&
+            (rowIdx === selectedCell.rowIdx ||
+             colIdx === selectedCell.colIdx);
+          const borderColor = isHighlighted ? "#87cefa" : "#ccc";
+          const borderWidth = isSelected ? "2px" : "1px";
+
+          return (
+            <input
+              key={`${rowIdx}-${colIdx}`}
+              value={cell.value}
+              readOnly={cell.readOnly}
+              onChange={(e) => handleChange(e, rowIdx, colIdx)}
+              onFocus={() => setSelectedCell({ rowIdx, colIdx })}
+              onBlur={() => setSelectedCell(null)}
+              style={{
+                width: "60px",
+                height: "60px",
+                textAlign: "center",
+                fontSize: "1.5rem",
+                backgroundColor: cell.readOnly ? "#e0e0e0" : "white",
+                border: `${borderWidth} solid ${borderColor}`,
+              }}
+            />
+          );
+        })
       )}
     </div>
   );
