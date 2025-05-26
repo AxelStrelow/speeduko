@@ -146,26 +146,13 @@
 }
 
 
-/* Base cell borders */
+/* Every cell gets a clean light border */
 .sudoku-cell {
   border: 1px solid #ccc;
   box-sizing: border-box;
-  background-color: #fff;
-  border-radius: 4px;
 }
 
-/* Selected cell */
-.sudoku-cell.selected {
-  border: 2px solid #3b82f6;
-  z-index: 1;
-}
-
-/* Highlighted row/col */
-.sudoku-cell.highlighted {
-  border-color: #93c5fd;
-}
-
-/* Subgrid outlines for 6x6 and 9x9 only */
+/* Subgrid bold borders only when applicable */
 .sudoku-grid.show-boxes .border-top-bold {
   border-top: 2px solid #333 !important;
 }
