@@ -12,15 +12,9 @@
   border: 2px solid #ccc;
   max-width: fit-content;
 }
-.sudoku-grid-3x3 {
-  grid-template-columns: repeat(3, 60px);
-}
-.sudoku-grid-6x6 {
-  grid-template-columns: repeat(6, 60px);
-}
-.sudoku-grid-9x9 {
-  grid-template-columns: repeat(9, 60px);
-}
+
+
+
 
 /* Cell Styling */
 .sudoku-cell {
@@ -169,13 +163,12 @@
 
 /* Enhanced Timer Style */
 
+
 .timer-display {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: inline-block;
   margin: 1rem auto;
-  background-color: #e5e7eb; /* soft neutral gray */
-  color: #1f2937; /* dark neutral text */
+  background-color: #e5e7eb;
+  color: #1f2937;
   font-family: 'Courier New', monospace;
   font-size: 2.25rem;
   font-weight: bold;
@@ -187,6 +180,7 @@
 
 
 
+
 /* App Layout Wrapper */
 .app-wrapper {
   min-height: 100vh;
@@ -195,4 +189,16 @@
   align-items: flex-start;
   background-color: #f4f4f5; /* neutral gray */
   padding: 2rem 1rem;
+}
+
+
+
+.sudoku-grid-3x3 {
+  grid-template-columns: repeat(3, 60px);
+}
+.sudoku-grid-6x6 {
+  grid-template-columns: repeat(6, 60px);
+}
+.sudoku-grid-9x9 {
+  grid-template-columns: repeat(9, 60px);
 }
