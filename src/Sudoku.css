@@ -2,14 +2,15 @@
 /* Core Grid Styles */
 .sudoku-grid {
   display: grid;
-  row-gap: 6px;
-  column-gap: 3px;
+  row-gap: 4px;
+  column-gap: 2px;
   justify-content: center;
   margin: 1rem auto;
   padding: 10px;
   background: #f9fafb;
   border-radius: 12px;
   border: 2px solid #ccc;
+  max-width: fit-content;
 }
 .sudoku-grid-3x3 {
   grid-template-columns: repeat(3, 60px);
@@ -132,5 +133,14 @@
 
 /* Optional: Fit grid nicely in view on large grids */
 .sudoku-grid {
+  display: grid;
+  row-gap: 4px;
+  column-gap: 2px;
+  justify-content: center;
+  margin: 1rem auto;
+  padding: 10px;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 2px solid #ccc;
   max-width: fit-content;
 }
