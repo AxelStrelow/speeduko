@@ -69,7 +69,8 @@ const SudokuGrid = () => {
     <div className={`sudoku-wrapper`}>
       <div
         className={`sudoku-grid${gridSize > 3 ? " show-boxes" : ""}`}
-      style={{
+      className={`sudoku-cell ${isSelected ? "selected" : ""} ${isHighlighted ? "highlighted" : ""} ${classes.join(" ")}`}
+              style={{
         gridTemplateColumns: `repeat(${gridSize}, 60px)`,
         gap: "5px",
       }}
@@ -87,18 +88,17 @@ const SudokuGrid = () => {
           const borderColor = isHighlighted ? "#87cefa" : "#ccc";
           const borderWidth = isSelected ? "2px" : "1px";
 
-          
           const boxSize = gridSize === 9 ? 3 : gridSize === 6 ? 2 : 1;
-          const classes = [];
-          if (gridSize > 3) {
-            if (rowIdx % boxSize === 0) classes.push("border-top-bold");
-            if (colIdx % boxSize === 0) classes.push("border-left-bold");
-            if ((rowIdx + 1) % boxSize === 0) classes.push("border-bottom-bold");
-            if ((colIdx + 1) % boxSize === 0) classes.push("border-right-bold");
-          }
+            const classes = [];
+            if (gridSize > 3) {
+              if (rowIdx % boxSize === 0) classes.push("border-top-bold");
+              if (colIdx % boxSize === 0) classes.push("border-left-bold");
+              if ((rowIdx + 1) % boxSize === 0) classes.push("border-bottom-bold");
+              if ((colIdx + 1) % boxSize === 0) classes.push("border-right-bold");
+            }
 
-          return (
-            <input className={classes.join(" ")}
+            return (
+              <input
               key={`${rowIdx}-${colIdx}`}
               value={cell.value}
               readOnly={cell.readOnly}
