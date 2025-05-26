@@ -1,14 +1,9 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 
-const isSameBox = (r1, c1, r2, c2, size) => {
-  const boxSize = Math.sqrt(size);
-  return (
-    Math.floor(r1 / boxSize) === Math.floor(r2 / boxSize) &&
-    Math.floor(c1 / boxSize) === Math.floor(c2 / boxSize)
-  );
-};
+const getTodayKey = () => new Date().toISOString().slice(0, 10);
+const hasPlayedToday = () => localStorage.getItem("lastPlayed") === getTodayKey();
+const markAsPlayed = () => localStorage.setItem("lastPlayed", getTodayKey());
 
 const mulberry32 = (a) => {
   return function () {
@@ -18,10 +13,6 @@ const mulberry32 = (a) => {
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
   };
 };
-
-const getTodayKey = () => new Date().toISOString().slice(0, 10);
-const hasPlayedToday = () => localStorage.getItem("lastPlayed") === getTodayKey();
-const markAsPlayed = () => localStorage.setItem("lastPlayed", getTodayKey());
 
 const getGridSize = (phase) => {
   if (phase < 3) return 3;
@@ -111,6 +102,7 @@ const DailyGameEngine = () => {
   const timerRef = useRef(null);
 
   const gridSize = getGridSize(phase);
+  const [boxRows, boxCols] = getBoxSize(gridSize);
   const levelIndex = phase % 3;
 
   const getBlankCount = (size, level) => {
@@ -124,7 +116,6 @@ const DailyGameEngine = () => {
 
   useEffect(() => {
     if (locked) return;
-
     const full = generateFullGrid(gridSize, rng.current);
     const blanks = getBlankCount(gridSize, levelIndex);
     const removed = removeCells(full, blanks, rng.current);
@@ -194,8 +185,6 @@ const DailyGameEngine = () => {
     setTimeout(() => setPhase(phase + 1), 300);
   };
 
-  const [boxRows, boxCols] = getBoxSize(gridSize);
-
   return (
     <div className="text-center">
       <h1 className="logo mb-2">🧠 Speeduko</h1>
@@ -203,14 +192,8 @@ const DailyGameEngine = () => {
       <div className="inline-block px-4 py-2 mt-2 bg-black text-white rounded font-mono text-3xl tracking-wider">
         {formatTime(timeLeft)}
       </div>
-      <div className="score-display relative mt-2 font-bold text-lg">
-        Score: {score}
-        {scoreFlash && (
-          <div key={scoreFlash.key} className={`score-flash ${scoreFlash.value > 0 ? 'positive' : 'negative'}`}>
-            {scoreFlash.value > 0 ? `+${scoreFlash.value}` : scoreFlash.value}
-          </div>
-        )}
-      </div>
+      <div className="score-display mt-2">Score: {score}</div>
+
       <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
         {grid.map((row, r) =>
           row.map((cell, c) => {
@@ -224,7 +207,11 @@ const DailyGameEngine = () => {
               ((cell !== null && cell === selectedValue) ||
                 parseInt(userInput[r][c]) === selectedValue)
                 ? "match-highlight"
-                : ""
+                : "",
+              r % boxRows === 0 ? "border-top-bold" : "",
+              c % boxCols === 0 ? "border-left-bold" : "",
+              r === gridSize - 1 ? "border-bottom-bold" : "",
+              c === gridSize - 1 ? "border-right-bold" : ""
             ].join(" ");
 
             return (
