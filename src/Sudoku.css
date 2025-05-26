@@ -146,39 +146,10 @@
 }
 
 
-/* Every cell gets a clean light border */
-.sudoku-cell {
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
 
-/* Subgrid bold borders only when applicable */
-.sudoku-grid.show-boxes .border-top-bold {
-  border-top: 2px solid #333 !important;
-}
-.sudoku-grid.show-boxes .border-left-bold {
-  border-left: 2px solid #333 !important;
-}
-.sudoku-grid.show-boxes .border-bottom-bold {
-  border-bottom: 2px solid #333 !important;
-}
-.sudoku-grid.show-boxes .border-right-bold {
-  border-right: 2px solid #333 !important;
-}
-
-
-
-/* Centered refined timer */
+/* Center the existing timer */
 .timer-display {
-  display: inline-block;
+  text-align: center;
+  display: block;
   margin: 1rem auto;
-  background-color: #e5e7eb; /* neutral */
-  color: #1f2937; /* dark neutral */
-  font-family: 'Courier New', monospace;
-  font-size: 2.25rem;
-  font-weight: bold;
-  padding: 0.5rem 1.25rem;
-  border-radius: 10px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-  letter-spacing: 0.05em;
 }
