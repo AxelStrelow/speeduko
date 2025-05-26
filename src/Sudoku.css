@@ -2,15 +2,13 @@
 /* Core Grid Styles */
 .sudoku-grid {
   display: grid;
-  row-gap: 2px;
-  column-gap: 7px;
+  gap: 4px;
   justify-content: center;
   margin: 1rem auto;
   padding: 10px;
   background: #f9fafb;
   border-radius: 12px;
   border: 2px solid #ccc;
-  max-width: fit-content;
 }
 .sudoku-grid-3x3 {
   grid-template-columns: repeat(3, 60px);
@@ -124,23 +122,16 @@
 }
 
 
-
-/* Wrapper to center the grid and limit excessive width */
-.sudoku-wrapper {
-  display: flex;
-  justify-content: center;
+/* Only apply box borders when .show-boxes is active (for 6x6, 9x9) */
+.sudoku-grid.show-boxes .border-top-bold {
+  border-top: 3px solid #000 !important;
 }
-
-/* Optional: Fit grid nicely in view on large grids */
-.sudoku-grid {
-  display: grid;
-  row-gap: 2px;
-  column-gap: 7px;
-  justify-content: center;
-  margin: 1rem auto;
-  padding: 10px;
-  background: #f9fafb;
-  border-radius: 12px;
-  border: 2px solid #ccc;
-  max-width: fit-content;
+.sudoku-grid.show-boxes .border-left-bold {
+  border-left: 3px solid #000 !important;
+}
+.sudoku-grid.show-boxes .border-bottom-bold {
+  border-bottom: 3px solid #000 !important;
+}
+.sudoku-grid.show-boxes .border-right-bold {
+  border-right: 3px solid #000 !important;
 }
