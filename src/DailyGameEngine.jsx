@@ -189,7 +189,7 @@ const DailyGameEngine = () => {
     <div className="text-center">
       <h1 className="logo mb-2">🧠 Speeduko</h1>
       <div className="level-indicator">Level {phase + 1}</div>
-      <div className="inline-block px-4 py-2 mt-2 bg-black text-white rounded font-mono text-3xl tracking-wider">
+      <div className="timer-display">
         {formatTime(timeLeft)}
       </div>
       <div className="score-display mt-2">Score: {score}</div>
