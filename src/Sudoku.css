@@ -2,7 +2,7 @@
 /* Core Grid Styles */
 .sudoku-grid {
   display: grid;
-  row-gap: 1.5px;
+  row-gap: 2px;
   column-gap: 7px;
   justify-content: center;
   margin: 1rem auto;
@@ -134,7 +134,7 @@
 /* Optional: Fit grid nicely in view on large grids */
 .sudoku-grid {
   display: grid;
-  row-gap: 1.5px;
+  row-gap: 2px;
   column-gap: 7px;
   justify-content: center;
   margin: 1rem auto;
@@ -143,4 +143,45 @@
   border-radius: 12px;
   border: 2px solid #ccc;
   max-width: fit-content;
+}
+
+
+/* Every cell gets a clean light border */
+.sudoku-cell {
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Subgrid bold borders only when applicable */
+.sudoku-grid.show-boxes .border-top-bold {
+  border-top: 2px solid #333 !important;
+}
+.sudoku-grid.show-boxes .border-left-bold {
+  border-left: 2px solid #333 !important;
+}
+.sudoku-grid.show-boxes .border-bottom-bold {
+  border-bottom: 2px solid #333 !important;
+}
+.sudoku-grid.show-boxes .border-right-bold {
+  border-right: 2px solid #333 !important;
+}
+
+
+/* Timer Styles */
+.timer-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.game-timer {
+  font-family: 'Courier New', monospace;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  background: #f8fafc;
+  padding: 0.5rem 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
