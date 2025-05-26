@@ -146,13 +146,7 @@
 }
 
 
-/* Every cell gets a clean light border */
-.sudoku-cell {
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-/* Subgrid bold borders only when applicable */
+/* Subgrid box outlines for 6x6 and 9x9 only */
 .sudoku-grid.show-boxes .border-top-bold {
   border-top: 2px solid #333 !important;
 }
