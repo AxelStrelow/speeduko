@@ -66,18 +66,10 @@ const SudokuGrid = () => {
   const gridSize = grid.length;
 
   return (
-    <div className="sudoku-wrapper">
+    <div className={`sudoku-wrapper`}>
       <div
         className={`sudoku-grid${gridSize > 3 ? " show-boxes" : ""}`}
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${gridSize}, 60px)`,
-          rowGap: "2px",
-          columnGap: "7px",
-        }}
-      >
       style={{
-        display: "grid",
         gridTemplateColumns: `repeat(${gridSize}, 60px)`,
         gap: "5px",
       }}
