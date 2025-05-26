@@ -2,8 +2,8 @@
 /* Core Grid Styles */
 .sudoku-grid {
   display: grid;
-  row-gap: 4px;
-  column-gap: 2px;
+  row-gap: 2px;
+  column-gap: 6px;
   justify-content: center;
   margin: 1rem auto;
   padding: 10px;
@@ -134,8 +134,8 @@
 /* Optional: Fit grid nicely in view on large grids */
 .sudoku-grid {
   display: grid;
-  row-gap: 4px;
-  column-gap: 2px;
+  row-gap: 2px;
+  column-gap: 6px;
   justify-content: center;
   margin: 1rem auto;
   padding: 10px;
