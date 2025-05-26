@@ -146,7 +146,27 @@
 }
 
 
-/* Subgrid box outlines for 6x6 and 9x9 only */
+/* Remove default cell borders */
+.sudoku-cell {
+  border: none;
+  background-color: #fff;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+/* Highlight selected cell */
+.sudoku-cell.selected {
+  outline: 2px solid #3b82f6;
+  z-index: 1;
+}
+
+/* Highlight related row/column */
+.sudoku-cell.highlighted {
+  outline: 1px solid #cbd5e1;
+  z-index: 0;
+}
+
+/* Clean subgrid box outlines for 6x6 and 9x9 */
 .sudoku-grid.show-boxes .border-top-bold {
   border-top: 2px solid #333 !important;
 }
