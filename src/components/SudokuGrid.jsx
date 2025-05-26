@@ -87,27 +87,32 @@ const SudokuGrid = () => {
           const borderColor = isHighlighted ? "#87cefa" : "#ccc";
           const borderWidth = isSelected ? "2px" : "1px";
 
+          
           const boxSize = gridSize === 9 ? 3 : gridSize === 6 ? 2 : 1;
-            const classes = ["sudoku-cell"];
-            if (isSelected) classes.push("selected");
-            if (isHighlighted) classes.push("highlighted");
-            if (gridSize > 3) {
-              if (rowIdx % boxSize === 0) classes.push("border-top-bold");
-              if (colIdx % boxSize === 0) classes.push("border-left-bold");
-              if ((rowIdx + 1) % boxSize === 0) classes.push("border-bottom-bold");
-              if ((colIdx + 1) % boxSize === 0) classes.push("border-right-bold");
-            }
+          const classes = [];
+          if (gridSize > 3) {
+            if (rowIdx % boxSize === 0) classes.push("border-top-bold");
+            if (colIdx % boxSize === 0) classes.push("border-left-bold");
+            if ((rowIdx + 1) % boxSize === 0) classes.push("border-bottom-bold");
+            if ((colIdx + 1) % boxSize === 0) classes.push("border-right-bold");
+          }
 
-            return (
-              <input
-                className={classes.join(" ")}
+          return (
+            <input className={classes.join(" ")}
               key={`${rowIdx}-${colIdx}`}
               value={cell.value}
               readOnly={cell.readOnly}
               onChange={(e) => handleChange(e, rowIdx, colIdx)}
               onFocus={() => setSelectedCell({ rowIdx, colIdx })}
               onBlur={() => setSelectedCell(null)}
-              style={{ width: "60px", height: "60px", textAlign: "center", fontSize: "1.5rem", backgroundColor: cell.readOnly ? "#e0e0e0" : "white" }}
+              style={{
+                width: "60px",
+                height: "60px",
+                textAlign: "center",
+                fontSize: "1.5rem",
+                backgroundColor: cell.readOnly ? "#e0e0e0" : "white",
+                border: `${borderWidth} solid ${borderColor}`,
+              }}
             />
           );
         })
