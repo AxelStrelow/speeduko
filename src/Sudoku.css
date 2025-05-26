@@ -146,27 +146,26 @@
 }
 
 
-/* Remove default cell borders */
+/* Base cell borders */
 .sudoku-cell {
-  border: none;
-  background-color: #fff;
+  border: 1px solid #ccc;
   box-sizing: border-box;
+  background-color: #fff;
   border-radius: 4px;
 }
 
-/* Highlight selected cell */
+/* Selected cell */
 .sudoku-cell.selected {
-  outline: 2px solid #3b82f6;
+  border: 2px solid #3b82f6;
   z-index: 1;
 }
 
-/* Highlight related row/column */
+/* Highlighted row/col */
 .sudoku-cell.highlighted {
-  outline: 1px solid #cbd5e1;
-  z-index: 0;
+  border-color: #93c5fd;
 }
 
-/* Clean subgrid box outlines for 6x6 and 9x9 */
+/* Subgrid outlines for 6x6 and 9x9 only */
 .sudoku-grid.show-boxes .border-top-bold {
   border-top: 2px solid #333 !important;
 }
