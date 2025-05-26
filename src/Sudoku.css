@@ -148,8 +148,20 @@
 
 
 /* Center the existing timer */
+
+/* Enhanced but elegant game clock */
 .timer-display {
+  display: inline-block;
+  margin: 1.25rem auto;
+  padding: 0.6rem 1.5rem;
   text-align: center;
-  display: block;
-  margin: 1rem auto;
+  font-family: 'Courier New', monospace;
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  background-color: #f1f5f9;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.08em;
 }
+
