@@ -189,9 +189,7 @@ const DailyGameEngine = () => {
     <div className="text-center">
       <h1 className="logo mb-2">🧠 Speeduko</h1>
       <div className="level-indicator">Level {phase + 1}</div>
-      <div className="timer-display">
-        {formatTime(timeLeft)}
-      </div>
+
       <div className="score-display mt-2">
         Score: {score}
         {scoreFlash && (
@@ -202,6 +200,10 @@ const DailyGameEngine = () => {
             {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
           </div>
         )}
+      </div>
+
+      <div className="timer-display">
+        {formatTime(timeLeft)}
       </div>
 
       <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
