@@ -244,6 +244,23 @@ const DailyGameEngine = () => {
                 readOnly={cell !== null}
                 onKeyDown={(e) => {
                   const key = e.key;
+                  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+                    e.preventDefault();
+                    let newRow = selectedCell?.row ?? r;
+                    let newCol = selectedCell?.col ?? c;
+
+                    if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
+                    if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
+                    if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
+                    if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
+
+                    const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
+                    if (next && !next.readOnly) {
+                      next.focus();
+                    }
+                  }
+                }}
+                  const key = e.key;
                   let newRow = selectedCell?.row ?? r;
                   let newCol = selectedCell?.col ?? c;
 
