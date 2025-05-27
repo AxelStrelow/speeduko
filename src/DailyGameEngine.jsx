@@ -163,7 +163,7 @@ const DailyGameEngine = () => {
         setScoreFlash({ value: -5, key: Date.now() });
       } else {
         setWrongCells(prev => prev.filter(k => k !== key));
-        if (parseInt(userInput[r][c]) === solution[r][c]) {
+        if (parseInt(userInput[r][c]) === solution[r][c] && key !== `${r}-${c}` && userInput[r][c] !== clean) {
           setScore(prev => prev + 10);
           setScoreFlash({ value: +10, key: Date.now() });
         }
