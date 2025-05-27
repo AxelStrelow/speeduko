@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 
 const getTodayKey = () => new Date().toISOString().slice(0, 10);
@@ -114,16 +114,32 @@ const handleKeyDown = useCallback((e, r, c) => {
     if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
     if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
 
-    const selector = `input[data-coord='${newRow}-${newCol}']`;
-    const next = document.querySelector(selector);
+    const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
     if (next && !next.readOnly) {
       next.focus();
     }
   }
-}, [gridSize]);
+}, [gridSize, selectedCell]);
 
 
+  const handleKeyDown = (e, r, c) => {
+    const key = e.key;
+    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+      e.preventDefault();
+      let newRow = r;
+      let newCol = c;
 
+      if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
+      if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
+      if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
+      if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
+
+      const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
+      if (next && !next.readOnly) {
+        next.focus();
+      }
+    }
+  };
 
 
   const gridSize = getGridSize(phase);
@@ -246,6 +262,7 @@ const handleKeyDown = useCallback((e, r, c) => {
                 Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
               isSoft = sameRow || sameCol || sameBox;
             }
+            ].join(" ");
 
             const classes = [
               "sudoku-cell",
@@ -261,7 +278,23 @@ const handleKeyDown = useCallback((e, r, c) => {
             return (
               <input
                 data-coord={`${r}-${c}`}
-                                  }
+                onKeyDown={(e) => {
+                  const key = e.key;
+                  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+                    e.preventDefault();
+                    let newRow = selectedCell?.row ?? r;
+                    let newCol = selectedCell?.col ?? c;
+
+                    if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
+                    if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
+                    if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
+                    if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
+
+                    const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
+                    if (next && !next.readOnly) {
+                      next.focus();
+                    }
+                  }
                 }} data-coord={`${r}-${c}`}
                 key={key}
                 className={classes}
@@ -269,8 +302,25 @@ const handleKeyDown = useCallback((e, r, c) => {
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, r, c)}
-                                            readOnly={cell !== null}
-                                  }
+              onKeyDown={(e) => handleKeyDown(e, r, c)}
+                readOnly={cell !== null}
+                onKeyDown={(e) => {
+                  const key = e.key;
+                  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+                    e.preventDefault();
+                    let newRow = selectedCell?.row ?? r;
+                    let newCol = selectedCell?.col ?? c;
+
+                    if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
+                    if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
+                    if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
+                    if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
+
+                    const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
+                    if (next && !next.readOnly) {
+                      next.focus();
+                    }
+                  }
                 }}
                   const key = e.key;
                   let newRow = selectedCell?.row ?? r;
