@@ -178,3 +178,8 @@
   margin-top: 0.5rem;
   position: relative;
 }
+
+
+.sudoku-cell.soft-highlight {
+  background-color: #f0f9ff !important;
+}
