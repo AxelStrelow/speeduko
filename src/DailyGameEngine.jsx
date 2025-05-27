@@ -235,13 +235,29 @@ const DailyGameEngine = () => {
             ].join(" ");
 
             return (
-              <input
+              <input data-coord={`${r}-${c}`}
                 key={key}
                 className={classes}
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
                 readOnly={cell !== null}
+                onKeyDown={(e) => {
+                  const key = e.key;
+                  let newRow = selectedCell?.row ?? r;
+                  let newCol = selectedCell?.col ?? c;
+
+                  if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
+                  else if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
+                  else if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
+                  else if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
+
+                  const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
+                  if (next && !next.readOnly) {
+                    e.preventDefault();
+                    next.focus();
+                  }
+                }}
                 onFocus={() => {
                   setSelectedCell({ row: r, col: c });
                   if (cell !== null) {
