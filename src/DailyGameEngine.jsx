@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 
@@ -207,26 +208,19 @@ const DailyGameEngine = () => {
           row.map((cell, c) => {
             const key = `${r}-${c}`;
             const isWrong = wrongCells.includes(key);
+
             const isMatch = selectedValue !== null &&
               ((cell !== null && cell === selectedValue) ||
                 parseInt(userInput[r][c]) === selectedValue);
 
             let isSoft = false;
-            if (selectedValue !== null) {
-              for (let i = 0; i < gridSize; i++) {
-                for (let j = 0; j < gridSize; j++) {
-                  const val = grid[i][j] !== null ? grid[i][j] : parseInt(userInput[i][j]);
-                  if (val === selectedValue) {
-                    const sameRow = r === i;
-                    const sameCol = c === j;
-                    const sameBox = Math.floor(r / boxRows) === Math.floor(i / boxRows) &&
-                                    Math.floor(c / boxCols) === Math.floor(j / boxCols);
-                    if ((sameRow || sameCol || sameBox) && !isMatch) {
-                      isSoft = true;
-                    }
-                  }
-                }
-              }
+            if (selectedCell) {
+              const sameRow = r === selectedCell.row;
+              const sameCol = c === selectedCell.col;
+              const sameBox = (gridSize === 6 || gridSize === 9) &&
+                Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
+                Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
+              isSoft = sameRow || sameCol || sameBox;
             }
 
             const classes = [
