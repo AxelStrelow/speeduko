@@ -114,7 +114,8 @@ const handleKeyDown = useCallback((e, r, c) => {
     if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
     if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
 
-    const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
+    const selector = `input[data-coord='${newRow}-${newCol}']`;
+    const next = document.querySelector(selector);
     if (next && !next.readOnly) {
       next.focus();
     }
@@ -260,11 +261,7 @@ const handleKeyDown = useCallback((e, r, c) => {
             return (
               <input
                 data-coord={`${r}-${c}`}
-                -${newCol}']`);
-                    if (next && !next.readOnly) {
-                      next.focus();
-                    }
-                  }
+                                  }
                 }} data-coord={`${r}-${c}`}
                 key={key}
                 className={classes}
@@ -272,14 +269,8 @@ const handleKeyDown = useCallback((e, r, c) => {
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, r, c)}
-              
-              
-                readOnly={cell !== null}
-                -${newCol}']`);
-                    if (next && !next.readOnly) {
-                      next.focus();
-                    }
-                  }
+                                            readOnly={cell !== null}
+                                  }
                 }}
                   const key = e.key;
                   let newRow = selectedCell?.row ?? r;
