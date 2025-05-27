@@ -44,7 +44,7 @@ const generateFullGrid = (gridSize, rng) => {
     const boxRow = Math.floor(row / boxRows) * boxRows;
     const boxCol = Math.floor(col / boxCols) * boxCols;
     for (let r = boxRow; r < boxRow + boxRows; r++) {
-      for (let c = boxCol; c < boxCols; c++) {
+      for (let c = boxCol; c < boxCol + boxCols; c++) {
         if (grid[r][c] === num) return false;
       }
     }
@@ -192,7 +192,17 @@ const DailyGameEngine = () => {
       <div className="timer-display">
         {formatTime(timeLeft)}
       </div>
-      <div className="score-display mt-2">Score: {score}</div>
+      <div className="score-display mt-2">
+        Score: {score}
+        {scoreFlash && (
+          <div
+            key={scoreFlash.key}
+            className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
+          >
+            {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+          </div>
+        )}
+      </div>
 
       <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
         {grid.map((row, r) =>
