@@ -102,6 +102,26 @@ const DailyGameEngine = () => {
   const rng = useRef(mulberry32(parseInt(getTodayKey().replace(/-/g, ''))));
   const timerRef = useRef(null);
 
+const handleKeyDown = useCallback((e, r, c) => {
+  const key = e.key;
+  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+    e.preventDefault();
+    let newRow = r;
+    let newCol = c;
+
+    if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
+    if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
+    if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
+    if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
+
+    const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
+    if (next && !next.readOnly) {
+      next.focus();
+    }
+  }
+}, [gridSize, selectedCell]);
+
+
   const handleKeyDown = (e, r, c) => {
     const key = e.key;
     if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
@@ -280,6 +300,7 @@ const DailyGameEngine = () => {
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
+              onKeyDown={(e) => handleKeyDown(e, r, c)}
               onKeyDown={(e) => handleKeyDown(e, r, c)}
                 readOnly={cell !== null}
                 onKeyDown={(e) => {
