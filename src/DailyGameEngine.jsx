@@ -189,7 +189,6 @@ const DailyGameEngine = () => {
     <div className="text-center">
       <h1 className="logo mb-2">🧠 Speeduko</h1>
       <div className="level-indicator">Level {phase + 1}</div>
-
       <div className="score-display mt-2">
         Score: {score}
         {scoreFlash && (
@@ -201,25 +200,40 @@ const DailyGameEngine = () => {
           </div>
         )}
       </div>
-
-      <div className="timer-display">
-        {formatTime(timeLeft)}
-      </div>
+      <div className="timer-display">{formatTime(timeLeft)}</div>
 
       <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
         {grid.map((row, r) =>
           row.map((cell, c) => {
             const key = `${r}-${c}`;
             const isWrong = wrongCells.includes(key);
+            const isMatch = selectedValue !== null &&
+              ((cell !== null && cell === selectedValue) ||
+                parseInt(userInput[r][c]) === selectedValue);
+
+            let isSoft = false;
+            if (selectedValue !== null) {
+              for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                  const val = grid[i][j] !== null ? grid[i][j] : parseInt(userInput[i][j]);
+                  if (val === selectedValue) {
+                    const sameRow = r === i;
+                    const sameCol = c === j;
+                    const sameBox = Math.floor(r / boxRows) === Math.floor(i / boxRows) &&
+                                    Math.floor(c / boxCols) === Math.floor(j / boxCols);
+                    if ((sameRow || sameCol || sameBox) && !isMatch) {
+                      isSoft = true;
+                    }
+                  }
+                }
+              }
+            }
+
             const classes = [
               "sudoku-cell",
               isWrong ? "bg-red-200" : "",
-              selectedCell && (selectedCell.row === r || selectedCell.col === c) ? "row-col-highlight" : "",
-              selectedValue !== null &&
-              ((cell !== null && cell === selectedValue) ||
-                parseInt(userInput[r][c]) === selectedValue)
-                ? "match-highlight"
-                : "",
+              isMatch ? "match-highlight" : "",
+              isSoft ? "soft-highlight" : "",
               r % boxRows === 0 ? "border-top-bold" : "",
               c % boxCols === 0 ? "border-left-bold" : "",
               r === gridSize - 1 ? "border-bottom-bold" : "",
