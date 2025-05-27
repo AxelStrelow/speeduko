@@ -214,7 +214,7 @@ const DailyGameEngine = () => {
                 parseInt(userInput[r][c]) === selectedValue);
 
             let isSoft = false;
-            if (selectedCell) {
+            if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
               const sameRow = r === selectedCell.row;
               const sameCol = c === selectedCell.col;
               const sameBox = (gridSize === 6 || gridSize === 9) &&
@@ -252,7 +252,13 @@ const DailyGameEngine = () => {
                     setSelectedValue(null);
                   }
                 }}
-                onBlur={() => setSelectedCell(null)}
+                onBlur={() => {
+                  setTimeout(() => {
+                    if (!document.activeElement.classList.contains("sudoku-cell")) {
+                      setSelectedCell(null);
+                    }
+                  }, 0);
+                }}
               />
             );
           })
