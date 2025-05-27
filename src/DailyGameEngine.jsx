@@ -189,13 +189,13 @@ const DailyGameEngine = () => {
     <div className="text-center">
       <h1 className="logo mb-2">🧠 Speeduko</h1>
       <div className="level-indicator">Level {phase + 1}</div>
-      <div className={`timer-display${timeLeft <= 30 ? " timer-warning" : ""}`}>
+      <div className="timer-display">
         {formatTime(timeLeft)}
       </div>
       <div className="score-display mt-2">Score: {score}</div>
 
       <div className="sudoku-grid-wrapper">
-        <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
+      <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
         {grid.map((row, r) =>
           row.map((cell, c) => {
             const key = `${r}-${c}`;
@@ -241,8 +241,6 @@ const DailyGameEngine = () => {
       </div>
     </div>
   );
-        </div>
-      </div>
 };
 
 export default DailyGameEngine;
