@@ -195,7 +195,7 @@ const DailyGameEngine = () => {
       <div className="score-display mt-2">Score: {score}</div>
 
       <div className="sudoku-grid-wrapper">
-      <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
+        <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
         {grid.map((row, r) =>
           row.map((cell, c) => {
             const key = `${r}-${c}`;
@@ -241,6 +241,8 @@ const DailyGameEngine = () => {
       </div>
     </div>
   );
+        </div>
+      </div>
 };
 
 export default DailyGameEngine;
