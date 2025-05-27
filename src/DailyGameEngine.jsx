@@ -98,6 +98,7 @@ const DailyGameEngine = () => {
   const [gameOver, setGameOver] = useState(false);
   const [phase, setPhase] = useState(0);
   const [selectedCell, setSelectedCell] = useState(null);
+  const [correctCells, setCorrectCells] = useState(new Set());
 
   const rng = useRef(mulberry32(parseInt(getTodayKey().replace(/-/g, ''))));
   const timerRef = useRef(null);
@@ -146,32 +147,35 @@ const DailyGameEngine = () => {
     return `${m}:${(s % 60).toString().padStart(2, '0')}`;
   };
 
-  const handleInput = (r, c, val) => {
-    if (gameOver || locked) return;
-    const clean = val.replace(/[^0-9]/, '').slice(0, 1);
-    const newInput = [...userInput];
-    newInput[r][c] = clean;
-    setUserInput(newInput);
+  
+const handleInput = (r, c, val) => {
+  if (gameOver || locked) return;
+  const clean = val.replace(/[^0-9]/, '').slice(0, 1);
+  const newInput = [...userInput];
+  newInput[r][c] = clean;
+  setUserInput(newInput);
 
-    const key = `${r}-${c}`;
-    if (grid[r][c] === null) {
-      const correct = parseInt(clean) === solution[r][c];
-      if (!correct && clean !== "") {
-        setWrongCells(prev => [...prev, key]);
-        setTimeLeft(prev => Math.max(prev - 5, 0));
-        setScore(prev => prev - 5);
-        setScoreFlash({ value: -5, key: Date.now() });
-      } else {
-        setWrongCells(prev => prev.filter(k => k !== key));
-        if (parseInt(userInput[r][c]) === solution[r][c] && key !== `${r}-${c}` && userInput[r][c] !== clean) {
-          setScore(prev => prev + 10);
-          setScoreFlash({ value: +10, key: Date.now() });
-        }
+  const key = `${r}-${c}`;
+  if (grid[r][c] === null) {
+    const correct = parseInt(clean) === solution[r][c];
+    if (!correct && clean !== "") {
+      setWrongCells(prev => [...prev, key]);
+      setTimeLeft(prev => Math.max(prev - 5, 0));
+      setScore(prev => prev - 5);
+      setScoreFlash({ value: -5, key: Date.now() });
+    } else {
+      setWrongCells(prev => prev.filter(k => k !== key));
+      if (correct && !correctCells.has(key)) {
+        setScore(prev => prev + 10);
+        setScoreFlash({ value: +10, key: Date.now() });
+        setCorrectCells(prev => new Set(prev).add(key));
       }
     }
+  }
 
-    checkComplete(newInput);
-  };
+  checkComplete(newInput);
+};
+
 
   const checkComplete = (inputs) => {
     for (let r = 0; r < gridSize; r++) {
