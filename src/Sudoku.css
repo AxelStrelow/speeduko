@@ -1,4 +1,3 @@
-
 /* Core Grid Styles */
 .sudoku-grid {
   display: grid;
@@ -33,6 +32,7 @@
   border: 2px solid #ccc;
   border-radius: 6px;
   transition: background-color 0.2s, border-color 0.2s;
+  position: relative;
 }
 .sudoku-cell:focus {
   border-color: #000;
@@ -101,6 +101,8 @@
   animation: popScore 1s ease forwards;
   left: 50%;
   transform: translateX(-50%);
+  top: -30px;
+  pointer-events: none;
 }
 .score-flash.positive {
   color: #16a34a;
@@ -123,36 +125,13 @@
   }
 }
 
-
-
 /* Wrapper to center the grid and limit excessive width */
 .sudoku-wrapper {
   display: flex;
   justify-content: center;
 }
 
-/* Optional: Fit grid nicely in view on large grids */
-.sudoku-grid {
-  display: grid;
-  row-gap: 2px;
-  column-gap: 7px;
-  justify-content: center;
-  margin: 1rem auto;
-  padding: 10px;
-  background: #f9fafb;
-  border-radius: 12px;
-  border: 2px solid #ccc;
-  max-width: fit-content;
-}
-
-
-
 /* Center the existing timer */
-
-/* Enhanced but elegant game clock */
-
-/* Final centered timer alignment */
-/* Fix timer alignment */
 .timer-display {
   display: flex;
   justify-content: center;
@@ -197,6 +176,5 @@
   color: #1e293b;
   text-align: center;
   margin-top: 0.5rem;
+  position: relative;
 }
-
-
