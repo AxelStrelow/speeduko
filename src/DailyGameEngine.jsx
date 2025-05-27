@@ -102,46 +102,6 @@ const DailyGameEngine = () => {
   const rng = useRef(mulberry32(parseInt(getTodayKey().replace(/-/g, ''))));
   const timerRef = useRef(null);
 
-const handleKeyDown = useCallback((e, r, c) => {
-  const key = e.key;
-  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
-    e.preventDefault();
-    let newRow = r;
-    let newCol = c;
-
-    if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
-    if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
-    if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
-    if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
-
-    const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
-    if (next && !next.readOnly) {
-      next.focus();
-    }
-  }
-}, [gridSize, selectedCell]);
-
-
-  const handleKeyDown = (e, r, c) => {
-    const key = e.key;
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
-      e.preventDefault();
-      let newRow = r;
-      let newCol = c;
-
-      if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
-      if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
-      if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
-      if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
-
-      const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
-      if (next && !next.readOnly) {
-        next.focus();
-      }
-    }
-  };
-
-
   const gridSize = getGridSize(phase);
   const [boxRows, boxCols] = getBoxSize(gridSize);
   const levelIndex = phase % 3;
@@ -262,7 +222,6 @@ const handleKeyDown = useCallback((e, r, c) => {
                 Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
               isSoft = sameRow || sameCol || sameBox;
             }
-            ].join(" ");
 
             const classes = [
               "sudoku-cell",
@@ -277,66 +236,12 @@ const handleKeyDown = useCallback((e, r, c) => {
 
             return (
               <input
-                data-coord={`${r}-${c}`}
-                onKeyDown={(e) => {
-                  const key = e.key;
-                  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
-                    e.preventDefault();
-                    let newRow = selectedCell?.row ?? r;
-                    let newCol = selectedCell?.col ?? c;
-
-                    if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
-                    if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
-                    if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
-                    if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
-
-                    const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
-                    if (next && !next.readOnly) {
-                      next.focus();
-                    }
-                  }
-                }} data-coord={`${r}-${c}`}
                 key={key}
                 className={classes}
                 type="text"
                 value={cell !== null ? cell : userInput[r][c]}
                 onChange={(e) => handleInput(r, c, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(e, r, c)}
-              onKeyDown={(e) => handleKeyDown(e, r, c)}
                 readOnly={cell !== null}
-                onKeyDown={(e) => {
-                  const key = e.key;
-                  if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
-                    e.preventDefault();
-                    let newRow = selectedCell?.row ?? r;
-                    let newCol = selectedCell?.col ?? c;
-
-                    if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
-                    if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
-                    if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
-                    if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
-
-                    const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
-                    if (next && !next.readOnly) {
-                      next.focus();
-                    }
-                  }
-                }}
-                  const key = e.key;
-                  let newRow = selectedCell?.row ?? r;
-                  let newCol = selectedCell?.col ?? c;
-
-                  if (key === 'ArrowUp') newRow = Math.max(0, r - 1);
-                  else if (key === 'ArrowDown') newRow = Math.min(gridSize - 1, r + 1);
-                  else if (key === 'ArrowLeft') newCol = Math.max(0, c - 1);
-                  else if (key === 'ArrowRight') newCol = Math.min(gridSize - 1, c + 1);
-
-                  const next = document.querySelector(`input[data-coord='${newRow}-${newCol}']`);
-                  if (next && !next.readOnly) {
-                    e.preventDefault();
-                    next.focus();
-                  }
-                }}
                 onFocus={() => {
                   setSelectedCell({ row: r, col: c });
                   if (cell !== null) {
