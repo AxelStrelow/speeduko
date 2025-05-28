@@ -12,9 +12,7 @@ const mulberry32 = (a) => {
     a |= 0; a = a + 0x6D2B79F5 | 0;
     let t = Math.imul(a ^ a >>> 15, 1 | a);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return (
-    <>
-      {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}(t ^ t >>> 14) >>> 0) / 4294967296;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
   };
 };
 
@@ -48,7 +46,7 @@ const generateFullGrid = (gridSize, rng) => {
     const boxRow = Math.floor(row / boxRows) * boxRows;
     const boxCol = Math.floor(col / boxCols) * boxCols;
     for (let r = boxRow; r < boxRow + boxRows; r++) {
-      for (let c = boxCol; c < boxCol + boxCols; c++) {
+      for (let c = boxCol; c < boxCols; c++) {
         if (grid[r][c] === num) return false;
       }
     }
@@ -102,7 +100,6 @@ const DailyGameEngine = () => {
   const [phase, setPhase] = useState(0);
   const [selectedCell, setSelectedCell] = useState(null);
   const [showIntro, setShowIntro] = useState(true);
-  const [correctCells, setCorrectCells] = useState(new Set());
 
   const rng = useRef(mulberry32(parseInt(getTodayKey().replace(/-/g, ''))));
   const timerRef = useRef(null);
@@ -143,9 +140,7 @@ const DailyGameEngine = () => {
         return prev - 1;
       });
     }, 1000);
-    return (
-    <>
-      {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}) => clearInterval(timerRef.current);
+    return () => clearInterval(timerRef.current);
   }, [locked]);
 
   const formatTime = (s) => {
@@ -153,35 +148,34 @@ const DailyGameEngine = () => {
     return `${m}:${(s % 60).toString().padStart(2, '0')}`;
   };
 
-  
-const handleInput = (r, c, val) => {
-  if (gameOver || locked) return;
-  const clean = val.replace(/[^0-9]/, '').slice(0, 1);
-  const newInput = [...userInput];
-  newInput[r][c] = clean;
-  setUserInput(newInput);
+  const handleInput = (r, c, val) => {
+    if (gameOver || locked) return;
+    const clean = val.replace(/[^0-9]/, '').slice(0, 1);
+    const newInput = [...userInput];
+    newInput[r][c] = clean;
+    setUserInput(newInput);
 
-  const key = `${r}-${c}`;
-  if (grid[r][c] === null) {
-    const correct = parseInt(clean) === solution[r][c];
-    if (!correct && clean !== "") {
-      setWrongCells(prev => [...prev, key]);
-      setTimeLeft(prev => Math.max(prev - 5, 0));
-      setScore(prev => prev - 5);
-      setScoreFlash({ value: -5, key: Date.now() });
-    } else {
-      setWrongCells(prev => prev.filter(k => k !== key));
-      if (correct && !correctCells.has(key)) {
-        setScore(prev => prev + 10);
-        setScoreFlash({ value: +10, key: Date.now() });
-        setCorrectCells(prev => new Set(prev).add(key));
+    const key = `${r}-${c}`;
+    if (grid[r][c] === null) {
+      const correct = parseInt(clean) === solution[r][c];
+      const alreadyCorrect = parseInt(userInput[r][c]) === solution[r][c];
+
+      if (!correct && clean !== "") {
+        setWrongCells(prev => [...new Set([...prev, key])]);
+        setTimeLeft(prev => Math.max(prev - 5, 0));
+        setScore(prev => prev - 5);
+        setScoreFlash({ value: -5, key: Date.now() });
+      } else {
+        setWrongCells(prev => prev.filter(k => k !== key));
+        if (!alreadyCorrect && correct) {
+          setScore(prev => prev + 10);
+          setScoreFlash({ value: +10, key: Date.now() });
+        }
       }
     }
-  }
 
-  checkComplete(newInput);
-};
-
+    checkComplete(newInput);
+  };
 
   const checkComplete = (inputs) => {
     for (let r = 0; r < gridSize; r++) {
@@ -199,89 +193,84 @@ const handleInput = (r, c, val) => {
   return (
     <>
       {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
-    <div className="text-center">
-      <h1 className="logo mb-2">🧠 Speeduko</h1>
-      <div className="level-indicator">Level {phase + 1}</div>
-      <div className="score-display mt-2">
-        Score: {score}
-        {scoreFlash && (
-          <div
-            key={scoreFlash.key}
-            className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
-          >
-            {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+      {!showIntro && (
+        <div className="text-center">
+          <h1 className="logo mb-2">🧠 Speeduko</h1>
+          <div className="level-indicator">Level {phase + 1}</div>
+          <div className="score-display mt-2">
+            Score: {score}
+            {scoreFlash && (
+              <div
+                key={scoreFlash.key}
+                className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
+              >
+                {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <div className="timer-display">{formatTime(timeLeft)}</div>
+          <div className="timer-display">{formatTime(timeLeft)}</div>
 
-      <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
-        {grid.map((row, r) =>
-          row.map((cell, c) => {
-            const key = `${r}-${c}`;
-            const isWrong = wrongCells.includes(key);
+          <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
+            {grid.map((row, r) =>
+              row.map((cell, c) => {
+                const key = `${r}-${c}`;
+                const isWrong = wrongCells.includes(key);
+                const isMatch = selectedValue !== null &&
+                  ((cell !== null && cell === selectedValue) || parseInt(userInput[r][c]) === selectedValue);
 
-            const isMatch = selectedValue !== null &&
-              ((cell !== null && cell === selectedValue) ||
-                parseInt(userInput[r][c]) === selectedValue);
+                let isSoft = false;
+                if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
+                  const sameRow = r === selectedCell.row;
+                  const sameCol = c === selectedCell.col;
+                  const sameBox = (gridSize === 6 || gridSize === 9) &&
+                    Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
+                    Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
+                  isSoft = sameRow || sameCol || sameBox;
+                }
 
-            let isSoft = false;
-            if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
-              const sameRow = r === selectedCell.row;
-              const sameCol = c === selectedCell.col;
-              const sameBox = (gridSize === 6 || gridSize === 9) &&
-                Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
-                Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
-              isSoft = sameRow || sameCol || sameBox;
-            }
+                const classes = [
+                  "sudoku-cell",
+                  isWrong ? "bg-red-200" : "",
+                  isMatch ? "match-highlight" : "",
+                  isSoft ? "soft-highlight" : "",
+                  r % boxRows === 0 ? "border-top-bold" : "",
+                  c % boxCols === 0 ? "border-left-bold" : "",
+                  r === gridSize - 1 ? "border-bottom-bold" : "",
+                  c === gridSize - 1 ? "border-right-bold" : ""
+                ].join(" ");
 
-            const classes = [
-              "sudoku-cell",
-              isWrong ? "bg-red-200" : "",
-              isMatch ? "match-highlight" : "",
-              isSoft ? "soft-highlight" : "",
-              r % boxRows === 0 ? "border-top-bold" : "",
-              c % boxCols === 0 ? "border-left-bold" : "",
-              r === gridSize - 1 ? "border-bottom-bold" : "",
-              c === gridSize - 1 ? "border-right-bold" : ""
-            ].join(" ");
-
-            return (
-    <>
-      {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
-              <input
-                key={key}
-                className={classes}
-                type="text"
-                value={cell !== null ? cell : userInput[r][c]}
-                onChange={(e) => handleInput(r, c, e.target.value)}
-                readOnly={cell !== null}
-                onFocus={() => {
-                  setSelectedCell({ row: r, col: c });
-                  if (cell !== null) {
-                    setSelectedValue(cell);
-                  } else if (userInput[r][c]) {
-                    setSelectedValue(parseInt(userInput[r][c]));
-                  } else {
-                    setSelectedValue(null);
-                  }
-                }}
-                onBlur={() => {
-                  setTimeout(() => {
-                    if (!document.activeElement.classList.contains("sudoku-cell")) {
-                      setSelectedCell(null);
-                    }
-                  }, 0);
-                }}
-              />
-            );
-          })
-        )}
-      </div>
-    </div>
-  );
-};
-
+                return (
+                  <input
+                    key={key}
+                    className={classes}
+                    type="text"
+                    value={cell !== null ? cell : userInput[r][c]}
+                    onChange={(e) => handleInput(r, c, e.target.value)}
+                    readOnly={cell !== null}
+                    onFocus={() => {
+                      setSelectedCell({ row: r, col: c });
+                      if (cell !== null) {
+                        setSelectedValue(cell);
+                      } else if (userInput[r][c]) {
+                        setSelectedValue(parseInt(userInput[r][c]));
+                      } else {
+                        setSelectedValue(null);
+                      }
+                    }}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        if (!document.activeElement.classList.contains("sudoku-cell")) {
+                          setSelectedCell(null);
+                        }
+                      }, 0);
+                    }}
+                  />
+                );
+              })
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 };
