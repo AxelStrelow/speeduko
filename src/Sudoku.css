@@ -38,7 +38,6 @@
   border-color: #000;
   background-color: #e0f2fe;
 }
-.sudoku-cell.bg-red-200 {
   background-color: #fecaca !important;
   border-color: #dc2626 !important;
 }
@@ -182,4 +181,15 @@
 
 .sudoku-cell.soft-highlight {
   background-color: #f0f9ff !important;
+}
+
+/* ✅ Ensure red background shows above other highlights */
+.sudoku-cell.bg-red-200 {
+  background-color: #fecaca !important;
+  z-index: 10;
+  position: relative;
+}
+.sudoku-cell.bg-red-200.soft-highlight,
+.sudoku-cell.bg-red-200.match-highlight {
+  background-color: #fecaca !important;
 }
