@@ -253,3 +253,15 @@
     font-size: 0.9rem;
   }
 }
+
+
+/* Left-align only the modal bullet points */
+.intro-modal ul {
+  text-align: left;
+  padding-left: 1.2rem;
+  margin-top: 1rem;
+}
+
+.intro-modal li {
+  margin: 0.4rem 0;
+}
