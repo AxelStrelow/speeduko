@@ -229,9 +229,9 @@ const handleInput = (r, c, val) => {
 
             const classes = [
               "sudoku-cell",
-              isWrong ? "bg-red-200" : "",
               isMatch ? "match-highlight" : "",
               isSoft ? "soft-highlight" : "",
+              isWrong ? "bg-red-200" : "",
               r % boxRows === 0 ? "border-top-bold" : "",
               c % boxCols === 0 ? "border-left-bold" : "",
               r === gridSize - 1 ? "border-bottom-bold" : "",
