@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
+import IntroModal from './IntroModal';
 
 const getTodayKey = () => new Date().toISOString().slice(0, 10);
 const hasPlayedToday = () => localStorage.getItem("lastPlayed") === getTodayKey();
@@ -11,7 +12,9 @@ const mulberry32 = (a) => {
     a |= 0; a = a + 0x6D2B79F5 | 0;
     let t = Math.imul(a ^ a >>> 15, 1 | a);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    return (
+    <>
+      {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}(t ^ t >>> 14) >>> 0) / 4294967296;
   };
 };
 
@@ -98,6 +101,7 @@ const DailyGameEngine = () => {
   const [gameOver, setGameOver] = useState(false);
   const [phase, setPhase] = useState(0);
   const [selectedCell, setSelectedCell] = useState(null);
+  const [showIntro, setShowIntro] = useState(true);
   const [correctCells, setCorrectCells] = useState(new Set());
 
   const rng = useRef(mulberry32(parseInt(getTodayKey().replace(/-/g, ''))));
@@ -139,7 +143,9 @@ const DailyGameEngine = () => {
         return prev - 1;
       });
     }, 1000);
-    return () => clearInterval(timerRef.current);
+    return (
+    <>
+      {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}) => clearInterval(timerRef.current);
   }, [locked]);
 
   const formatTime = (s) => {
@@ -191,6 +197,8 @@ const handleInput = (r, c, val) => {
   };
 
   return (
+    <>
+      {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
     <div className="text-center">
       <h1 className="logo mb-2">🧠 Speeduko</h1>
       <div className="level-indicator">Level {phase + 1}</div>
@@ -239,6 +247,8 @@ const handleInput = (r, c, val) => {
             ].join(" ");
 
             return (
+    <>
+      {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
               <input
                 key={key}
                 className={classes}
@@ -269,6 +279,10 @@ const handleInput = (r, c, val) => {
         )}
       </div>
     </div>
+  );
+};
+
+    </>
   );
 };
 
