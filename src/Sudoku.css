@@ -193,3 +193,63 @@
 .sudoku-cell.bg-red-200.match-highlight {
   background-color: #fecaca !important;
 }
+
+
+/* 🎨 Centered and mobile-friendly Intro Modal */
+.intro-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+  max-width: 90%;
+  width: 400px;
+  z-index: 9999;
+  text-align: center;
+}
+
+.intro-modal h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.intro-modal p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.intro-modal button {
+  background-color: #4f46e5;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.intro-modal button:hover {
+  background-color: #4338ca;
+}
+
+@media (max-width: 500px) {
+  .intro-modal {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  .intro-modal h2 {
+    font-size: 1.25rem;
+  }
+
+  .intro-modal p,
+  .intro-modal button {
+    font-size: 0.9rem;
+  }
+}
