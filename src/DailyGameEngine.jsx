@@ -29,30 +29,6 @@ const getBoxSize = (gridSize) => {
 };
 
 const generateFullGrid = (gridSize, rng) => {
-  if (gridSize === 9) {
-    // Base pattern for a valid 9x9 Sudoku
-    const base = [...Array(9).keys()].map(n => (n + 1));
-    const pattern = (r, c) => (3 * (r % 3) + Math.floor(r / 3) + c) % 9;
-
-    const shuffle = (array) => {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(rng() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    };
-
-    const rows = shuffle([0, 1, 2]).flatMap(g => shuffle([0, 1, 2]).map(r => g * 3 + r));
-    const cols = shuffle([0, 1, 2]).flatMap(g => shuffle([0, 1, 2]).map(c => g * 3 + c));
-    const nums = shuffle([...base]);
-
-    const board = Array.from({ length: 9 }, (_, r) =>
-      Array.from({ length: 9 }, (_, c) => nums[pattern(rows[r], cols[c])])
-    );
-    return board;
-  }
-
-  // Fallback to brute-force method
   const base = Array.from({ length: gridSize }, (_, i) => i + 1);
   const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -70,7 +46,7 @@ const generateFullGrid = (gridSize, rng) => {
     const boxRow = Math.floor(row / boxRows) * boxRows;
     const boxCol = Math.floor(col / boxCols) * boxCols;
     for (let r = boxRow; r < boxRow + boxRows; r++) {
-      for (let c = boxCol; c < boxCol + boxCols; c++) {
+      for (let c = boxCol; c < boxCols; c++) {
         if (grid[r][c] === num) return false;
       }
     }
@@ -240,7 +216,10 @@ const DailyGameEngine = () => {
                 const key = `${r}-${c}`;
                 const isWrong = wrongCells.includes(key);
                 const isMatch = selectedValue !== null &&
-                  ((cell !== null && cell === selectedValue) || parseInt(userInput[r][c]) === selectedValue);
+  (
+    (cell !== null && cell === selectedValue) ||
+    (parseInt(userInput[r][c]) === selectedValue && solution[r][c] === selectedValue)
+  );
 
                 let isSoft = false;
                 if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
