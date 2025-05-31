@@ -215,11 +215,13 @@ const DailyGameEngine = () => {
               row.map((cell, c) => {
                 const key = `${r}-${c}`;
                 const isWrong = wrongCells.includes(key);
-                const isMatch = selectedValue !== null &&
-  (
-    (cell !== null && cell === selectedValue) ||
-    (parseInt(userInput[r][c]) === selectedValue && solution[r][c] === selectedValue)
-  );
+                const isMatch = selectedValue !== null && (
+  (cell !== null && cell === selectedValue) ||
+  (grid[r][c] === null &&
+   parseInt(userInput[r][c]) === selectedValue &&
+   solution[r][c] === selectedValue &&
+   !wrongCells.includes(`${r}-${c}`))
+);
 
                 let isSoft = false;
                 if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
