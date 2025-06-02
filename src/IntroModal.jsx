@@ -1,11 +1,13 @@
 import React from 'react';
+import './Sudoku.css';
 
 const IntroModal = ({ onStart }) => {
   return (
-    <div className="intro-modal-overlay">
-      <div className="intro-modal">
-        <img src="/icon.png" alt="Logo" className="logo-icon" />
-        <h1 className="title">SPEEDUKO</h1>
+    <div className="game-container">
+      <img src="/icon.png" alt="Grid Icon" style={{ width: "60px", marginBottom: "10px" }} />
+      <h1 className="logo">SPEEDUKO</h1>
+
+      <div className="intro-box">
         <p>Your mission? <strong>Rack up as many points as possible</strong> before the clock hits zero!</p>
         <ul>
           <li>Fill in the grid with no repeats in rows, columns, or boxes</li>
@@ -15,8 +17,9 @@ const IntroModal = ({ onStart }) => {
         </ul>
         <p>⏳ This is a daily challenge! ⏳</p>
         <p>A new puzzle awaits every day. Come back tomorrow and keep your streak alive!</p>
-        <button onClick={onStart} className="start-button">START</button>
       </div>
+
+      <button className="start-button" onClick={onStart}>START</button>
     </div>
   );
 };
