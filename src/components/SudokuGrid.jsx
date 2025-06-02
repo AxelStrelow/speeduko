@@ -54,7 +54,7 @@ const SudokuGrid = () => {
         SCORE: 0
       </div>
 
-      <div className="sudoku-grid sudoku-grid-3x3">
+      <div className="sudoku-grid">
         {grid.map((row, rowIdx) =>
           row.map((cell, colIdx) => (
             <input
