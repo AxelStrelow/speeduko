@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Sudoku.css";
 
-// Helper to generate a completed 3x3 Sudoku grid
 function generateCompleteGrid() {
   const nums = [1, 2, 3];
   const shuffle = (array) => array.sort(() => Math.random() - 0.5);
@@ -13,7 +12,6 @@ function generateCompleteGrid() {
   ];
 }
 
-// Helper to remove numbers based on difficulty
 function removeCells(grid, difficulty) {
   const levels = { easy: 2, medium: 3, hard: 4 };
   const numToRemove = levels[difficulty] || 2;
@@ -31,7 +29,6 @@ function removeCells(grid, difficulty) {
 const SudokuGrid = () => {
   const [levelIndex, setLevelIndex] = useState(0);
   const [grid, setGrid] = useState([]);
-  const [selectedCell, setSelectedCell] = useState(null);
   const levels = ["easy", "medium", "hard"];
 
   useEffect(() => {
@@ -79,32 +76,6 @@ const SudokuGrid = () => {
         </button>
       </div>
 
-      <div className="timer-box">
-        ⏳ 00:00
-      </div>
-    </div>
-  );
-    <div className="game-container">
-      <h1 className="title">SPEEDUKO</h1>
-      <div className="level-score">
-        LEVEL {levelIndex + 1}<br />
-        SCORE: 0
-      </div>
-      <div className="sudoku-grid sudoku-grid-3x3">
-        {grid.map((row, rowIdx) =>
-          row.map((cell, colIdx) => (
-            <input
-              key={`${rowIdx}-${colIdx}`}
-              type="text"
-              className="sudoku-cell"
-              value={cell.value}
-              onChange={(e) => handleChange(e, rowIdx, colIdx)}
-              readOnly={cell.readOnly}
-              maxLength={1}
-            />
-          ))
-        )}
-      </div>
       <div className="timer-box">
         ⏳ 00:00
       </div>
