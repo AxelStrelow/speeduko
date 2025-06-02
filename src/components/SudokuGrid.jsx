@@ -47,32 +47,34 @@ const SudokuGrid = () => {
   };
 
   return (
-    <div className="game-container">
-      <h1 className="logo">SPEEDUKO</h1>
-      <div className="level-score">
-        LEVEL {levelIndex + 1}<br />
-        SCORE: 0
-      </div>
-
-      <div className="grid-wrapper">
-        <div className="sudoku-grid">
-          {grid.map((row, rowIdx) =>
-            row.map((cell, colIdx) => (
-              <input
-                key={`${rowIdx}-${colIdx}`}
-                type="text"
-                className="sudoku-cell"
-                value={cell.value}
-                onChange={(e) => handleChange(e, rowIdx, colIdx)}
-                readOnly={cell.readOnly}
-                maxLength={1}
-              />
-            ))
-          )}
+    <div className="outer-wrapper">
+      <div className="game-container">
+        <h1 className="logo">SPEEDUKO</h1>
+        <div className="level-score">
+          LEVEL {levelIndex + 1}<br />
+          SCORE: 0
         </div>
-      </div>
 
-      <div className="timer-box">⏳ 00:00</div>
+        <div className="grid-wrapper">
+          <div className="sudoku-grid">
+            {grid.map((row, rowIdx) =>
+              row.map((cell, colIdx) => (
+                <input
+                  key={`${rowIdx}-${colIdx}`}
+                  type="text"
+                  className="sudoku-cell"
+                  value={cell.value}
+                  onChange={(e) => handleChange(e, rowIdx, colIdx)}
+                  readOnly={cell.readOnly}
+                  maxLength={1}
+                />
+              ))
+            )}
+          </div>
+        </div>
+
+        <div className="timer-box">⏳ 00:00</div>
+      </div>
     </div>
   );
 };
