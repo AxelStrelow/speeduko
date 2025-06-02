@@ -72,12 +72,6 @@ const SudokuGrid = () => {
         </div>
       </div>
 
-      <div className="button-box">
-        <button className="next-button" onClick={() => setLevelIndex((i) => (i + 1) % 3)}>
-          NEXT LEVEL
-        </button>
-      </div>
-
       <div className="timer-box">⏳ 00:00</div>
     </div>
   );
