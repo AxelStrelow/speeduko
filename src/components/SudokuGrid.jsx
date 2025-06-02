@@ -56,6 +56,40 @@ const SudokuGrid = () => {
         LEVEL {levelIndex + 1}<br />
         SCORE: 0
       </div>
+
+      <div className="sudoku-grid sudoku-grid-3x3">
+        {grid.map((row, rowIdx) =>
+          row.map((cell, colIdx) => (
+            <input
+              key={`${rowIdx}-${colIdx}`}
+              type="text"
+              className="sudoku-cell"
+              value={cell.value}
+              onChange={(e) => handleChange(e, rowIdx, colIdx)}
+              readOnly={cell.readOnly}
+              maxLength={1}
+            />
+          ))
+        )}
+      </div>
+
+      <div className="button-row">
+        <button className="start-button" onClick={() => setLevelIndex((i) => (i + 1) % 3)}>
+          NEXT LEVEL
+        </button>
+      </div>
+
+      <div className="timer-box">
+        ⏳ 00:00
+      </div>
+    </div>
+  );
+    <div className="game-container">
+      <h1 className="title">SPEEDUKO</h1>
+      <div className="level-score">
+        LEVEL {levelIndex + 1}<br />
+        SCORE: 0
+      </div>
       <div className="sudoku-grid sudoku-grid-3x3">
         {grid.map((row, rowIdx) =>
           row.map((cell, colIdx) => (
