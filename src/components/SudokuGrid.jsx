@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Sudoku.css";
 
-// Helper to generate a completed 3x3 Sudoku grid
 function generateCompleteGrid() {
   const nums = [1, 2, 3];
   const shuffle = (array) => array.sort(() => Math.random() - 0.5);
@@ -70,10 +69,6 @@ const SudokuGrid = () => {
           ))
         )}
       </div>
-
-      <button className="start-button" onClick={() => setLevelIndex((i) => (i + 1) % 3)}>
-        NEXT LEVEL
-      </button>
 
       <div className="timer-box">⏳ 00:00</div>
     </div>
