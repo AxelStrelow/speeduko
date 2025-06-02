@@ -3,9 +3,9 @@ import './Sudoku.css';
 
 const IntroModal = ({ onStart }) => {
   return (
-    <div className="game-container">
-      <img src="/icon.png" alt="Grid Icon" style={{ width: "60px", marginBottom: "10px" }} />
-      <h1 className="logo">SPEEDUKO</h1>
+    <div className="intro-container">
+      <img src="/icon.png" alt="Logo Icon" className="intro-icon" />
+      <h1 className="intro-title">SPEEDUKO</h1>
 
       <div className="intro-box">
         <p>Your mission? <strong>Rack up as many points as possible</strong> before the clock hits zero!</p>
