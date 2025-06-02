@@ -25,6 +25,9 @@ function removeCells(grid, difficulty) {
   return newGrid;
 }
 
+import React from 'react';
+import './Sudoku.css';
+
 const SudokuGrid = () => {
   const [levelIndex, setLevelIndex] = useState(0);
   const [grid, setGrid] = useState([]);
@@ -66,6 +69,12 @@ const SudokuGrid = () => {
   const gridSize = grid.length;
 
   return (
+    <div>
+      <h1 className="title">SPEEDUKO</h1>
+      <div className="level-score">
+        LEVEL 1<br />
+        SCORE: 0
+      </div>
     <div className={`sudoku-wrapper`}>
       <div
         className={`sudoku-grid${gridSize > 3 ? " show-boxes" : ""}`}
@@ -97,6 +106,12 @@ const SudokuGrid = () => {
             }
 
             return (
+    <div>
+      <h1 className="title">SPEEDUKO</h1>
+      <div className="level-score">
+        LEVEL 1<br />
+        SCORE: 0
+      </div>
               <input className={classes.join(" ")}
               key={`${rowIdx}-${colIdx}`}
               value={cell.value}
