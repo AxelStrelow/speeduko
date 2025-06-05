@@ -4,8 +4,9 @@ const IntroModal = ({ onStart }) => {
   return (
     <div className="intro-modal-overlay">
       <div className="intro-modal">
+        <div className="modal-text-box">
         <div className="game-header-wrapper">
-        <div className="logo-grid compact">
+        <div className="logo-grid tight">
           {Array.from({ length: 9 }).map((_, i) => (
             <div key={i} className="logo-cell" />
           ))}
@@ -21,7 +22,7 @@ const IntroModal = ({ onStart }) => {
         </ul>
         <p>⏳ This is a daily challenge! ⏳</p>
         <p>A new puzzle awaits every day. Come back tomorrow and keep your streak alive!</p>
-        <button onClick={onStart} className="start-button">START</button>
+        </div><button onClick={onStart} className="start-button fredoka-font">START</button>
       </div>
     </div>
   );
