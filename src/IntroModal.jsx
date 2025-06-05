@@ -4,8 +4,14 @@ const IntroModal = ({ onStart }) => {
   return (
     <div className="intro-modal-overlay">
       <div className="intro-modal">
-        <img src="/icon.png" alt="Logo" className="logo-icon" />
-        <h1 className="title">SPEEDUKO</h1>
+        <div className="game-header-wrapper">
+        <div className="logo-grid compact">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div key={i} className="logo-cell" />
+          ))}
+        </div>
+        <h1 className="game-title">SPEEDUKO</h1>
+      </div>
         <p>Your mission? <strong>Rack up as many points as possible</strong> before the clock hits zero!</p>
         <ul>
           <li>Fill in the grid with no repeats in rows, columns, or boxes</li>
