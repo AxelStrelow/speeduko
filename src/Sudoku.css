@@ -166,17 +166,28 @@ body {
 }
 
 
+
+
+
+
+
 .logo-grid.tight {
   display: grid;
-  grid-template-columns: repeat(3, 18px);
+  grid-template-columns: repeat(3, 24px);
   grid-gap: 0;
   margin-bottom: 12px;
+  justify-content: center;
 }
 
 .logo-cell {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   background-color: white;
-  border: 1px solid black;
+  border: 2px solid black;
   box-sizing: border-box;
+}
+
+.start-button.fredoka-font {
+  display: block;
+  margin: 0 auto;
 }
