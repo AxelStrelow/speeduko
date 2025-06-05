@@ -195,7 +195,14 @@ const DailyGameEngine = () => {
       {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
       {!showIntro && (
         <div className="text-center">
-          <h1 className="logo mb-2">🧠 Speeduko</h1>
+          <div className="game-header-wrapper">
+      <div className="logo-grid">
+        {Array.from({ length: 9 }).map((_, i) => (
+          <div key={i} className="logo-cell" />
+        ))}
+      </div>
+      <h1 className="game-title">SPEEDUKO</h1>
+    </div>
           <div className="level-indicator">Level {phase + 1}</div>
           <div className="score-display mt-2">
             Score: {score}
