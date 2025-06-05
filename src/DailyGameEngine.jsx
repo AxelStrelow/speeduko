@@ -197,11 +197,75 @@ const DailyGameEngine = () => {
         <div className="text-center">
           <h1 className="game-title">SPEEDUKO</h1>
           <div className="level-score">LEVEL {phase + 1}<br />SCORE: {score}</div>
+          <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
+            {grid.map((row, r) =>
+              row.map((cell, c) => {
+                const key = `${r}-${c}`;
+                const isWrong = wrongCells.includes(key);
+                const isMatch = selectedValue !== null && (
+                  (cell !== null && cell === selectedValue) ||
+                  (grid[r][c] === null &&
+                   userInput[r][c] !== "" &&
+                   parseInt(userInput[r][c]) === selectedValue &&
+                   solution[r][c] === selectedValue)
+                );
+
+                let isSoft = false;
+                if (selectedCell && typeof selectedCell.row === "number" && typeof selectedCell.col === "number") {
+                  const sameRow = r === selectedCell.row;
+                  const sameCol = c === selectedCell.col;
+                  const sameBox = (gridSize === 6 || gridSize === 9) &&
+                    Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
+                    Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
+                  isSoft = sameRow || sameCol || sameBox;
+                }
+
+                const classes = [
+                  "sudoku-cell",
+                  isWrong ? "bg-red-200" : "",
+                  isMatch ? "match-highlight" : "",
+                  isSoft ? "soft-highlight" : "",
+                  r % boxRows === 0 ? "border-top-bold" : "",
+                  c % boxCols === 0 ? "border-left-bold" : "",
+                  r === gridSize - 1 ? "border-bottom-bold" : "",
+                  c === gridSize - 1 ? "border-right-bold" : ""
+                ].join(" ");
+
+                return (
+                  <input
+                    key={key}
+                    className={classes}
+                    type="text"
+                    value={cell !== null ? cell : userInput[r][c]}
+                    onChange={(e) => handleInput(r, c, e.target.value)}
+                    readOnly={cell !== null}
+                    onFocus={() => {
+                      setSelectedCell({ row: r, col: c });
+                      if (cell !== null) {
+                        setSelectedValue(cell);
+                      } else if (userInput[r][c]) {
+                        setSelectedValue(parseInt(userInput[r][c]));
+                      } else {
+                        setSelectedValue(null);
+                      }
+                    }}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        if (!document.activeElement.classList.contains("sudoku-cell")) {
+                          setSelectedCell(null);
+                        }
+                      }, 0);
+                    }}
+                  />
+                );
+              })
             )}
           </div>
-          
-
-          <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
+          <div className="timer-box">
+            ⏳ {formatTime(timeLeft)}
+          </div>
+        </div>
+      )}
             {grid.map((row, r) =>
               row.map((cell, c) => {
                 const key = `${r}-${c}`;
