@@ -199,6 +199,7 @@ const DailyGameEngine = () => {
         <div className="text-center">
           <h1 className="game-title">SPEEDUKO</h1>
           <div className="level-score">LEVEL {phase + 1}<br />SCORE: {score}</div>
+<>
           <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
             {grid.map((row, r) =>
               row.map((cell, c) => {
@@ -265,6 +266,7 @@ const DailyGameEngine = () => {
           </div>
           <div className="timer-box">
             ⏳ {formatTime(timeLeft)}
+</>
         </div>
       )}
         </div>
