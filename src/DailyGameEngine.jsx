@@ -208,7 +208,7 @@ const DailyGameEngine = () => {
               </div>
             )}
           </div>
-          <div className="timer-display">{formatTime(timeLeft)}</div>
+          
 
           <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
             {grid.map((row, r) =>
@@ -274,6 +274,9 @@ const DailyGameEngine = () => {
               })
             )}
           </div>
+          <div className="timer-box">
+            ⏳ {formatTime(timeLeft)}
+         </div>
         </div>
       )}
     </>
