@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import './Sudoku.css';
-import './Logo.css';
+import '../Sudoku.css';
 
 function generateCompleteGrid() {
   const nums = [1, 2, 3];
@@ -75,7 +74,7 @@ const SudokuGrid = () => {
         LEVEL 1<br />
         SCORE: 0
       </div>
-      <div className={`sudoku-wrapper`}>
+      <div className="sudoku-wrapper">
         <div
           className={`sudoku-grid${gridSize > 3 ? " show-boxes" : ""}`}
           style={{
