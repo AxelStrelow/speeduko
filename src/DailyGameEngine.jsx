@@ -194,6 +194,7 @@ const DailyGameEngine = () => {
     <>
       {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
       {!showIntro && (
+        <div className="game-container">
         <div className="text-center">
           <h1 className="game-title">SPEEDUKO</h1>
           <div className="level-score">LEVEL {phase + 1}<br />SCORE: {score}</div>
@@ -264,6 +265,8 @@ const DailyGameEngine = () => {
           <div className="timer-box">
             ⏳ {formatTime(timeLeft)}
           </div>
+        </div>
+      )}
         </div>
       )}
             {grid.map((row, r) =>
