@@ -106,7 +106,7 @@ const SudokuGrid = () => {
 
               return (
                 <input
-                  key={\`\${rowIdx}-\${colIdx}\`}
+                    key={`${rowIdx}-${colIdx}`}
                   className={classes.join(" ")}
                   value={cell.value}
                   readOnly={cell.readOnly}
