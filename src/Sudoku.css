@@ -205,3 +205,17 @@ body {
   color: #000;
   margin-bottom: 24px;
 }
+
+
+.status-container {
+  text-align: center;
+  margin-top: 20px;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.level-indicator,
+.score-display {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #000;
+}
