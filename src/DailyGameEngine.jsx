@@ -196,10 +196,16 @@ const DailyGameEngine = () => {
       {!showIntro && (
         <div className="text-center">
           <h1 className="game-title">SPEEDUKO</h1>
-          <div className="level-score">
-            <div>Level {phase + 1}</div>
-            <div>Score: {score}</div>
-          </div>
+          <div className="level-indicator">Level {phase + 1}</div>
+          <div className="score-display mt-2">
+            Score: {score}
+            {scoreFlash && (
+              <div
+                key={scoreFlash.key}
+                className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
+              >
+                {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+              </div>
             )}
           </div>
           
@@ -271,8 +277,10 @@ const DailyGameEngine = () => {
           <div className="timer-box">
             ⏳ {formatTime(timeLeft)}
          </div>
+        </div>
       )}
     </>
   );
+};
 
 export default DailyGameEngine;
