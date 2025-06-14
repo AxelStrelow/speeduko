@@ -78,7 +78,7 @@ const SudokuGrid = () => {
         <div
           className={`sudoku-grid${gridSize > 3 ? " show-boxes" : ""}`}
           style={{
-            gridTemplateColumns: \`repeat(\${gridSize}, 60px)\`,
+              gridTemplateColumns: `repeat(${gridSize}, 60px)`,
             gap: "5px",
           }}
         >
