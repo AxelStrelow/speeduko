@@ -196,8 +196,9 @@ const DailyGameEngine = () => {
       {!showIntro && (
         <div className="text-center">
           <h1 className="game-title">SPEEDUKO</h1>
+          <div className="status-container">
           <div className="level-indicator">Level {phase + 1}</div>
-          <div className="score-display mt-2">
+          <div className="score-display">
             Score: {score}
             {scoreFlash && (
               <div
