@@ -205,3 +205,31 @@ body {
   color: #000;
   margin-bottom: 24px;
 }
+
+
+/* Centered level and score display */
+.status-display {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 20px;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.status-label {
+  font-size: 1.1rem;
+  color: #222;
+  margin-bottom: 4px;
+}
+
+.status-value {
+  font-size: 1.8rem;
+  color: #4d5eff;
+  font-weight: bold;
+}
