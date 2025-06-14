@@ -78,7 +78,7 @@ const SudokuGrid = () => {
         <div
           className={`sudoku-grid${gridSize > 3 ? " show-boxes" : ""}`}
           style={{
-              gridTemplateColumns: `repeat(${gridSize}, 60px)`,
+            gridTemplateColumns: \`repeat(\${gridSize}, 60px)\`,
             gap: "5px",
           }}
         >
@@ -106,7 +106,7 @@ const SudokuGrid = () => {
 
               return (
                 <input
-                    key={`${rowIdx}-${colIdx}`}
+                  key={\`\${rowIdx}-\${colIdx}\`}
                   className={classes.join(" ")}
                   value={cell.value}
                   readOnly={cell.readOnly}
@@ -119,7 +119,7 @@ const SudokuGrid = () => {
                     textAlign: "center",
                     fontSize: "1.5rem",
                     backgroundColor: cell.readOnly ? "#e0e0e0" : "white",
-                      border: `${borderWidth} solid ${borderColor}`,
+                    border: \`\${borderWidth} solid \${borderColor}\`,
                   }}
                 />
               );
