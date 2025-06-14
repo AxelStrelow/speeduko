@@ -119,7 +119,7 @@ const SudokuGrid = () => {
                     textAlign: "center",
                     fontSize: "1.5rem",
                     backgroundColor: cell.readOnly ? "#e0e0e0" : "white",
-                    border: \`\${borderWidth} solid \${borderColor}\`,
+                      border: `${borderWidth} solid ${borderColor}`,
                   }}
                 />
               );
