@@ -1,40 +1,207 @@
-/* Existing styles preserved */
 
-.app-container {
-  text-align: center;
-  margin: 0 auto;
-  padding: 20px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
 
-.game-header {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.status-display {
-  display: flex;
-  gap: 40px;
-  align-items: center;
-  font-family: 'Arial', sans-serif;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.status-item {
+.game-header-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 20px;
 }
 
-.status-label {
-  font-size: 1.2rem;
-  color: #888;
-  margin-bottom: 4px;
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 20px);
+  grid-gap: 4px;
+  margin-bottom: 10px;
 }
 
-.status-value {
-  font-size: 2.2rem;
-  color: #222;
+
+
+.game-title {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 48px;
+  color: #4d5eff;
+  text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+  letter-spacing: 2px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* Global Background */
+body {
+  background-color: #90caf9;
+  font-family: 'Poppins', 'Nunito', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Core Grid Styles */
+.sudoku-grid {
+  display: grid;
+  row-gap: 2px;
+  column-gap: 7px;
+  justify-content: center;
+  margin: 1rem auto;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 24px;
+  border: 4px solid #000;
+  max-width: fit-content;
+}
+
+/* Grid Sizes */
+.sudoku-grid-3x3 {
+  grid-template-columns: repeat(3, 60px);
+}
+.sudoku-grid-6x6 {
+  grid-template-columns: repeat(6, 60px);
+}
+.sudoku-grid-9x9 {
+  grid-template-columns: repeat(9, 60px);
+}
+
+/* Cell Styling */
+.sudoku-cell {
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  text-align: center;
+  font-weight: bold;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  transition: background-color 0.2s, border-color 0.2s;
+  position: relative;
+}
+.sudoku-cell:focus {
+  border-color: #000;
+  background-color: #e0f2fe;
+}
+
+.sudoku-cell.error {
+  background-color: #ffe5e5 !important;
+  border-color: #ff4d4d !important;
+}
+
+.sudoku-cell.match-highlight {
+  background-color: #e2e8f0 !important;
+}
+.sudoku-cell.match-highlight:read-only {
+  background-color: #f3f4f6 !important;
+}
+
+/* Title and Score */
+.title {
+  font-size: 32px;
+  font-weight: 900;
+  color: #000;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+
+/* Timer */
+
+
+
+.logo-grid.compact {
+  grid-gap: 2px;
+}
+
+
+
+
+.modal-text-box {
+  background-color: white;
+  padding: 24px;
+  border-radius: 20px;
+  border: 4px solid black;
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+}
+
+.fredoka-font {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  background-color: #4d5eff;
+  color: white;
+  border: 3px solid black;
+  border-radius: 12px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.fredoka-font:hover {
+  background-color: #3a48e0;
+}
+
+
+
+
+
+
+
+.logo-grid.tight {
+  display: grid;
+  grid-template-columns: repeat(3, 24px);
+  grid-gap: 0;
+  margin-bottom: 12px;
+  justify-content: center;
+}
+
+.logo-cell {
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border: 2px solid black;
+  box-sizing: border-box;
+}
+
+.start-button.fredoka-font {
+  display: block;
+  margin: 0 auto;
+}
+
+.timer-box {
+  background-color: white;
+  color: #1e3a8a;
+  padding: 10px 24px;
+  border-radius: 16px;
+  border: 4px solid black;
+  display: flex;
+  align-items: center;
+  font-size: 28px;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.bg-red-200 {
+  background-color: #ffe5e5 !important;
+  border-color: #ff4d4d !important;
+}
+
+.level-score {
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #000;
+  margin-bottom: 24px;
 }
