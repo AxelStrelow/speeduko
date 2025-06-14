@@ -98,12 +98,6 @@ const DailyGameEngine = () => {
   const [timeLeft, setTimeLeft] = useState(300);
   const [gameOver, setGameOver] = useState(false);
   const [phase, setPhase] = useState(0);
-  const [score, setScore] = useState(0); // Score starts at 0
-
-  // Called when a correct input is made (safe to move into handleInputChange if needed)
-  const incrementScore = (points = 1) => {
-    setScore(prev => Math.max(0, prev + points));
-  };
   const [selectedCell, setSelectedCell] = useState(null);
   const [showIntro, setShowIntro] = useState(true);
 
