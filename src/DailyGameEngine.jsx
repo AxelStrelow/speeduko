@@ -191,23 +191,97 @@ const DailyGameEngine = () => {
   };
 
   return (
-    <div className="game-container">
+    <>
       {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
-      <div className="status-container">
-        <div className="level-indicator">Level {phase + 1}</div>
-        <div className="score-display">
-          Score: {score}
-          {scoreFlash && (
-            <div
-              key={scoreFlash.key}
+      {!showIntro && (
+        <div className="text-center">
+          <h1 className="game-title">SPEEDUKO</h1>
+          <div className="status-container">
+        <div className="status-container">
+          <div className="level-indicator">Level {phase + 1}</div>
+          <div className="score-display">
+            Score: {score}
+            {scoreFlash && (
+              <div
+                key={scoreFlash.key}
               className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
-            >
-              {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
-            </div>
-          )}
+              >
+                {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+          </div>
         </div>
-      </div>
-      {/* Your existing game rendering JSX continues here */}
+            )}
+          </div>
+          
+
+          <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
+            {grid.map((row, r) =>
+              row.map((cell, c) => {
+                const key = `${r}-${c}`;
+                const isWrong = wrongCells.includes(key);
+                const isMatch = selectedValue !== null && (
+                  (cell !== null && cell === selectedValue) ||
+                  (grid[r][c] === null &&
+                   userInput[r][c] !== "" &&
+                   parseInt(userInput[r][c]) === selectedValue &&
+                   solution[r][c] === selectedValue)
+                );
+
+                let isSoft = false;
+                if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
+                  const sameRow = r === selectedCell.row;
+                  const sameCol = c === selectedCell.col;
+                  const sameBox = (gridSize === 6 || gridSize === 9) &&
+                    Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
+                    Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
+                  isSoft = sameRow || sameCol || sameBox;
+                }
+
+                const classes = [
+                  "sudoku-cell",
+                  isWrong ? "bg-red-200" : "",
+                  isMatch ? "match-highlight" : "",
+                  isSoft ? "soft-highlight" : "",
+                  r % boxRows === 0 ? "border-top-bold" : "",
+                  c % boxCols === 0 ? "border-left-bold" : "",
+                  r === gridSize - 1 ? "border-bottom-bold" : "",
+                  c === gridSize - 1 ? "border-right-bold" : ""
+                ].join(" ");
+
+                return (
+                  <input
+                    key={key}
+                    className={classes}
+                    type="text"
+                    value={cell !== null ? cell : userInput[r][c]}
+                    onChange={(e) => handleInput(r, c, e.target.value)}
+                    readOnly={cell !== null}
+                    onFocus={() => {
+                      setSelectedCell({ row: r, col: c });
+                      if (cell !== null) {
+                        setSelectedValue(cell);
+                      } else if (userInput[r][c]) {
+                        setSelectedValue(parseInt(userInput[r][c]));
+                      } else {
+                        setSelectedValue(null);
+                      }
+                    }}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        if (!document.activeElement.classList.contains("sudoku-cell")) {
+                          setSelectedCell(null);
+                        }
+                      }, 0);
+                    }}
+                  />
+                );
+              })
+            )}
+          </div>
+          <div className="timer-box">
+            ⏳ {formatTime(timeLeft)}
+         </div>
+        </div>
+      )}
     </div>
   );
 };
