@@ -280,7 +280,7 @@ const DailyGameEngine = () => {
          </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
