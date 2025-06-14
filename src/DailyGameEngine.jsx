@@ -1,207 +1,286 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
+import React, { useState, useEffect, useRef } from 'react';
+import './Sudoku.css';
+import IntroModal from './IntroModal';
 
-.game-header-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
+const getTodayKey = () => new Date().toISOString().slice(0, 10);
+const hasPlayedToday = () => localStorage.getItem("lastPlayed") === getTodayKey();
+const markAsPlayed = () => localStorage.setItem("lastPlayed", getTodayKey());
 
-.logo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 20px);
-  grid-gap: 4px;
-  margin-bottom: 10px;
-}
+const mulberry32 = (a) => {
+  return function () {
+    a |= 0; a = a + 0x6D2B79F5 | 0;
+    let t = Math.imul(a ^ a >>> 15, 1 | a);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+};
 
+const getGridSize = (phase) => {
+  if (phase < 3) return 3;
+  if (phase < 6) return 6;
+  return 9;
+};
 
+const getBoxSize = (gridSize) => {
+  if (gridSize === 3) return [1, 3];
+  if (gridSize === 6) return [2, 3];
+  return [3, 3];
+};
 
-.game-title {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 48px;
-  color: #4d5eff;
-  text-shadow:
-    -2px -2px 0 #000,
-    2px -2px 0 #000,
-    -2px 2px 0 #000,
-    2px 2px 0 #000;
-  letter-spacing: 2px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  text-align: center;
-}
+const generateFullGrid = (gridSize, rng) => {
+  const base = Array.from({ length: gridSize }, (_, i) => i + 1);
+  const shuffle = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  };
 
-/* Global Background */
-body {
-  background-color: #90caf9;
-  font-family: 'Poppins', 'Nunito', sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 100vh;
-}
+  const isValid = (grid, row, col, num) => {
+    for (let i = 0; i < gridSize; i++) {
+      if (grid[row][i] === num || grid[i][col] === num) return false;
+    }
+    const [boxRows, boxCols] = getBoxSize(gridSize);
+    const boxRow = Math.floor(row / boxRows) * boxRows;
+    const boxCol = Math.floor(col / boxCols) * boxCols;
+    for (let r = boxRow; r < boxRow + boxRows; r++) {
+      for (let c = boxCol; c < boxCols; c++) {
+        if (grid[r][c] === num) return false;
+      }
+    }
+    return true;
+  };
 
-/* Core Grid Styles */
-.sudoku-grid {
-  display: grid;
-  row-gap: 2px;
-  column-gap: 7px;
-  justify-content: center;
-  margin: 1rem auto;
-  padding: 10px;
-  background: #f9f9f9;
-  border-radius: 24px;
-  border: 4px solid #000;
-  max-width: fit-content;
-}
+  const grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(0));
+  const fillGrid = (row = 0, col = 0) => {
+    if (row === gridSize) return true;
+    if (col === gridSize) return fillGrid(row + 1, 0);
+    const nums = shuffle([...base]);
+    for (let num of nums) {
+      if (isValid(grid, row, col, num)) {
+        grid[row][col] = num;
+        if (fillGrid(row, col + 1)) return true;
+        grid[row][col] = 0;
+      }
+    }
+    return false;
+  };
 
-/* Grid Sizes */
-.sudoku-grid-3x3 {
-  grid-template-columns: repeat(3, 60px);
-}
-.sudoku-grid-6x6 {
-  grid-template-columns: repeat(6, 60px);
-}
-.sudoku-grid-9x9 {
-  grid-template-columns: repeat(9, 60px);
-}
+  fillGrid();
+  return grid;
+};
 
-/* Cell Styling */
-.sudoku-cell {
-  width: 60px;
-  height: 60px;
-  font-size: 24px;
-  text-align: center;
-  font-weight: bold;
-  background-color: #fff;
-  border: 2px solid #ccc;
-  border-radius: 12px;
-  transition: background-color 0.2s, border-color 0.2s;
-  position: relative;
-}
-.sudoku-cell:focus {
-  border-color: #000;
-  background-color: #e0f2fe;
-}
+const removeCells = (grid, blanks, rng) => {
+  const newGrid = grid.map(row => [...row]);
+  const size = grid.length;
+  while (blanks > 0) {
+    const i = Math.floor(rng() * size);
+    const j = Math.floor(rng() * size);
+    if (newGrid[i][j] !== null) {
+      newGrid[i][j] = null;
+      blanks--;
+    }
+  }
+  return newGrid;
+};
 
-.sudoku-cell.error {
-  background-color: #ffe5e5 !important;
-  border-color: #ff4d4d !important;
-}
+const DailyGameEngine = () => {
+  const [locked, setLocked] = useState(hasPlayedToday());
+  const [score, setScore] = useState(0);
+  const [scoreFlash, setScoreFlash] = useState(null);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [grid, setGrid] = useState([]);
+  const [solution, setSolution] = useState([]);
+  const [userInput, setUserInput] = useState([]);
+  const [wrongCells, setWrongCells] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(300);
+  const [gameOver, setGameOver] = useState(false);
+  const [phase, setPhase] = useState(0);
+  const [selectedCell, setSelectedCell] = useState(null);
+  const [showIntro, setShowIntro] = useState(true);
 
-.sudoku-cell.match-highlight {
-  background-color: #e2e8f0 !important;
-}
-.sudoku-cell.match-highlight:read-only {
-  background-color: #f3f4f6 !important;
-}
+  const rng = useRef(mulberry32(parseInt(getTodayKey().replace(/-/g, ''))));
+  const timerRef = useRef(null);
 
-/* Title and Score */
-.title {
-  font-size: 32px;
-  font-weight: 900;
-  color: #000;
-  text-align: center;
-  margin-bottom: 10px;
-}
+  const gridSize = getGridSize(phase);
+  const [boxRows, boxCols] = getBoxSize(gridSize);
+  const levelIndex = phase % 3;
 
+  const getBlankCount = (size, level) => {
+    const blanks = {
+      3: [2, 4, 6],
+      6: [8, 14, 20],
+      9: [30, 45, 60],
+    };
+    return blanks[size][level];
+  };
 
-/* Timer */
+  useEffect(() => {
+    if (locked) return;
+    const full = generateFullGrid(gridSize, rng.current);
+    const blanks = getBlankCount(gridSize, levelIndex);
+    const removed = removeCells(full, blanks, rng.current);
+    setSolution(full);
+    setGrid(removed);
+    setUserInput(Array.from({ length: gridSize }, () => Array(gridSize).fill("")));
+    setWrongCells([]);
+  }, [phase, locked]);
 
+  useEffect(() => {
+    if (locked) return;
+    timerRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timerRef.current);
+          setGameOver(true);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, [locked]);
 
+  const formatTime = (s) => {
+    const m = Math.floor(s / 60).toString().padStart(2, '0');
+    return `${m}:${(s % 60).toString().padStart(2, '0')}`;
+  };
 
-.logo-grid.compact {
-  grid-gap: 2px;
-}
+  const handleInput = (r, c, val) => {
+    if (gameOver || locked) return;
+    const clean = val.replace(/[^0-9]/, '').slice(0, 1);
+    const newInput = [...userInput];
+    newInput[r][c] = clean;
+    setUserInput(newInput);
 
+    const key = `${r}-${c}`;
+    if (grid[r][c] === null) {
+      const correct = parseInt(clean) === solution[r][c];
+      const alreadyCorrect = parseInt(userInput[r][c]) === solution[r][c];
 
+      if (!correct && clean !== "") {
+        setWrongCells(prev => [...new Set([...prev, key])]);
+        setTimeLeft(prev => Math.max(prev - 5, 0));
+        setScore(prev => prev - 5);
+        setScoreFlash({ value: -5, key: Date.now() });
+      } else {
+        setWrongCells(prev => prev.filter(k => k !== key));
+        if (!alreadyCorrect && correct) {
+          setScore(prev => prev + 10);
+          setScoreFlash({ value: +10, key: Date.now() });
+        }
+      }
+    }
 
+    checkComplete(newInput);
+  };
 
-.modal-text-box {
-  background-color: white;
-  padding: 24px;
-  border-radius: 20px;
-  border: 4px solid black;
-  max-width: 600px;
-  margin: 0 auto 20px auto;
-  text-align: center;
-}
+  const checkComplete = (inputs) => {
+    for (let r = 0; r < gridSize; r++) {
+      for (let c = 0; c < gridSize; c++) {
+        if ((grid[r][c] === null || grid[r][c] === 0) && parseInt(inputs[r][c]) !== solution[r][c]) {
+          return;
+        }
+      }
+    }
+    setScore(prev => prev + 100 * gridSize);
+    setTimeLeft(prev => prev + 30);
+    setTimeout(() => setPhase(phase + 1), 300);
+  };
 
-.fredoka-font {
-  font-family: 'Fredoka', sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  background-color: #4d5eff;
-  color: white;
-  border: 3px solid black;
-  border-radius: 12px;
-  padding: 12px 24px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  return (
+    <>
+      {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
+      {!showIntro && (
+        <div className="text-center">
+          <h1 className="game-title">SPEEDUKO</h1>
+          <div className="level-indicator">Level {phase + 1}</div>
+          <div className="score-display mt-2">
+            Score: {score}
+            {scoreFlash && (
+              <div
+                key={scoreFlash.key}
+                className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
+              >
+                {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+              </div>
+            )}
+          </div>
+          
 
-.fredoka-font:hover {
-  background-color: #3a48e0;
-}
+          <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
+            {grid.map((row, r) =>
+              row.map((cell, c) => {
+                const key = `${r}-${c}`;
+                const isWrong = wrongCells.includes(key);
+                const isMatch = selectedValue !== null && (
+                  (cell !== null && cell === selectedValue) ||
+                  (grid[r][c] === null &&
+                   userInput[r][c] !== "" &&
+                   parseInt(userInput[r][c]) === selectedValue &&
+                   solution[r][c] === selectedValue)
+                );
 
+                let isSoft = false;
+                if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
+                  const sameRow = r === selectedCell.row;
+                  const sameCol = c === selectedCell.col;
+                  const sameBox = (gridSize === 6 || gridSize === 9) &&
+                    Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
+                    Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
+                  isSoft = sameRow || sameCol || sameBox;
+                }
 
+                const classes = [
+                  "sudoku-cell",
+                  isWrong ? "bg-red-200" : "",
+                  isMatch ? "match-highlight" : "",
+                  isSoft ? "soft-highlight" : "",
+                  r % boxRows === 0 ? "border-top-bold" : "",
+                  c % boxCols === 0 ? "border-left-bold" : "",
+                  r === gridSize - 1 ? "border-bottom-bold" : "",
+                  c === gridSize - 1 ? "border-right-bold" : ""
+                ].join(" ");
 
+                return (
+                  <input
+                    key={key}
+                    className={classes}
+                    type="text"
+                    value={cell !== null ? cell : userInput[r][c]}
+                    onChange={(e) => handleInput(r, c, e.target.value)}
+                    readOnly={cell !== null}
+                    onFocus={() => {
+                      setSelectedCell({ row: r, col: c });
+                      if (cell !== null) {
+                        setSelectedValue(cell);
+                      } else if (userInput[r][c]) {
+                        setSelectedValue(parseInt(userInput[r][c]));
+                      } else {
+                        setSelectedValue(null);
+                      }
+                    }}
+                    onBlur={() => {
+                      setTimeout(() => {
+                        if (!document.activeElement.classList.contains("sudoku-cell")) {
+                          setSelectedCell(null);
+                        }
+                      }, 0);
+                    }}
+                  />
+                );
+              })
+            )}
+          </div>
+          <div className="timer-box">
+            ⏳ {formatTime(timeLeft)}
+         </div>
+        </div>
+      )}
+    </>
+  );
+};
 
-
-
-
-.logo-grid.tight {
-  display: grid;
-  grid-template-columns: repeat(3, 24px);
-  grid-gap: 0;
-  margin-bottom: 12px;
-  justify-content: center;
-}
-
-.logo-cell {
-  width: 24px;
-  height: 24px;
-  background-color: white;
-  border: 2px solid black;
-  box-sizing: border-box;
-}
-
-.start-button.fredoka-font {
-  display: block;
-  margin: 0 auto;
-}
-
-.timer-box {
-  background-color: white;
-  color: #1e3a8a;
-  padding: 10px 24px;
-  border-radius: 16px;
-  border: 4px solid black;
-  display: flex;
-  align-items: center;
-  font-size: 28px;
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 700;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 30px;
-  margin-bottom: 10px;
-}
-
-.bg-red-200 {
-  background-color: #ffe5e5 !important;
-  border-color: #ff4d4d !important;
-}
-
-.level-score {
-  text-align: center;
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 700;
-  font-size: 28px;
-  color: #000;
-  margin-bottom: 24px;
-}
+export default DailyGameEngine;
