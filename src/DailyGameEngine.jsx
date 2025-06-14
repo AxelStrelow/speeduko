@@ -271,10 +271,8 @@ const DailyGameEngine = () => {
           <div className="timer-box">
             ⏳ {formatTime(timeLeft)}
          </div>
-        </div>
       )}
     </>
   );
-};
 
 export default DailyGameEngine;
