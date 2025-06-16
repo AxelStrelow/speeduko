@@ -207,7 +207,6 @@ const DailyGameEngine = () => {
               {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
             </div>
           )},
-            )}
           </div>
           
 
@@ -273,13 +272,11 @@ const DailyGameEngine = () => {
                   />
                 );
               })
-            )}
           </div>
           <div className="timer-box">
             ⏳ {formatTime(timeLeft)}
          </div>
         </div>
-      )}
     </>
   );
 };
