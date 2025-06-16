@@ -210,7 +210,7 @@ const DailyGameEngine = () => {
           </div>
           
 
-          <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
+          <div className={"sudoku-grid sudoku-grid-" + gridSize + "x" + gridSize}>
             {grid.map((row, r) =>
               row.map((cell, c) => {
                 const key = `${r}-${c}`;
