@@ -1,6 +1,5 @@
 // FULLY REPAIRED AND STYLED DailyGameEngine.jsx
-// Level and score are centered and styled like the timer
-// Sub-grid boxes are outlined in 6x6 and 9x9 grids
+// Score flash animation applies to both positive and negative values
 
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
@@ -206,7 +205,7 @@ const DailyGameEngine = () => {
               {scoreFlash && (
                 <div
                   key={scoreFlash.key}
-                  className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
+                  className={`score-flash animate ${scoreFlash.value > 0 ? "positive" : "negative"}`}
                 >
                   {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
                 </div>
