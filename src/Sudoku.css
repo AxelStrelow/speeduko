@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
 
 body {
@@ -219,6 +218,7 @@ body {
   background-color: #ffe5e5 !important;
   border-color: #ff4d4d !important;
 }
+
 /* Subgrid box borders */
 .border-top-bold {
   border-top: 3px solid black !important;
