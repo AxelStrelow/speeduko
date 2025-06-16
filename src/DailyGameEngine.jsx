@@ -206,7 +206,6 @@ const DailyGameEngine = () => {
               className={scoreFlash.value > 0 ? "score-flash positive" : "score-flash negative"}>
               {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
             </div>
-          )}
             {scoreFlash && (
               <div
                 key={scoreFlash.key}
@@ -214,7 +213,6 @@ const DailyGameEngine = () => {
               >
                 {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
               </div>
-            )}
           </div>
           
 
@@ -280,13 +278,11 @@ const DailyGameEngine = () => {
                   />
                 );
               })
-            )}
           </div>
           <div className="timer-box">
             ⏳ {formatTime(timeLeft)}
          </div>
         </div>
-      )}
     </>
   );
 };
