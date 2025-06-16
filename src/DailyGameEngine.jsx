@@ -1,6 +1,6 @@
 // FULLY REPAIRED AND STYLED DailyGameEngine.jsx
 // Level and score are centered and styled like the timer
-// No layout regression; build-ready
+// Sub-grid boxes are outlined in 6x6 and 9x9 grids
 
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
@@ -237,15 +237,20 @@ const DailyGameEngine = () => {
                   isSoft = sameRow || sameCol || sameBox;
                 }
 
+                const borderClasses = [];
+                if (gridSize > 3) {
+                  if (r % boxRows === 0) borderClasses.push("border-top-bold");
+                  if (c % boxCols === 0) borderClasses.push("border-left-bold");
+                  if ((r + 1) % boxRows === 0) borderClasses.push("border-bottom-bold");
+                  if ((c + 1) % boxCols === 0) borderClasses.push("border-right-bold");
+                }
+
                 const classes = [
                   "sudoku-cell",
                   isWrong ? "bg-red-200" : "",
                   isMatch ? "match-highlight" : "",
                   isSoft ? "soft-highlight" : "",
-                  r % boxRows === 0 ? "border-top-bold" : "",
-                  c % boxCols === 0 ? "border-left-bold" : "",
-                  r === gridSize - 1 ? "border-bottom-bold" : "",
-                  c === gridSize - 1 ? "border-right-bold" : ""
+                  ...borderClasses
                 ].join(" ");
 
                 return (
