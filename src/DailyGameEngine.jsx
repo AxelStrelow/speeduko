@@ -194,7 +194,7 @@ const DailyGameEngine = () => {
     <>
       {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
       {!showIntro && (
-        <div className="game-container">
+        <div className="text-center">
           <h1 className="game-title">SPEEDUKO</h1>
           <div className="level-indicator">Level {phase + 1}</div>
           <div className="score-display mt-2">
