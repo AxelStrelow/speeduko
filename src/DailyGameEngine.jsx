@@ -201,8 +201,6 @@ const DailyGameEngine = () => {
             <div>Score: {score}</div>
           </div>
           {scoreFlash && (
-            {scoreFlash && (
-          </div>
           
 
           <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
