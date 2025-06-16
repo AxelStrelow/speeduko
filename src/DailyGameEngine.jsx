@@ -154,13 +154,14 @@ const DailyGameEngine = () => {
     if (gameOver || locked) return;
     const clean = val.replace(/[^0-9]/, '').slice(0, 1);
     const newInput = [...userInput];
+    const key = `${r}-${c}`;
+    const previous = userInput[r][c];
     newInput[r][c] = clean;
     setUserInput(newInput);
 
-    const key = `${r}-${c}`;
     if (grid[r][c] === null) {
       const correct = parseInt(clean) === solution[r][c];
-      const alreadyCorrect = parseInt(userInput[r][c]) === solution[r][c];
+      const alreadyCorrect = parseInt(previous) === solution[r][c];
 
       if (!correct && clean !== "") {
         setWrongCells(prev => [...new Set([...prev, key])]);
@@ -171,7 +172,7 @@ const DailyGameEngine = () => {
         setWrongCells(prev => prev.filter(k => k !== key));
         if (!alreadyCorrect && correct) {
           setScore(prev => prev + 10);
-          setScoreFlash({ value: +10, key: Date.now() });
+          setScoreFlash({ value: 10, key: Date.now() });
         }
       }
     }
