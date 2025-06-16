@@ -202,15 +202,15 @@ const DailyGameEngine = () => {
             <br />
             Score: {score}
           </div>
-          {scoreFlash && (
-            <div
-              key={scoreFlash.key}
-              className={scoreFlash.value > 0 ? "score-flash positive" : "score-flash negative"}
-            >
-              {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
-            </div>
-          )}
         </div>
+        {scoreFlash && (
+          <div
+            key={scoreFlash.key}
+            className={scoreFlash.value > 0 ? "score-flash positive" : "score-flash negative"}
+          >
+            {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+          </div>
+        )}
             )}
           </div>
           
