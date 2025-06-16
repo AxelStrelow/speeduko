@@ -189,3 +189,16 @@ body {
   background-color: #ffe5e5 !important;
   border-color: #ff4d4d !important;
 }
+/* Subgrid box borders */
+.border-top-bold {
+  border-top: 3px solid black !important;
+}
+.border-left-bold {
+  border-left: 3px solid black !important;
+}
+.border-right-bold {
+  border-right: 3px solid black !important;
+}
+.border-bottom-bold {
+  border-bottom: 3px solid black !important;
+}
