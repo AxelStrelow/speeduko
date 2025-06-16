@@ -259,34 +259,6 @@ const DailyGameEngine = () => {
                     key={key}
                     className={classes}
                     type="text"
-                    value={grid[r][c] !== null ? grid[r][c] : (userInput[r][c] || "")}
-                    onChange={(e) => {
-                      if (grid[r][c] === null) {
-                        handleInput(r, c, e.target.value);
-                      }
-                    }}
-                    readOnly={grid[r][c] !== null}
-                    onFocus={() => {
-                      setSelectedCell({ row: r, col: c });
-                      if (grid[r][c] !== null) {
-                        setSelectedValue(grid[r][c]);
-                      } else if (userInput[r][c]) {
-                        setSelectedValue(parseInt(userInput[r][c]));
-                      } else {
-                        setSelectedValue(null);
-                      }
-                    }}
-                    onBlur={() => {
-                      setTimeout(() => {
-                        if (!document.activeElement.classList.contains("sudoku-cell")) {
-                          setSelectedCell(null);
-                        }
-                      }, 0);
-                    }}
-                  />
-                    key={key}
-                    className={classes}
-                    type="text"
                     value={cell !== null ? cell : userInput[r][c]}
                     onChange={(e) => handleInput(r, c, e.target.value)}
                     readOnly={cell !== null}
