@@ -138,7 +138,7 @@ const DailyGameEngine = () => {
           return 0;
         }
         return prev - 1;
-      });
+              })}
     }, 1000);
     return () => clearInterval(timerRef.current);
   }, [locked]);
@@ -264,7 +264,7 @@ const DailyGameEngine = () => {
                     }}
                   />
                 );
-              });
+              })}
           </div>
           <div className="timer-box">
             ⏳ {formatTime(timeLeft)}
