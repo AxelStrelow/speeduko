@@ -1,6 +1,5 @@
 
 import React from "react";
-import "./NumberPad.css";
 
 const NumberPad = ({ gridSize, onNumberClick }) => {
   const maxNumber = gridSize;
