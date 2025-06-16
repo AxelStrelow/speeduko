@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@700&display=swap');
 
 body {
@@ -48,8 +49,7 @@ body {
 /* Sudoku Grid */
 .sudoku-grid {
   display: grid;
-  row-gap: 2px;
-  column-gap: 7px;
+  gap: 1px;
   justify-content: center;
   padding: 10px;
   background: #f9f9f9;
@@ -77,8 +77,8 @@ body {
   text-align: center;
   font-weight: bold;
   background-color: #fff;
-  border: 2px solid #ccc;
-  border-radius: 12px;
+  border: 1px solid #ccc;
+  border-radius: 0;
   transition: background-color 0.2s, border-color 0.2s;
   position: relative;
 }
@@ -189,16 +189,17 @@ body {
   background-color: #ffe5e5 !important;
   border-color: #ff4d4d !important;
 }
-/* Subgrid box borders */
+
+/* Subgrid box borders - visually subtle and connected */
 .border-top-bold {
-  border-top: 3px solid black !important;
+  border-top: 2px solid #222 !important;
 }
 .border-left-bold {
-  border-left: 3px solid black !important;
+  border-left: 2px solid #222 !important;
 }
 .border-right-bold {
-  border-right: 3px solid black !important;
+  border-right: 2px solid #222 !important;
 }
 .border-bottom-bold {
-  border-bottom: 3px solid black !important;
+  border-bottom: 2px solid #222 !important;
 }
