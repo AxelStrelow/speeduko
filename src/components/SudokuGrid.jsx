@@ -62,8 +62,8 @@ const SudokuGrid = () => {
   const gridSize = grid.length;
 
   return (
-    <div className="game-header-wrapper">
-      <div className="header-content">
+    <div className="game-screen">
+      <div className="game-header-wrapper">
         <div className="logo-grid">
           {Array.from({ length: 9 }).map((_, i) => (
             <div key={i} className="logo-cell" />
@@ -71,7 +71,7 @@ const SudokuGrid = () => {
         </div>
         <h1 className="game-title">SPEEDUKO</h1>
         <div className="level-score">
-          LEVEL 1<br />
+          LEVEL {levelIndex + 1}<br />
           SCORE: 0
         </div>
       </div>
@@ -91,8 +91,7 @@ const SudokuGrid = () => {
                 colIdx === selectedCell.colIdx;
               const isHighlighted =
                 selectedCell &&
-                (rowIdx === selectedCell.rowIdx ||
-                 colIdx === selectedCell.colIdx);
+                (rowIdx === selectedCell.rowIdx || colIdx === selectedCell.colIdx);
               const borderColor = isHighlighted ? "#87cefa" : "#ccc";
               const borderWidth = isSelected ? "2px" : "1px";
 
