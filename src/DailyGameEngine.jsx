@@ -165,8 +165,8 @@ const DailyGameEngine = () => {
       if (!correct && clean !== "") {
         setWrongCells(prev => [...new Set([...prev, key])]);
         setTimeLeft(prev => Math.max(prev - 5, 0));
-        setScore(prev => prev - 5);
-        setScoreFlash({ value: -5, key: Date.now() });
+        setScore(prev => prev - 100);
+        setScoreFlash({ value: -100, key: Date.now() });
       } else {
         setWrongCells(prev => prev.filter(k => k !== key));
         if (!alreadyCorrect && correct) {
