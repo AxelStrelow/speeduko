@@ -330,3 +330,33 @@ html {
   transform: scale(0.95);
   background-color: #e0f7fa;
 }
+
+/* Number Pad */
+.number-pad {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  gap: 0.5rem;
+  padding: 1rem 0;
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  justify-items: center;
+}
+
+.number-pad-button {
+  width: 100%;
+  aspect-ratio: 1;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: #e3f2fd;
+  border: 2px solid #4d5eff;
+  border-radius: 12px;
+  color: #1e3a8a;
+  transition: transform 0.1s;
+}
+
+.number-pad-button:active {
+  transform: scale(0.95);
+  background-color: #bbdefb;
+}
