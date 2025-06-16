@@ -4,6 +4,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 import IntroModal from './IntroModal';
+import NumberPad from "./NumberPad";
 
 const getTodayKey = () => new Date().toISOString().slice(0, 10);
 const hasPlayedToday = () => localStorage.getItem("lastPlayed") === getTodayKey();
@@ -283,7 +284,13 @@ const DailyGameEngine = () => {
               })
             )}
           </div>
-          <div className="timer-box">
+          <NumberPad gridSize={gridSize} onNumberClick={(num) => {
+  if (!selectedCell) return;
+  const { row, col } = selectedCell;
+  handleInput(row, col, num.toString());
+}} />
+
+<div className="timer-box">
             ⏳ {formatTime(timeLeft)}
           </div>
         </div>
