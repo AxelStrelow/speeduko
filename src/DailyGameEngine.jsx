@@ -138,7 +138,7 @@ const DailyGameEngine = () => {
           return 0;
         }
         return prev - 1;
-              })}
+      });
     }, 1000);
     return () => clearInterval(timerRef.current);
   }, [locked]);
@@ -196,11 +196,18 @@ const DailyGameEngine = () => {
       {!showIntro && (
         <div className="text-center">
           <h1 className="game-title">SPEEDUKO</h1>
-          <div className="level-box">
-            <div>Level {phase + 1}</div>
-            <div>Score: {score}</div>
+          <div className="level-indicator">Level {phase + 1}</div>
+          <div className="score-display mt-2">
+            Score: {score}
+            {scoreFlash && (
+              <div
+                key={scoreFlash.key}
+                className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
+              >
+                {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+              </div>
+            )}
           </div>
-          {scoreFlash && (
           
 
           <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
@@ -264,12 +271,14 @@ const DailyGameEngine = () => {
                     }}
                   />
                 );
-              })}
+              })
+            )}
           </div>
           <div className="timer-box">
             ⏳ {formatTime(timeLeft)}
          </div>
         </div>
+      )}
     </>
   );
 };
