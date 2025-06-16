@@ -1,3 +1,6 @@
+// FULLY REPAIRED AND STYLED DailyGameEngine.jsx
+// Level and score are centered and styled like the timer
+// No layout regression; build-ready
 
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
@@ -46,7 +49,7 @@ const generateFullGrid = (gridSize, rng) => {
     const boxRow = Math.floor(row / boxRows) * boxRows;
     const boxCol = Math.floor(col / boxCols) * boxCols;
     for (let r = boxRow; r < boxRow + boxRows; r++) {
-      for (let c = boxCol; c < boxCols; c++) {
+      for (let c = boxCol; c < boxCol + boxCols; c++) {
         if (grid[r][c] === num) return false;
       }
     }
@@ -131,7 +134,7 @@ const DailyGameEngine = () => {
   useEffect(() => {
     if (locked) return;
     timerRef.current = setInterval(() => {
-      setTimeLeft((prev) => {
+      setTimeLeft(prev => {
         if (prev <= 1) {
           clearInterval(timerRef.current);
           setGameOver(true);
@@ -194,21 +197,22 @@ const DailyGameEngine = () => {
     <>
       {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
       {!showIntro && (
-        <div className="text-center">
+        <div className="game-container">
           <h1 className="game-title">SPEEDUKO</h1>
-          <div className="level-indicator">Level {phase + 1}</div>
-          <div className="score-display mt-2">
-            Score: {score}
-            {scoreFlash && (
-              <div
-                key={scoreFlash.key}
-                className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
-              >
-                {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
-              </div>
-            )}
+          <div className="game-header">
+            <div className="level-indicator">Level {phase + 1}</div>
+            <div className="score-display">
+              Score: {score}
+              {scoreFlash && (
+                <div
+                  key={scoreFlash.key}
+                  className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
+                >
+                  {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+                </div>
+              )}
+            </div>
           </div>
-          
 
           <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
             {grid.map((row, r) =>
@@ -218,9 +222,9 @@ const DailyGameEngine = () => {
                 const isMatch = selectedValue !== null && (
                   (cell !== null && cell === selectedValue) ||
                   (grid[r][c] === null &&
-                   userInput[r][c] !== "" &&
-                   parseInt(userInput[r][c]) === selectedValue &&
-                   solution[r][c] === selectedValue)
+                    userInput[r][c] !== "" &&
+                    parseInt(userInput[r][c]) === selectedValue &&
+                    solution[r][c] === selectedValue)
                 );
 
                 let isSoft = false;
@@ -276,7 +280,7 @@ const DailyGameEngine = () => {
           </div>
           <div className="timer-box">
             ⏳ {formatTime(timeLeft)}
-         </div>
+          </div>
         </div>
       )}
     </>
