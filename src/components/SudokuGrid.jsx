@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import '../Sudoku.css';
 
@@ -64,21 +63,23 @@ const SudokuGrid = () => {
 
   return (
     <div className="game-header-wrapper">
-      <div className="logo-grid">
-        {Array.from({ length: 9 }).map((_, i) => (
-          <div key={i} className="logo-cell" />
-        ))}
-      </div>
-      <h1 className="game-title">SPEEDUKO</h1>
-      <div className="level-score">
-        LEVEL 1<br />
-        SCORE: 0
+      <div className="header-content">
+        <div className="logo-grid">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <div key={i} className="logo-cell" />
+          ))}
+        </div>
+        <h1 className="game-title">SPEEDUKO</h1>
+        <div className="level-score">
+          LEVEL 1<br />
+          SCORE: 0
+        </div>
       </div>
       <div className="sudoku-wrapper">
         <div
           className={`sudoku-grid${gridSize > 3 ? " show-boxes" : ""}`}
           style={{
-            gridTemplateColumns: \`repeat(\${gridSize}, 60px)\`,
+            gridTemplateColumns: `repeat(${gridSize}, 60px)`,
             gap: "5px",
           }}
         >
@@ -106,7 +107,7 @@ const SudokuGrid = () => {
 
               return (
                 <input
-                  key={\`\${rowIdx}-\${colIdx}\`}
+                  key={`${rowIdx}-${colIdx}`}
                   className={classes.join(" ")}
                   value={cell.value}
                   readOnly={cell.readOnly}
@@ -119,7 +120,7 @@ const SudokuGrid = () => {
                     textAlign: "center",
                     fontSize: "1.5rem",
                     backgroundColor: cell.readOnly ? "#e0e0e0" : "white",
-                    border: \`\${borderWidth} solid \${borderColor}\`,
+                    border: `${borderWidth} solid ${borderColor}`,
                   }}
                 />
               );
