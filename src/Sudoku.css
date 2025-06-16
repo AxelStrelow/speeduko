@@ -49,7 +49,7 @@ body {
 /* Sudoku Grid */
 .sudoku-grid {
   display: grid;
-  gap: 1px;
+  gap: 0;
   justify-content: center;
   padding: 10px;
   background: #f9f9f9;
@@ -71,6 +71,8 @@ body {
 
 /* Sudoku Cell */
 .sudoku-cell {
+  box-sizing: border-box;
+  margin: 0;
   width: 60px;
   height: 60px;
   font-size: 24px;
