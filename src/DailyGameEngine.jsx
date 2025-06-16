@@ -195,21 +195,21 @@ const DailyGameEngine = () => {
       {showIntro && <IntroModal onStart={() => setShowIntro(false)} />}
       {!showIntro && (
         <div className="text-center">
-          <div className="game-header">
           <h1 className="game-title">SPEEDUKO</h1>
+          
           <div className="level-box">
             <div>Level {phase + 1}</div>
             <div>Score: {score}</div>
+            {scoreFlash && (
+              <div
+                key={scoreFlash.key}
+                className={`score-flash ${scoreFlash.value > 0 ? "positive" : "negative"}`}
+              >
+                {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
+              </div>
+            )}
           </div>
-          {scoreFlash && (
-            <div
-              key={scoreFlash.key}
-              className={scoreFlash.value > 0 ? "score-flash positive" : "score-flash negative"}
-            >
-              {scoreFlash.value > 0 ? `+${scoreFlash.value}` : `${scoreFlash.value}`}
-            </div>
-          )}
-        </div>
+
             )}
           </div>
           
