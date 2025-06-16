@@ -173,7 +173,7 @@ body {
 
 .level-box {
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 4px;
 }
 
 /* Score/Level Indicator Styles */
