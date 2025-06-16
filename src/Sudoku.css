@@ -203,7 +203,7 @@ body {
   align-items: center;
 }
 
-.game-screen {
+.game-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -211,10 +211,6 @@ body {
 }
 
 .level-score {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   text-align: center;
   font-family: 'Fredoka', sans-serif;
   font-weight: 700;
