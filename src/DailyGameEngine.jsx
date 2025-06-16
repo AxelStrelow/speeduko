@@ -153,7 +153,7 @@ const DailyGameEngine = () => {
 
   const handleInput = (r, c, val) => {
     if (gameOver || locked) return;
-    const clean = val.replace(/[^0-9]/, '').slice(0, 1);
+    const clean = parseInt(val.replace(/[^0-9]/g, '').slice(0, 1), 10) || '';
     const newInput = userInput.map(row => [...row]);
     const key = `${r}-${c}`;
     const previous = userInput[r][c];
