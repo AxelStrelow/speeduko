@@ -1,10 +1,9 @@
-// FULLY REPAIRED AND STYLED DailyGameEngine.jsx
-// Score flash animation applies to both positive and negative values
+// FULLY FIXED: Valid JSX structure and working NumberPad integration
 
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 import IntroModal from './IntroModal';
-import NumberPad from "./NumberPad";
+import NumberPad from './NumberPad';
 
 const getTodayKey = () => new Date().toISOString().slice(0, 10);
 const hasPlayedToday = () => localStorage.getItem("lastPlayed") === getTodayKey();
@@ -111,19 +110,10 @@ const DailyGameEngine = () => {
   const [boxRows, boxCols] = getBoxSize(gridSize);
   const levelIndex = phase % 3;
 
-  const getBlankCount = (size, level) => {
-    const blanks = {
-      3: [2, 4, 6],
-      6: [8, 14, 20],
-      9: [30, 45, 60],
-    };
-    return blanks[size][level];
-  };
-
   useEffect(() => {
     if (locked) return;
     const full = generateFullGrid(gridSize, rng.current);
-    const blanks = getBlankCount(gridSize, levelIndex);
+    const blanks = [2, 4, 6, 8, 14, 20, 30, 45, 60][levelIndex + (gridSize === 3 ? 0 : gridSize === 6 ? 3 : 6)];
     const removed = removeCells(full, blanks, rng.current);
     setSolution(full);
     setGrid(removed);
@@ -146,10 +136,7 @@ const DailyGameEngine = () => {
     return () => clearInterval(timerRef.current);
   }, [locked]);
 
-  const formatTime = (s) => {
-    const m = Math.floor(s / 60).toString().padStart(2, '0');
-    return `${m}:${(s % 60).toString().padStart(2, '0')}`;
-  };
+  const formatTime = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
   const handleInput = (r, c, val) => {
     if (gameOver || locked) return;
@@ -163,7 +150,6 @@ const DailyGameEngine = () => {
     if (grid[r][c] === null) {
       const correct = parseInt(clean) === solution[r][c];
       const alreadyCorrect = parseInt(previous) === solution[r][c];
-
       if (!correct && clean !== "") {
         setWrongCells(prev => [...new Set([...prev, key])]);
         setTimeLeft(prev => Math.max(prev - 5, 0));
@@ -217,73 +203,42 @@ const DailyGameEngine = () => {
 
           <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
             {grid.map((row, r) =>
-  row.map((cell, c) => {
-    const key = `${r}-${c}`;
-    const isWrong = wrongCells.includes(key);
-    const isMatch = selectedValue !== null && (
-      (cell !== null && cell === selectedValue) ||
-      (grid[r][c] === null &&
-        userInput[r][c] !== "" &&
-        parseInt(userInput[r][c]) === selectedValue &&
-        solution[r][c] === selectedValue)
-    );
+              row.map((cell, c) => {
+                const key = `${r}-${c}`;
+                const isWrong = wrongCells.includes(key);
+                const isMatch = selectedValue !== null && (
+                  (cell !== null && cell === selectedValue) ||
+                  (grid[r][c] === null && userInput[r][c] !== "" && parseInt(userInput[r][c]) === selectedValue && solution[r][c] === selectedValue)
+                );
 
-    let isSoft = false;
-    if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
-      const sameRow = r === selectedCell.row;
-      const sameCol = c === selectedCell.col;
-      const sameBox = (gridSize === 6 || gridSize === 9) &&
-        Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
-        Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
-      isSoft = sameRow || sameCol || sameBox;
-    }
+                let isSoft = false;
+                if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
+                  const sameRow = r === selectedCell.row;
+                  const sameCol = c === selectedCell.col;
+                  const sameBox = (gridSize === 6 || gridSize === 9) &&
+                    Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
+                    Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
+                  isSoft = sameRow || sameCol || sameBox;
+                }
 
-    const borderClasses = [];
-    if (gridSize > 3) {
-      if (r % boxRows === 0) borderClasses.push("border-top-bold");
-      if (c % boxCols === 0) borderClasses.push("border-left-bold");
-      if ((r + 1) % boxRows === 0) borderClasses.push("border-bottom-bold");
-      if ((c + 1) % boxCols === 0) borderClasses.push("border-right-bold");
-    }
+                const borderClasses = [];
+                if (gridSize > 3) {
+                  if (r % boxRows === 0) borderClasses.push("border-top-bold");
+                  if (c % boxCols === 0) borderClasses.push("border-left-bold");
+                  if ((r + 1) % boxRows === 0) borderClasses.push("border-bottom-bold");
+                  if ((c + 1) % boxCols === 0) borderClasses.push("border-right-bold");
+                }
 
-    const classes = [
-      "sudoku-cell",
-      isWrong ? "bg-red-200" : "",
-      isMatch ? "match-highlight" : "",
-      isSoft ? "soft-highlight" : "",
-      ...borderClasses
-    ].join(" ");
+                const classes = [
+                  "sudoku-cell",
+                  isWrong ? "bg-red-200" : "",
+                  isMatch ? "match-highlight" : "",
+                  isSoft ? "soft-highlight" : "",
+                  ...borderClasses
+                ].join(" ");
 
-    return (
-      <div
-        key={key}
-        className={classes}
-        onClick={() => {
-          setSelectedCell({ row: r, col: c });
-          if (userInput[r][c]) {
-            setSelectedValue(parseInt(userInput[r][c]));
-          } else {
-            setSelectedValue(null);
-          }
-        }}
-      >
-        {grid[r][c] !== null ? grid[r][c] : userInput[r][c] || ""}
-      </div>
-    });
-  })
-)};
-                        if (userInput[r][c]) {
-                          setSelectedValue(parseInt(userInput[r][c]));
-                        } else {
-                          setSelectedValue(null);
-                        }
-                      }}
-                    >
-                      {userInput[r][c] || ""}
-                    </div>
-                  )}
-                  </>
-                
+                return (
+                  <input
                     key={key}
                     className={classes}
                     type="text"
@@ -300,31 +255,26 @@ const DailyGameEngine = () => {
                         setSelectedValue(null);
                       }
                     }}
-                    onBlur={() => {
-                      setTimeout(() => {
-                        if (!document.activeElement.classList.contains("sudoku-cell")) {
-                          setSelectedCell(null);
-                        }
-                      }, 0);
-                    }}
                   />
-    });
+                );
               })
             )}
           </div>
-          <NumberPad gridSize={gridSize} onNumberClick={(num) => {
-  if (!selectedCell) return;
-  const { row, col } = selectedCell;
-  handleInput(row, col, num.toString());
-}} />
 
-<div className="timer-box">
-            ⏳ {formatTime(timeLeft)}
-          </div>
+          <NumberPad
+            gridSize={gridSize}
+            onNumberClick={(num) => {
+              if (!selectedCell) return;
+              const { row, col } = selectedCell;
+              handleInput(row, col, num.toString());
+            }}
+          />
+
+          <div className="timer-box">⏳ {formatTime(timeLeft)}</div>
         </div>
       )}
     </>
-    });
+  );
 };
 
 export default DailyGameEngine;
