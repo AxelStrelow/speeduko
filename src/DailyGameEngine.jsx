@@ -145,6 +145,7 @@ const DailyGameEngine = () => {
     const previous = userInput[r][c];
     newInput[r][c] = clean;
     setUserInput(newInput);
+    setSelectedValue(parseInt(clean) || null);
 
     if (grid[r][c] === null) {
       const correct = parseInt(clean) === solution[r][c];
