@@ -206,9 +206,14 @@ const DailyGameEngine = () => {
                 const key = `${r}-${c}`;
                 const isWrong = wrongCells.includes(key);
                 const isMatch = selectedValue !== null && (
-                  (cell !== null && cell === selectedValue) ||
-                  (grid[r][c] === null && userInput[r][c] !== "" && parseInt(userInput[r][c]) === selectedValue && solution[r][c] === selectedValue)
-                );
+  (cell !== null && cell === selectedValue) ||
+  (
+    grid[r][c] === null &&
+    userInput[r][c] !== "" &&
+    parseInt(userInput[r][c]) === selectedValue &&
+    parseInt(userInput[r][c]) === solution[r][c]
+  )
+);
 
                 let isSoft = false;
                 if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
