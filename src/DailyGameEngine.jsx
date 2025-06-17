@@ -255,6 +255,7 @@ const DailyGameEngine = () => {
                 ].join(" ");
 
                 return (
+                  <>
                   {grid[r][c] !== null ? (
                     <div key={key} className={classes}>
                       {grid[r][c]}
@@ -275,6 +276,7 @@ const DailyGameEngine = () => {
                       {userInput[r][c] || ""}
                     </div>
                   )}
+                  </>
                 
                     key={key}
                     className={classes}
