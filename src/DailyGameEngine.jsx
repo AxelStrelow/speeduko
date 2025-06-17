@@ -226,7 +226,7 @@ const DailyGameEngine = () => {
         userInput[r][c] !== "" &&
         parseInt(userInput[r][c]) === selectedValue &&
         solution[r][c] === selectedValue)
-    });
+    );
 
     let isSoft = false;
     if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
