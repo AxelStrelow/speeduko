@@ -1,10 +1,7 @@
-// FULLY REPAIRED AND STYLED DailyGameEngine.jsx
-// Score flash animation applies to both positive and negative values
-
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 import IntroModal from './IntroModal';
-import NumberPad from "./NumberPad";
+import NumberPad from './NumberPad';
 
 const getTodayKey = () => new Date().toISOString().slice(0, 10);
 const hasPlayedToday = () => localStorage.getItem("lastPlayed") === getTodayKey();
@@ -12,7 +9,8 @@ const markAsPlayed = () => localStorage.setItem("lastPlayed", getTodayKey());
 
 const mulberry32 = (a) => {
   return function () {
-    a |= 0; a = a + 0x6D2B79F5 | 0;
+    a |= 0;
+    a = a + 0x6D2B79F5 | 0;
     let t = Math.imul(a ^ a >>> 15, 1 | a);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
@@ -111,19 +109,10 @@ const DailyGameEngine = () => {
   const [boxRows, boxCols] = getBoxSize(gridSize);
   const levelIndex = phase % 3;
 
-  const getBlankCount = (size, level) => {
-    const blanks = {
-      3: [2, 4, 6],
-      6: [8, 14, 20],
-      9: [30, 45, 60],
-    };
-    return blanks[size][level];
-  };
-
   useEffect(() => {
     if (locked) return;
     const full = generateFullGrid(gridSize, rng.current);
-    const blanks = getBlankCount(gridSize, levelIndex);
+    const blanks = [2, 4, 6, 8, 14, 20, 30, 45, 60][levelIndex + (gridSize === 3 ? 0 : gridSize === 6 ? 3 : 6)];
     const removed = removeCells(full, blanks, rng.current);
     setSolution(full);
     setGrid(removed);
@@ -146,10 +135,7 @@ const DailyGameEngine = () => {
     return () => clearInterval(timerRef.current);
   }, [locked]);
 
-  const formatTime = (s) => {
-    const m = Math.floor(s / 60).toString().padStart(2, '0');
-    return `${m}:${(s % 60).toString().padStart(2, '0')}`;
-  };
+  const formatTime = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
 
   const handleInput = (r, c, val) => {
     if (gameOver || locked) return;
@@ -163,7 +149,6 @@ const DailyGameEngine = () => {
     if (grid[r][c] === null) {
       const correct = parseInt(clean) === solution[r][c];
       const alreadyCorrect = parseInt(previous) === solution[r][c];
-
       if (!correct && clean !== "") {
         setWrongCells(prev => [...new Set([...prev, key])]);
         setTimeLeft(prev => Math.max(prev - 5, 0));
@@ -222,10 +207,7 @@ const DailyGameEngine = () => {
                 const isWrong = wrongCells.includes(key);
                 const isMatch = selectedValue !== null && (
                   (cell !== null && cell === selectedValue) ||
-                  (grid[r][c] === null &&
-                    userInput[r][c] !== "" &&
-                    parseInt(userInput[r][c]) === selectedValue &&
-                    solution[r][c] === selectedValue)
+                  (grid[r][c] === null && userInput[r][c] !== "" && parseInt(userInput[r][c]) === selectedValue && solution[r][c] === selectedValue)
                 );
 
                 let isSoft = false;
@@ -254,45 +236,43 @@ const DailyGameEngine = () => {
                   ...borderClasses
                 ].join(" ");
 
-                return (
+                return cell !== null ? (
                   <input
                     key={key}
                     className={classes}
                     type="text"
-                    value={cell !== null ? cell : userInput[r][c]}
-                    onChange={(e) => handleInput(r, c, e.target.value)}
-                    readOnly={cell !== null}
-                    onFocus={() => {
-                      setSelectedCell({ row: r, col: c });
-                      if (cell !== null) {
-                        setSelectedValue(cell);
-                      } else if (userInput[r][c]) {
-                        setSelectedValue(parseInt(userInput[r][c]));
-                      } else {
-                        setSelectedValue(null);
-                      }
-                    }}
-                    onBlur={() => {
-                      setTimeout(() => {
-                        if (!document.activeElement.classList.contains("sudoku-cell")) {
-                          setSelectedCell(null);
-                        }
-                      }, 0);
-                    }}
+                    value={cell}
+                    readOnly
+                    tabIndex={-1}
                   />
+                ) : (
+                  <div
+                    key={key}
+                    className={classes}
+                    tabIndex={0}
+                    role="button"
+                    contentEditable={false}
+                    onClick={() => setSelectedCell({ row: r, col: c })}
+                    onFocus={() => setSelectedCell({ row: r, col: c })}
+                  >
+                    {userInput[r][c]}
+                  </div>
                 );
               })
             )}
           </div>
-          <NumberPad gridSize={gridSize} onNumberClick={(num) => {
-  if (!selectedCell) return;
-  const { row, col } = selectedCell;
-  handleInput(row, col, num.toString());
-}} />
 
-<div className="timer-box">
-            ⏳ {formatTime(timeLeft)}
-          </div>
+          <NumberPad
+            gridSize={gridSize}
+            onNumberClick={(num) => {
+              if (!selectedCell) return;
+              const { row, col } = selectedCell;
+              handleInput(row, col, num.toString());
+              setSelectedValue(num);
+            }}
+          />
+
+          <div className="timer-box">⏳ {formatTime(timeLeft)}</div>
         </div>
       )}
     </>
