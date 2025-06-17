@@ -1,4 +1,4 @@
-// FULLY FIXED: Prevent iOS keyboard popup on focusable cells
+// FULLY FIXED: Prevent iOS keyboard popup on focusable cells, enable desktop keyboard input
 
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
@@ -251,8 +251,11 @@ const DailyGameEngine = () => {
                     key={key}
                     className={classes}
                     tabIndex={0}
+                    contentEditable={!/Mobi|Android/i.test(navigator.userAgent)}
+                    suppressContentEditableWarning={true}
                     onClick={() => setSelectedCell({ row: r, col: c })}
                     onFocus={() => setSelectedCell({ row: r, col: c })}
+                    onInput={(e) => handleInput(r, c, e.currentTarget.textContent)}
                   >
                     {userInput[r][c]}
                   </div>
@@ -278,4 +281,3 @@ const DailyGameEngine = () => {
 };
 
 export default DailyGameEngine;
-
