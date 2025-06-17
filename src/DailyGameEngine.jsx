@@ -232,10 +232,10 @@ const DailyGameEngine = () => {
                 }
 
                 const classes = [
-                  "sudoku-cell",
-                  isWrong ? "bg-red-200" : "",
-                  isMatch ? "match-highlight" : "",
-                  isSoft ? "soft-highlight" : "",
+  "sudoku-cell",
+  isWrong ? "bg-red-200" : "",
+  !isWrong && isMatch ? "match-highlight" : "",
+  !isWrong && isSoft ? "soft-highlight" : "",
                   ...borderClasses
                 ].join(" ");
 
