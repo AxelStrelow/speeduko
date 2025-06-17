@@ -1,3 +1,4 @@
+// Fully Restored: Highlight logic, keyboard and NumberPad integration
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
 import IntroModal from './IntroModal';
@@ -9,8 +10,7 @@ const markAsPlayed = () => localStorage.setItem("lastPlayed", getTodayKey());
 
 const mulberry32 = (a) => {
   return function () {
-    a |= 0;
-    a = a + 0x6D2B79F5 | 0;
+    a |= 0; a = a + 0x6D2B79F5 | 0;
     let t = Math.imul(a ^ a >>> 15, 1 | a);
     t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
     return ((t ^ t >>> 14) >>> 0) / 4294967296;
@@ -206,14 +206,11 @@ const DailyGameEngine = () => {
                 const key = `${r}-${c}`;
                 const isWrong = wrongCells.includes(key);
                 const isMatch = selectedValue !== null && (
-  (cell !== null && cell === selectedValue) ||
-  (
-    grid[r][c] === null &&
-    userInput[r][c] !== "" &&
-    parseInt(userInput[r][c]) === selectedValue &&
-    parseInt(userInput[r][c]) === solution[r][c]
-  )
-);
+                  (cell !== null && cell === selectedValue) ||
+                  (grid[r][c] === null && userInput[r][c] !== "" &&
+                   parseInt(userInput[r][c]) === selectedValue &&
+                   parseInt(userInput[r][c]) === solution[r][c])
+                );
 
                 let isSoft = false;
                 if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
@@ -251,17 +248,17 @@ const DailyGameEngine = () => {
                     tabIndex={-1}
                   />
                 ) : (
-                  <div
+                  <input
                     key={key}
                     className={classes}
-                    tabIndex={0}
-                    role="button"
-                    contentEditable={false}
-                    onClick={() => setSelectedCell({ row: r, col: c })}
-                    onFocus={() => setSelectedCell({ row: r, col: c })}
-                  >
-                    {userInput[r][c]}
-                  </div>
+                    type="text"
+                    value={userInput[r][c]}
+                    onChange={(e) => handleInput(r, c, e.target.value)}
+                    onFocus={() => {
+                      setSelectedCell({ row: r, col: c });
+                      setSelectedValue(parseInt(userInput[r][c]) || null);
+                    }}
+                  />
                 );
               })
             )}
