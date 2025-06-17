@@ -70,13 +70,15 @@ body {
 }
 
 /* Sudoku Cell */
+
 .sudoku-cell {
   box-sizing: border-box;
   margin: 0;
   width: 60px;
   height: 60px;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 1.25rem;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
   border: 1px solid #ccc;
   border-radius: 0;
   background-color: #fff;
@@ -88,6 +90,7 @@ body {
   user-select: none;
   text-align: center;
 }
+
 .sudoku-cell:focus {
   border-color: #000;
   background-color: #e0f2fe;
@@ -273,17 +276,36 @@ html {
     margin-bottom: 1rem;
   }
 
-  .sudoku-grid-6x6,
-  .sudoku-grid-9x9 {
-    grid-template-columns: repeat(6, 1fr);
-  }
+  
+.sudoku-grid-6x6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+.sudoku-grid-9x9 {
+  grid-template-columns: repeat(9, 1fr);
+}
 
-  .sudoku-cell {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1;
-    font-size: clamp(14px, 4vw, 20px);
-  }
+
+  
+.sudoku-cell {
+  box-sizing: border-box;
+  margin: 0;
+  width: 60px;
+  height: 60px;
+  font-size: 1.25rem;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s, border-color 0.2s;
+  position: relative;
+  user-select: none;
+  text-align: center;
+}
+
 
   .level-box,
   .timer-box {
