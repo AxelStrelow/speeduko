@@ -1,4 +1,4 @@
-// FULLY FIXED: Valid JSX structure and working NumberPad integration
+// FULLY FIXED: Prevent iOS keyboard popup on focusable cells
 
 import React, { useState, useEffect, useRef } from 'react';
 import './Sudoku.css';
@@ -237,25 +237,25 @@ const DailyGameEngine = () => {
                   ...borderClasses
                 ].join(" ");
 
-                return (
+                return cell !== null ? (
                   <input
                     key={key}
                     className={classes}
                     type="text"
-                    value={cell !== null ? cell : userInput[r][c]}
-                    onChange={(e) => handleInput(r, c, e.target.value)}
-                    readOnly={cell !== null}
-                    onFocus={() => {
-                      setSelectedCell({ row: r, col: c });
-                      if (cell !== null) {
-                        setSelectedValue(cell);
-                      } else if (userInput[r][c]) {
-                        setSelectedValue(parseInt(userInput[r][c]));
-                      } else {
-                        setSelectedValue(null);
-                      }
-                    }}
+                    value={cell}
+                    readOnly
+                    tabIndex={-1}
                   />
+                ) : (
+                  <div
+                    key={key}
+                    className={classes}
+                    tabIndex={0}
+                    onClick={() => setSelectedCell({ row: r, col: c })}
+                    onFocus={() => setSelectedCell({ row: r, col: c })}
+                  >
+                    {userInput[r][c]}
+                  </div>
                 );
               })
             )}
