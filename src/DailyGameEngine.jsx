@@ -255,7 +255,27 @@ const DailyGameEngine = () => {
                 ].join(" ");
 
                 return (
-                  <input
+                  {grid[r][c] !== null ? (
+                    <div key={key} className={classes}>
+                      {grid[r][c]}
+                    </div>
+                  ) : (
+                    <div
+                      key={key}
+                      className={classes}
+                      onClick={() => {
+                        setSelectedCell({ row: r, col: c });
+                        if (userInput[r][c]) {
+                          setSelectedValue(parseInt(userInput[r][c]));
+                        } else {
+                          setSelectedValue(null);
+                        }
+                      }}
+                    >
+                      {userInput[r][c] || ""}
+                    </div>
+                  )}
+                
                     key={key}
                     className={classes}
                     type="text"
