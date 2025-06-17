@@ -217,6 +217,7 @@ if (selectedCell) {
   const sameCol = c === selectedCell.col;
   isSoft = sameRow || sameCol;
 }
+}
                 }
 
                 const borderClasses = [];
