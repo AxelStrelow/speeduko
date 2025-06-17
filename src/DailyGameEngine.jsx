@@ -217,55 +217,61 @@ const DailyGameEngine = () => {
 
           <div className={`sudoku-grid sudoku-grid-${gridSize}x${gridSize}`}>
             {grid.map((row, r) =>
-              row.map((cell, c) => {
-                const key = `${r}-${c}`;
-                const isWrong = wrongCells.includes(key);
-                const isMatch = selectedValue !== null && (
-                  (cell !== null && cell === selectedValue) ||
-                  (grid[r][c] === null &&
-                    userInput[r][c] !== "" &&
-                    parseInt(userInput[r][c]) === selectedValue &&
-                    solution[r][c] === selectedValue)
-                );
+  row.map((cell, c) => {
+    const key = `${r}-${c}`;
+    const isWrong = wrongCells.includes(key);
+    const isMatch = selectedValue !== null && (
+      (cell !== null && cell === selectedValue) ||
+      (grid[r][c] === null &&
+        userInput[r][c] !== "" &&
+        parseInt(userInput[r][c]) === selectedValue &&
+        solution[r][c] === selectedValue)
+    );
 
-                let isSoft = false;
-                if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
-                  const sameRow = r === selectedCell.row;
-                  const sameCol = c === selectedCell.col;
-                  const sameBox = (gridSize === 6 || gridSize === 9) &&
-                    Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
-                    Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
-                  isSoft = sameRow || sameCol || sameBox;
-                }
+    let isSoft = false;
+    if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
+      const sameRow = r === selectedCell.row;
+      const sameCol = c === selectedCell.col;
+      const sameBox = (gridSize === 6 || gridSize === 9) &&
+        Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
+        Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
+      isSoft = sameRow || sameCol || sameBox;
+    }
 
-                const borderClasses = [];
-                if (gridSize > 3) {
-                  if (r % boxRows === 0) borderClasses.push("border-top-bold");
-                  if (c % boxCols === 0) borderClasses.push("border-left-bold");
-                  if ((r + 1) % boxRows === 0) borderClasses.push("border-bottom-bold");
-                  if ((c + 1) % boxCols === 0) borderClasses.push("border-right-bold");
-                }
+    const borderClasses = [];
+    if (gridSize > 3) {
+      if (r % boxRows === 0) borderClasses.push("border-top-bold");
+      if (c % boxCols === 0) borderClasses.push("border-left-bold");
+      if ((r + 1) % boxRows === 0) borderClasses.push("border-bottom-bold");
+      if ((c + 1) % boxCols === 0) borderClasses.push("border-right-bold");
+    }
 
-                const classes = [
-                  "sudoku-cell",
-                  isWrong ? "bg-red-200" : "",
-                  isMatch ? "match-highlight" : "",
-                  isSoft ? "soft-highlight" : "",
-                  ...borderClasses
-                ].join(" ");
+    const classes = [
+      "sudoku-cell",
+      isWrong ? "bg-red-200" : "",
+      isMatch ? "match-highlight" : "",
+      isSoft ? "soft-highlight" : "",
+      ...borderClasses
+    ].join(" ");
 
-                return (
-                  <>
-                  {grid[r][c] !== null ? (
-                    <div key={key} className={classes}>
-                      {grid[r][c]}
-                    </div>
-                  ) : (
-                    <div
-                      key={key}
-                      className={classes}
-                      onClick={() => {
-                        setSelectedCell({ row: r, col: c });
+    return (
+      <div
+        key={key}
+        className={classes}
+        onClick={() => {
+          setSelectedCell({ row: r, col: c });
+          if (userInput[r][c]) {
+            setSelectedValue(parseInt(userInput[r][c]));
+          } else {
+            setSelectedValue(null);
+          }
+        }}
+      >
+        {grid[r][c] !== null ? grid[r][c] : userInput[r][c] || ""}
+      </div>
+    );
+  })
+)};
                         if (userInput[r][c]) {
                           setSelectedValue(parseInt(userInput[r][c]));
                         } else {
