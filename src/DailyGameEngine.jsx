@@ -253,7 +253,7 @@ const DailyGameEngine = () => {
                     tabIndex={0}
                     contentEditable={!/Mobi|Android/i.test(navigator.userAgent)}
   suppressContentEditableWarning={true}
-  onClick={() => setSelectedCell({ row: r, col: c })}
+  onClick={() =onClick={() => setSelectedCell({ row: r, col: c })}
   onFocus={() => setSelectedCell({ row: r, col: c })}
   onInput={(e) => handleInput(r, c, e.currentTarget.textContent)}
   onKeyDown={(e) => {
