@@ -405,3 +405,12 @@ html {
     font-size: clamp(14px, 4vw, 20px);
   }
 }
+
+.match-highlight {
+  background-color: #dbeafe !important; /* soft blue */
+}
+
+.soft-highlight {
+  background-color: #f0f9ff !important; /* lightest blue */
+}
+
