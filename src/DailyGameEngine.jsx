@@ -269,8 +269,7 @@ const DailyGameEngine = () => {
       >
         {grid[r][c] !== null ? grid[r][c] : userInput[r][c] || ""}
       </div>
-    });
-  })
+  })}
 )};
                         if (userInput[r][c]) {
                           setSelectedValue(parseInt(userInput[r][c]));
