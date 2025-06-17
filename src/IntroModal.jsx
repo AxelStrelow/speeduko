@@ -19,7 +19,7 @@ const IntroModal = ({ onStart }) => {
           <ul style={{ textAlign: 'left', maxWidth: '400px', margin: '0 auto' }}>
             <li>Fill in the grid with no repeats in rows, columns, or boxes</li>
             <li>+10 points for each correct entry</li>
-            <li>-5 points & 5 seconds lost for each mistake</li>
+            <li>-100 points & 5 seconds lost for each mistake</li>
             <li>Finish a grid? Bonus points + time!</li>
           </ul>
           <p>⏳ This is a daily challenge! ⏳</p>
