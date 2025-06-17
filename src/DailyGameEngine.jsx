@@ -226,7 +226,7 @@ const DailyGameEngine = () => {
         userInput[r][c] !== "" &&
         parseInt(userInput[r][c]) === selectedValue &&
         solution[r][c] === selectedValue)
-    );
+    });
 
     let isSoft = false;
     if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
@@ -269,7 +269,7 @@ const DailyGameEngine = () => {
       >
         {grid[r][c] !== null ? grid[r][c] : userInput[r][c] || ""}
       </div>
-    );
+    });
   })
 )};
                         if (userInput[r][c]) {
@@ -308,7 +308,7 @@ const DailyGameEngine = () => {
                       }, 0);
                     }}
                   />
-                );
+    });
               })
             )}
           </div>
@@ -324,7 +324,7 @@ const DailyGameEngine = () => {
         </div>
       )}
     </>
-  );
+    });
 };
 
 export default DailyGameEngine;
