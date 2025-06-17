@@ -21,5 +21,3 @@ const NumberPad = ({ gridSize, onNumberClick }) => {
 };
 
 export default NumberPad;
-
-
