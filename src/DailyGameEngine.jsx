@@ -207,20 +207,16 @@ const DailyGameEngine = () => {
                 const key = `${r}-${c}`;
                 const isWrong = wrongCells.includes(key);
                 const isMatch = selectedValue !== null && (
-                  (cell !== null && cell === selectedValue) ||
-                  (grid[r][c] === null && userInput[r][c] !== "" &&
-                   parseInt(userInput[r][c]) === selectedValue &&
-                   parseInt(userInput[r][c]) === solution[r][c])
-                );
+  (cell !== null && cell === selectedValue) ||
+  (userInput[r][c] !== "" && parseInt(userInput[r][c]) === selectedValue)
+);
 
                 let isSoft = false;
-                if (selectedCell && typeof selectedCell.row === 'number' && typeof selectedCell.col === 'number') {
-                  const sameRow = r === selectedCell.row;
-                  const sameCol = c === selectedCell.col;
-                  const sameBox = (gridSize === 6 || gridSize === 9) &&
-                    Math.floor(r / boxRows) === Math.floor(selectedCell.row / boxRows) &&
-                    Math.floor(c / boxCols) === Math.floor(selectedCell.col / boxCols);
-                  isSoft = sameRow || sameCol || sameBox;
+if (selectedCell) {
+  const sameRow = r === selectedCell.row;
+  const sameCol = c === selectedCell.col;
+  isSoft = sameRow || sameCol;
+}
                 }
 
                 const borderClasses = [];
