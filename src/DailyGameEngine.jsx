@@ -252,8 +252,15 @@ const DailyGameEngine = () => {
                     className={classes}
                     tabIndex={0}
                     contentEditable={!/Mobi|Android/i.test(navigator.userAgent)}
-                    suppressContentEditableWarning={true}
-                    onClick={() => setSelectedCell({ row: r, col: c })}
+  suppressContentEditableWarning={true}
+  onClick={() => setSelectedCell({ row: r, col: c })}
+  onFocus={() => setSelectedCell({ row: r, col: c })}
+  onInput={(e) => handleInput(r, c, e.currentTarget.textContent)}
+  onKeyDown={(e) => {
+    const allowed = ['1','2','3','4','5','6','7','8','9','Backspace','Delete','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'];
+    if (!allowed.includes(e.key)) e.preventDefault();
+  }}
+> setSelectedCell({ row: r, col: c })}
                     onFocus={() => setSelectedCell({ row: r, col: c })}
                     onInput={(e) => handleInput(r, c, e.currentTarget.textContent)}
                   >
