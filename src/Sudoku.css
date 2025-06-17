@@ -275,7 +275,7 @@ html {
 
   .sudoku-grid-6x6,
   .sudoku-grid-9x9 {
-    grid-template-columns: repeat(auto-fit, minmax(10vw, 1fr));
+    grid-template-columns: repeat(6, 1fr);
   }
 
   .sudoku-cell {
